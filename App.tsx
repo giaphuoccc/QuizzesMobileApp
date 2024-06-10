@@ -77,7 +77,7 @@ function App(): React.JSX.Element {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Step One">
-            Edit <Text style={styles.highlight}>SQUADEA_PROJECT_</Text> to change this
+            Edit <Text style={styles.highlight}>SQUADEA_PROJECT_123</Text> to change this
             screen and then come back to see your edits.
           </Section>
           <Section title="See Your Changes">
