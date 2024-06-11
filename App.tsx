@@ -25,7 +25,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Home from './Screen/chooseLevel';
+import Home from './Screen/chooseLevel_1stPage';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
