@@ -24,7 +24,9 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import Home from './Screen/123';
+
+import Greeting from './Screen/chooseLevel_1stPage';
+import Brief from './Screen/chooseLevel_2ndPage';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -65,7 +67,8 @@ function App(): React.JSX.Element {
 
   return (
     <View>
-      <Home/>
+      {/* <Greeting/> */}
+      <Brief/>
     </View>
   )
 }
