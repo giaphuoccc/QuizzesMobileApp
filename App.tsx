@@ -25,8 +25,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Greeting from './Screen/chooseLevel_1stPage';
-import Brief from './Screen/chooseLevel_2ndPage';
+import Greeting from './Screen/chooseLevel_1stScreen';
+import Brief from './Screen/chooseLevel_2ndScreen';
+import Ranking from './Screen/rankingScreen';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -59,37 +60,22 @@ import Brief from './Screen/chooseLevel_2ndPage';
 // }
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  // const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
 
   return (
     <View>
       {/* <Greeting/> */}
       <Brief/>
+      {/* <Ranking/> */}
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
 });
 
 export default App;
