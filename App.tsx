@@ -25,8 +25,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Greeting from './Screen/chooseLevel_1stPage';
-import Brief from './Screen/chooseLevel_2ndPage';
+import Greeting from './Screen/chooseLevel_1stScreen';
+import Brief from './Screen/chooseLevel_2ndScreen';
+import Ranking from './Screen/rankingScreen';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -69,6 +70,7 @@ function App(): React.JSX.Element {
     <View>
       {/* <Greeting/> */}
       <Brief/>
+      {/* <Ranking/> */}
     </View>
   )
 }
