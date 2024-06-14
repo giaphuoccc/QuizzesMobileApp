@@ -27,6 +27,7 @@ import {
 
 import Greeting from './Screen/chooseLevel_1stPage';
 import Brief from './Screen/chooseLevel_2ndPage';
+import Heading from './Screen/quiz_Heading';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -68,7 +69,8 @@ function App(): React.JSX.Element {
   return (
     <View>
       {/* <Greeting/> */}
-      <Brief/>
+      {/* <Brief/> */}
+      <Heading/>
     </View>
   )
 }
