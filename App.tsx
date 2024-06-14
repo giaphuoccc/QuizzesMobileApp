@@ -27,6 +27,7 @@ import {
 
 import Greeting from './Screen/chooseLevel_1stPage';
 import Brief from './Screen/chooseLevel_2ndPage';
+import Ranking from './Screen/rankingScreen';
 import Heading from './Screen/quiz_Heading';
 
 // type SectionProps = PropsWithChildren<{
@@ -60,38 +61,21 @@ import Heading from './Screen/quiz_Heading';
 // }
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  // const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
 
   return (
     <View>
       {/* <Greeting/> */}
-      {/* <Brief/> */}
-      <Heading/>
+      <Brief/>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
 });
 
 export default App;
