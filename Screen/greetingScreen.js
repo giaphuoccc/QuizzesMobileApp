@@ -2,9 +2,11 @@ import { Button, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-n
 import React, {useState} from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { RadioButton } from 'react-native-paper';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
-const homeScreen = () => {
+const GreetingScreen = ({navigation }) => {
   const [checked, setChecked] = useState('first');
   return (
     <View style={{height:'100%', flexDirection: 'column'}}>
@@ -77,7 +79,7 @@ const homeScreen = () => {
             You can always change your goals later.</Text>
         </View>
         <View style={[styles.button]}>
-          <TouchableOpacity style={[styles.buttonNext]}>
+          <TouchableOpacity style={[styles.buttonNext]} onPress={() => navigation.navigate('BriefScreen')}>
               <Text style={styles.buttonText}>Set My Goal</Text>
           </TouchableOpacity>
         </View>
@@ -198,4 +200,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default homeScreen
+export default GreetingScreen
