@@ -16,7 +16,7 @@ const StackNav = createNativeStackNavigator();
 const stack = () => {
   return (
     <NavigationContainer>
-      <StackNav.Navigator initialRouteName="Loading">
+      <StackNav.Navigator initialRouteName="HomeScreen">
         <StackNav.Screen
           name="Loading"
           component={Loading}
@@ -40,6 +40,11 @@ const stack = () => {
         <StackNav.Screen
           name="BriefScreen"
           component={BriefScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="HomeScreen"
+          component={HomeScreen}
           options={{headerShown: false}}
         />
       </StackNav.Navigator>
