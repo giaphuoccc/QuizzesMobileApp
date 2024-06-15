@@ -15,6 +15,7 @@ import ProfileScreen from './Screen/profile_Screen';
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
 import FriendsScreen from './Screen/friendsScreen.js';
+import HomeScreen from './Screen/homeScreen'
 
 
 
