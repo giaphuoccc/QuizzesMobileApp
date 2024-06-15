@@ -1,29 +1,16 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
 const port = 8000;
-const cors = require('cors');
 
-// const {create} = require('react-test-renderer');
+const {create} = require('react-test-renderer');
 
-app.use(cors());
-
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-app.use(passport.initialize());
-
-mongoose
-  .connect(
+mongoose.connect(
     'mongodb+srv://nguyentrunghau220203:hau220203@cluster0.yywfbel.mongodb.net/',
     {
-    // Các tùy chọn nếu cần thiết
       // useNewUrlParser: true,
       // useUnifiedTopology: true
-      
+      // Các tùy chọn khác nếu cần thiết
     },
   )
   .then(() => {
@@ -32,6 +19,9 @@ mongoose
   .catch(err => {
     console.log('Error connecting to MongoDB', err);
   });
+
+  const accountRouter = require("./routers/userRou")
+  app.use('/api/users', accountRouter);
 
 app.listen(port, () => {
   console.log('Sever running on port 8000 ');

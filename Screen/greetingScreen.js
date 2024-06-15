@@ -11,7 +11,6 @@ const GreetingScreen = ({navigation }) => {
   return (
     <View style={{height:'100%', flexDirection: 'column'}}>
        <View style={styles.headerSection}>
-       {/* <Icon name="left" style={{ fontSize: 20 }} color="white" /> */}
        <Text 
         style={[styles.headerText]}>Greetings</Text>
       </View>
