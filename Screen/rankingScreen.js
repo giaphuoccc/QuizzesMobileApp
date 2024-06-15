@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const rankingScreen = () => {
+const RankingScreen = () => {
   return (
     <View
       style={{
@@ -72,7 +72,7 @@ const rankingScreen = () => {
   )
 }
 
-export default rankingScreen
+export default RankingScreen
 
 const styles = StyleSheet.create({
     headerSection: {

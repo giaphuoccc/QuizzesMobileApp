@@ -12,9 +12,7 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  Text, 
 } from 'react-native';
 
 import {
@@ -28,6 +26,7 @@ import {
 import Greeting from './Screen/chooseLevel_1stScreen';
 import Brief from './Screen/chooseLevel_2ndScreen';
 import Ranking from './Screen/rankingScreen';
+import Stack from './stack';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -67,11 +66,9 @@ function App(): React.JSX.Element {
   // };
 
   return (
-    <View>
-      {/* <Greeting/> */}
-      <Brief/>
-      {/* <Ranking/> */}
-    </View>
+    <>
+      <Stack/>
+    </>
   )
 }
 
