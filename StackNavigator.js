@@ -7,6 +7,8 @@ import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 import Loading from './Screen/LoadingScreen.js';
 import Welcome from './Screen/WelcomeScreen.js';
+import ProfileScreen from './Screen/profile_Screen';
+
 
 const StackNav = createNativeStackNavigator();
 
