@@ -46,7 +46,7 @@ const LoginGreetingScreen = () => {
             alignItems: 'center',
             marginBottom: 10,
           }}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => navigation.navigate('HomeScreen')}>
           <Text style={{color: '#001B37', fontSize: 25, fontWeight: 'bold'}}>
             Get started
           </Text>

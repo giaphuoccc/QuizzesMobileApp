@@ -71,8 +71,6 @@ const HomeScreen = () => {
                 </View>
                 <Icon name="check-circle-fill" style={[styles.icon_6]} />
             </View>
-            <View style={[styles.NavBar]}>
-            </View>
         </View>
     )
 }

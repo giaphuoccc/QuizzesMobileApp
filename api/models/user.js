@@ -1,4 +1,3 @@
-// folder thiết kế các cơ sở dữ liệu
 const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
   name: {
