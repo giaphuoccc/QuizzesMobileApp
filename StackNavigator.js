@@ -3,22 +3,19 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 import Loading from './Screen/LoadingScreen.js';
-import Welcome from './Screen/welcomeScreen.js';
+import Welcome from './Screen/WelcomeScreen.js';
 import ProfileScreen from './Screen/profile_Screen';
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
-import FriendsScreen from './Screen/friendsScreen.js';
+import FriendsScreen from './Screen/FriendsScreen.js';
 import HomeScreen from './Screen/homeScreen'
 import RegisterScreen from './Screen/registerScreen.js';
-
-
 
 const Tab = createBottomTabNavigator();
 const StackNav = createNativeStackNavigator();
@@ -81,7 +78,7 @@ function MyTabs() {
 const stack = () => {
   return (
     <NavigationContainer>
-      <StackNav.Navigator initialRouteName="Tabs">
+      <StackNav.Navigator initialRouteName="HomeScreen">
         <StackNav.Screen
           name="Loading"
           component={Loading}
@@ -92,7 +89,10 @@ const stack = () => {
           component={Welcome}
           options={{headerShown: false}}
         />
-        <StackNav.Screen name="Tabs" component={MyTabs} options={{ headerShown: false }} />
+        <StackNav.Screen 
+          name="Tabs" 
+          component={MyTabs} 
+          options={{ headerShown: false }} />
         <StackNav.Screen
           name="Login"
           component={Login}

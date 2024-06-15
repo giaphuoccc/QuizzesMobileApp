@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground } from 'react-native'
 import React from 'react'
 import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Octicons';
 const HomeScreen = () => {
     return (
         <View style={{ height: '100%', flexDirection: 'column' }}>
-            <View style={[styles.topic]}>
+            {/* <View style={[styles.topic]}>
                 <View style={[styles.topicContainer]}>
                     <View style={[styles.topicText]}>
                         <Text style={[styles.topicName]}>Chapter I</Text>
@@ -20,29 +20,59 @@ const HomeScreen = () => {
                             borderRadius={200}
                             borderColor="#086CA4"
                             color="#CFFF0F"
-                            height={'100%'}
+                            height={1000}
                             style={styles.processBar} />
                         <Text style={[styles.indicator]}>80%</Text>
                     </View>
                 </View>
             </View>
             <View style={[styles.content]} >
-                <Icon name="check-circle-fill" style={[styles.icon_1]}/>
+                <Icon name="check-circle-fill" style={[styles.icon_1]} />
                 <View style={[styles.layout]}>
-                    <ImageBackground style={[styles.image]} source={require('../Assets/Images/turtle.png')}/>
+                    <ImageBackground style={[styles.image]} source={require('../Assets/Images/turtle.png')} />
                     <View style={[styles.iconLayout]}>
-                        <Icon name="feed-star" style={[styles.icon_2]}/>
-                        <Icon name="x-circle-fill" style={[styles.icon_34]}/>
-                        <Icon name="x-circle-fill" style={[styles.icon_34]}/>
-                        <Icon name="feed-star" style={[styles.icon_5]}/>
+                        <Icon name="feed-star" style={[styles.icon_2]} />
+                        <Icon name="x-circle-fill" style={[styles.icon_34]} />
+                        <Icon name="x-circle-fill" style={[styles.icon_34]} />
+                        <Icon name="feed-star" style={[styles.icon_5]} />
                     </View>
                 </View>
-                <Icon name="check-circle-fill" style={[styles.icon_6]}/>
+                <Icon name="check-circle-fill" style={[styles.icon_6]} />
+            </View> */}
+            <View style={[styles.topic]}>
+                <View style={[styles.topicContainer]}>
+                    <View style={[styles.topicText]}>
+                        <Text style={[styles.topicName]}>Chapter II</Text>
+                        <Text style={[styles.topicDescription]}>School</Text>
+                    </View>
+                    <View style={[styles.progessIndicator]}>
+                        <Progress.Bar
+                            progress={0.5}
+                            unfilledColor="black"
+                            borderRadius={200}
+                            borderColor="#086CA4"
+                            color="#CFFF0F"
+                            height={1000}
+                            style={styles.processBar} />
+                        <Text style={[styles.indicator]}>50%</Text>
+                    </View>
+                </View>
+            </View>
+            <View style={[styles.content]} >
+                <Icon name="check-circle-fill" style={[styles.icon_1]} />
+                <View style={[styles.layout]}>
+                    <View style={[styles.iconLayout]}>
+                        <Icon name="feed-star" style={[styles.icon_2]} />
+                        <Icon name="x-circle-fill" style={[styles.icon_34_2]} />
+                        <Icon name="x-circle-fill" style={[styles.icon_34_2]} />
+                        <Icon name="feed-star" style={[styles.icon_5]} />
+                    </View>
+                    <ImageBackground style={[styles.image_2]} source={require('../Assets/Images/turtle.png')} />
+                </View>
+                <Icon name="check-circle-fill" style={[styles.icon_6]} />
             </View>
             <View style={[styles.NavBar]}>
-
             </View>
-
         </View>
     )
 }
@@ -89,12 +119,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     content: {
-        flex: 10,
-        backgroundColor: '#2E4583', 
-        paddingHorizontal:'5%'
+        flex: 12,
+        backgroundColor: '#2E4583',
+        paddingHorizontal: '5%'
     },
     icon_1: {
-        flex:1,
+        flex: 1,
         fontSize: 100,
         textAlignVertical: 'center',
         textAlign: 'center',
@@ -107,43 +137,56 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'yellow',
     },
-    layout:{
-        flex:4,
-        flexDirection:'row',
-        alignItems:'center',
+    layout: {
+        flex: 4,
+        flexDirection: 'row',
+        alignItems: 'center',
     },
-    image:{
-        flex:1.5,
-        height:200,
-        width:350,
+    image: {
+        flex: 1.5,
+        height: 200,
+        width: 350,
         // backgroundColor:'red'
     },
-    iconLayout:{
-        flex:2,
+    image_2:{
+        flex: 1.5,
+        height: 200,
+        width: 350,
+        transform:'scaleX(-1);'
     },
-    icon_34:{
+    iconLayout: {
+        flex: 2,
+    },
+    icon_34: {
         flex: 2,
         fontSize: 100,
         textAlignVertical: 'center',
         textAlign: 'right',
         color: 'red',
     },
-    icon_5:{
+    icon_34_2:{
+        flex: 2,
+        fontSize: 100,
+        textAlignVertical: 'center',
+        textAlign: 'left',
+        color: 'red',
+    },
+    icon_5: {
         flex: 2,
         fontSize: 100,
         textAlignVertical: 'center',
         textAlign: 'center',
         color: '#EEEEEE',
     },
-    icon_6:{
-        flex:1,
+    icon_6: {
+        flex: 1,
         fontSize: 100,
         textAlignVertical: 'center',
         textAlign: 'center',
         color: '#EEEEEE'
     },
-    NavBar:{
-        flex:1
+    NavBar: {
+        flex: 1
     }
 
 })
