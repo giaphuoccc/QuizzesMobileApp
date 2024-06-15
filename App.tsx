@@ -27,6 +27,7 @@ import Greeting from './Screen/chooseLevel_1stScreen';
 import Brief from './Screen/chooseLevel_2ndScreen';
 import Ranking from './Screen/rankingScreen';
 import Stack from './stack';
+import Heading from './Screen/quiz_Heading';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -58,12 +59,7 @@ import Stack from './stack';
 //   );
 // }
 
-function App(): React.JSX.Element {
-  // const isDarkMode = useColorScheme() === 'dark';
-
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
+function App() {
 
   return (
     <>
