@@ -6,9 +6,11 @@ import {
   Text,
   TextInput,
   View,
+  Image,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -20,8 +22,15 @@ const LoginScreen = () => {
         flex: 1,
         backgroundColor: 'white',
         padding: 10,
-        alignItems: 'center',
       }}>
+      <View style={{padding: 10}}>
+        <Ionicons
+          onPress={() => navigation.navigate('LoginGreeting')}
+          name="chevron-back-outline"
+          size={40}
+          color={'#001B37'}
+        />
+      </View>
       <KeyboardAvoidingView
         style={{
           flex: 1,
@@ -34,7 +43,7 @@ const LoginScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text style={{color: '#4A55A2', fontSize: 35, fontWeight: 'bold'}}>
+          <Text style={{color: '#001B37', fontSize: 35, fontWeight: 'bold'}}>
             Sign In
           </Text>
           <Text
@@ -108,13 +117,26 @@ const LoginScreen = () => {
             </Text>
           </Pressable>
 
-          <Pressable
-            // onPress={() => navigation.navigate('RegisterScreen')}
-            style={{margin: 15}}>
+          <View
+
+            style={{
+              margin: 15,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 5
+            }}>
             <Text style={{textAlign: 'center', color: 'gray', fontSize: 16}}>
-              Don't have an account? Sign Up
+              Don't have an account? 
             </Text>
-          </Pressable>
+            <Pressable 
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Text style={{textAlign: 'center', color: '#4A55A2', fontSize: 16, fontStyle: "italic"}}>
+                Sign Up
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </View>

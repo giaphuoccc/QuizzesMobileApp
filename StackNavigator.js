@@ -16,6 +16,7 @@ import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
 import FriendsScreen from './Screen/friendsScreen.js';
 import HomeScreen from './Screen/homeScreen'
+import RegisterScreen from './Screen/registerScreen.js';
 
 
 
@@ -95,6 +96,11 @@ const stack = () => {
         <StackNav.Screen
           name="Login"
           component={Login}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="Register"
+          component={RegisterScreen}
           options={{headerShown: false}}
         />
         <StackNav.Screen

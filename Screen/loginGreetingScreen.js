@@ -6,38 +6,11 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 const LoginGreetingScreen = () => {
-    const navigation = useNavigation();
-    const [showHome, setshowHome] = useState(false);
-    const [showLogin, setShowLogin] = useState(false);
-
-  useEffect(() => {
-    if (showHome) {
-      navigation.navigate('Home');
-    }
-  }, [showHome, navigation]);
-
-  const handleStartHome = () => {
-    setTimeout(() => {
-        setshowHome(true);
-    }, 1000); 
-  };
-
-  useEffect(() => {
-    if (showLogin) {
-      navigation.navigate('Login');
-    }
-  }, [showLogin, navigation]);
-
-  const handleStartLogin = () => {
-    setTimeout(() => {
-        setShowLogin(true);
-    }, 1000); 
-  };
-
+  const navigation = useNavigation();
   return (
     <SafeAreaView
       style={{
@@ -71,9 +44,12 @@ const LoginGreetingScreen = () => {
             paddingHorizontal: 20,
             borderRadius: 8,
             alignItems: 'center',
-            marginBottom: 10
-          }} onPress={handleStartHome}>
-          <Text style={{color: '#001B37', fontSize: 25, fontWeight: "bold"}}>Get started</Text>
+            marginBottom: 10,
+          }}
+          onPress={() => navigation.navigate('Home')}>
+          <Text style={{color: '#001B37', fontSize: 25, fontWeight: 'bold'}}>
+            Get started
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
@@ -83,10 +59,13 @@ const LoginGreetingScreen = () => {
             paddingHorizontal: 20,
             borderRadius: 8,
             alignItems: 'center',
-            borderWidth: 3, 
+            borderWidth: 3,
             borderColor: 'gray',
-          }} onPress={handleStartLogin}>
-          <Text style={{color: '#05e221', fontSize: 25, fontWeight: "bold"}}>I already have an account</Text>
+          }}
+          onPress={() => navigation.navigate('Login')}>
+          <Text style={{color: '#05e221', fontSize: 25, fontWeight: 'bold'}}>
+            I already have an account
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
