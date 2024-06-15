@@ -6,6 +6,7 @@ import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 import ProfileScreen from './Screen/profile_Screen';
+import HomeScreen from './Screen/homeScreen'
 
 
 const StackNav = createNativeStackNavigator();
@@ -13,11 +14,12 @@ const StackNav = createNativeStackNavigator();
 const stack = () => {
   return (
     <NavigationContainer>
-      <StackNav.Navigator initialRouteName='ProfileScreen'>
+      <StackNav.Navigator initialRouteName='HomeScreen'>
         <StackNav.Screen name="RankingScreen" component={RankingScreen} options={{headerShown: false}} />
         <StackNav.Screen name="GreetingScreen" component={GreetingScreen} options={{headerShown: false}} />
         <StackNav.Screen name="BriefScreen" component={BriefScreen} options={{headerShown: false}} />
         <StackNav.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown: false}} />
+        <StackNav.Screen name="HomeScreen" component={HomeScreen} options={{headerShown: false}} />
       </StackNav.Navigator>
     </NavigationContainer>
   )
