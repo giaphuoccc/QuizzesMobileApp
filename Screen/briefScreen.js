@@ -1,8 +1,10 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-const BriefPage = () => {
+const BriefPage = ({navigation}) => {
   return (
     <View
       style={{
@@ -11,7 +13,7 @@ const BriefPage = () => {
         flexDirection: 'column',
       }}>
       <View style={styles.headerSection}>
-        <Icon name="arrow-left" style={[styles.back]}/>
+        <Icon name="arrow-left" style={[styles.back]}onPress={() => navigation.goBack()}/>
         <Text style={[styles.headerText]}>What will you learn</Text>
         <Text style={[styles.hmm]}></Text>
       </View>
@@ -100,7 +102,7 @@ const BriefPage = () => {
         </View>
       </View>
       <View style={[styles.button]}>
-        <TouchableOpacity style={[styles.buttonNext]}>
+        <TouchableOpacity style={[styles.buttonNext]} onPress={() => navigation.navigate('RankingScreen')}>
           <Text style={styles.buttonText}>LET'S START</Text>
         </TouchableOpacity>
       </View>
