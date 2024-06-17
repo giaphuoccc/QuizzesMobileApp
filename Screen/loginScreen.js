@@ -43,6 +43,15 @@ const LoginScreen = () => {
             justifyContent: 'center',
             alignItems: 'center',
           }}>
+          <Image
+            style={{width: 100, height: 100}}
+            source={require('../Assets/Images/logo3.png')}></Image>
+        </View>
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <Text style={{color: '#001B37', fontSize: 35, fontWeight: 'bold'}}>
             Sign In
           </Text>
@@ -118,21 +127,24 @@ const LoginScreen = () => {
           </Pressable>
 
           <View
-
             style={{
               margin: 15,
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 5
+              gap: 5,
             }}>
             <Text style={{textAlign: 'center', color: 'gray', fontSize: 16}}>
-              Don't have an account? 
+              Don't have an account?
             </Text>
-            <Pressable 
-              onPress={() => navigation.navigate('Register')}
-            >
-              <Text style={{textAlign: 'center', color: '#4A55A2', fontSize: 16, fontStyle: "italic"}}>
+            <Pressable onPress={() => navigation.navigate('Register')}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  color: '#4A55A2',
+                  fontSize: 16,
+                  fontStyle: 'italic',
+                }}>
                 Sign Up
               </Text>
             </Pressable>

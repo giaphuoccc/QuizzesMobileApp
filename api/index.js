@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const app = express();
 const port = 8000;
 
-const {create} = require('react-test-renderer');
+
 
 mongoose.connect(
     'mongodb+srv://nguyentrunghau220203:hau220203@cluster0.yywfbel.mongodb.net/',
