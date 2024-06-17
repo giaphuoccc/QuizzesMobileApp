@@ -9,6 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
+import QuizHolderScreen from './Screen/quizHolderScreen';
 import Loading from './Screen/LoadingScreen.js';
 import Welcome from './Screen/welcomeScreen.js';
 import ProfileScreen from './Screen/profile_Screen';
@@ -106,6 +107,11 @@ const stack = () => {
         <StackNav.Screen
           name="Loading"
           component={Loading}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="QuizHolderScreen"
+          component={QuizHolderScreen}
           options={{headerShown: false}}
         />
         <StackNav.Screen
