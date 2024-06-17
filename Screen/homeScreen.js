@@ -4,7 +4,7 @@ import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
 
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     return (
         <View style={{ height: '100%', flexDirection: 'column' }}>
             {/* <View style={[styles.topic]}>
@@ -59,7 +59,7 @@ const HomeScreen = () => {
                 </View>
             </View>
             <View style={[styles.content]} >
-                <Icon name="check-circle-fill" style={[styles.icon_1]} />
+                <Icon name="check-circle-fill" style={[styles.icon_1]} onPress={()=>navigation.navigate("QuizHolderScreen")}/>
                 <View style={[styles.layout]}>
                     <View style={[styles.iconLayout]}>
                         <Icon name="feed-star" style={[styles.icon_2]} />

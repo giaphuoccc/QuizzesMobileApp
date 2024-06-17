@@ -9,14 +9,10 @@ import ArragaSentence from "./arrangeSentence";
 const QuizHolderScreen = ({navigation}) => {return(
     <View style={styles.container}>
       <View style={styles.heading}>
-        <View style={{width: "10%",
-                      height: "100%",
-                      justifyContent: 'center',}}>
+        <View style={{width: "10%", height: "100%", justifyContent: 'center',}}>
           <TouchableOpacity style={[styles.buttonClose] }>
-            <IconFontisto name="close-a" 
-                          style={{ fontSize: 36}} 
-                          color="black" 
-                          onPress={()=> navigation.navigate('QuizHolderScreen')}/>
+            <IconFontisto name="close-a" style={{ fontSize: 36}} color="black" 
+              onPress={()=> navigation.navigate('QuizHolderScreen')}/>
           </TouchableOpacity> 
         </View>
         <Progress.Bar 
