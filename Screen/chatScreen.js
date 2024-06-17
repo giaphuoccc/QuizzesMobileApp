@@ -1,11 +1,18 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import {useNavigation, useRoute} from '@react-navigation/native';
 
 const ChatScreen = () => {
+  const navigation = useNavigation();
   return (
-    <View>
-      <Text>chatScreen</Text>
-    </View>
+    <ScrollView showsVerticalScrollIndicator={false}>
+    <Pressable>
+      {/* components */}
+      {/* { acceptedFriends.map((item, index) => (
+        <UserChat key={index} item={item} userIdFromToken={userIdFromToken}/>
+      ))} */}
+    </Pressable>
+  </ScrollView>
   )
 }
 
