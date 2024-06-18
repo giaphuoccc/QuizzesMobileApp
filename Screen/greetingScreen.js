@@ -72,7 +72,7 @@ const GreetingScreen = ({navigation }) => {
       <View style={styles.footerSection}>
         <View style={styles.footerTips}>
           <Image 
-            source={require('../Assets/Images/turtle.png')}
+            source={require('../Assets/Images/logo3.png')}
             style={styles.footerImage}></Image>
           <Text style={styles.tips} numberOfLines={2} ellipsizeMode='tail'>
             You can always change your goals later.</Text>
@@ -95,43 +95,47 @@ const styles = StyleSheet.create({
   },
   headerText:{
     fontSize: 30,
-    fontWeight: 500,
+    fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
-    textAlignVertical:'center'
+    textAlignVertical:'center',
+    textTransform:'uppercase',
   },
   contentSection:{
-    flex: 6,
+    flex: 8,
     flexDirection:'column',
     justifyContent:'center',
   },
   contentTitle:{
-    flex: 1,
+    flex: 1.5,
     fontSize: 30,
     color:'#3572EF',
-    alignSelf: 'center',
     textAlign: 'center',
     textAlignVertical:'center', 
-    width: '97%',
-    fontWeight: '350',
+    fontWeight: '500',
+    backgroundColor:'#CAE8FF',
   },
   contentSelection:{
-    flex:5,
+    flex:6,
     textAlign: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor:'#ADDDF8',
+    borderColor:'black',
+    borderWidth: 0.5,
   },
   contentContainer:{
     flexDirection: 'row',
-    flex:1,
-    paddingHorizontal: 0.5,
+    flex:2,
     alignItems: 'center',
     borderColor:'black',
-    borderBottomWidth: 0.2,
-    width: '99%',
+    borderBottomWidth: 0.5,
+    paddingHorizontal:'2%'
+  
   },
   contentDescription:{
     flexDirection: 'row',
-    flex:10
+    flex:10,
+   
   },
   label: {
     flex:3,
@@ -140,40 +144,41 @@ const styles = StyleSheet.create({
     color:"#3572EF"
   },
   description: {
-    flex: 7,
+    flex: 5,
     fontSize: 18,
     textAlign:'right',
     color: '#555',
-    fontStyle:'italic'
+    fontStyle:'italic',
   },
   footerSection:{
-    flex:5,
+    flex:6.5,
     flexDirection:'column',
-    backgroundColor:'#EEEEEE'
+    backgroundColor:'#CAE8FF',
+    
   },
   footerTips:{
-    flex: 9,
     flexDirection: 'row',
+    flex: 10,
     alignItems:'center',
     justifyContent: 'center',
     
   },
   footerImage:{
-    height: '50%',
-    width: '45%',
-    top:'10%'
+    height: 150,
+    width: 150,
+    margin:'5%',
+    top:'5%'
   },
   tips:{
     width:'50%',
     textAlign:'center',
-    fontSize:15,
+    fontSize:18,
     padding:18,
     fontWeight:'bold',
     color:"#3572EF",
     borderColor:'black',
     borderRadius: 10,
     borderWidth: 1,
-    bottom:'5%'
   },
   button:{
     flex: 5,

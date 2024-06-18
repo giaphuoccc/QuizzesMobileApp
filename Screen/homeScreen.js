@@ -4,7 +4,7 @@ import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
 
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
     return (
         <View style={{ height: '100%', flexDirection: 'column' }}>
             {/* <View style={[styles.topic]}>
@@ -27,9 +27,9 @@ const HomeScreen = () => {
                 </View>
             </View>
             <View style={[styles.content]} >
-                <Icon name="check-circle-fill" style={[styles.icon_1]} />
+            <Icon name="check-circle-fill" style={[styles.icon_1]} onPress={()=>navigation.navigate("QuizHolderScreen")}/>
                 <View style={[styles.layout]}>
-                    <ImageBackground style={[styles.image]} source={require('../Assets/Images/turtle.png')} />
+                    <ImageBackground resizeMode="contain" style={[styles.image]} source={require('../Assets/Images/man.png')} />
                     <View style={[styles.iconLayout]}>
                         <Icon name="feed-star" style={[styles.icon_2]} />
                         <Icon name="x-circle-fill" style={[styles.icon_34]} />
@@ -59,7 +59,7 @@ const HomeScreen = () => {
                 </View>
             </View>
             <View style={[styles.content]} >
-                <Icon name="check-circle-fill" style={[styles.icon_1]} />
+                <Icon name="check-circle-fill" style={[styles.icon_1]} onPress={()=>navigation.navigate("QuizHolderScreen")}/>
                 <View style={[styles.layout]}>
                     <View style={[styles.iconLayout]}>
                         <Icon name="feed-star" style={[styles.icon_2]} />
@@ -67,7 +67,7 @@ const HomeScreen = () => {
                         <Icon name="x-circle-fill" style={[styles.icon_34_2]} />
                         <Icon name="feed-star" style={[styles.icon_5]} />
                     </View>
-                    <ImageBackground style={[styles.image_2]} source={require('../Assets/Images/turtle.png')} />
+                    <ImageBackground style={[styles.image_2]} source={require('../Assets/Images/man.png')} />
                 </View>
                 <Icon name="check-circle-fill" style={[styles.icon_6]} />
             </View>
@@ -143,13 +143,13 @@ const styles = StyleSheet.create({
     image: {
         flex: 1.5,
         height: 200,
-        width: 350,
+        width: 200,
         // backgroundColor:'red'
     },
     image_2:{
         flex: 1.5,
         height: 200,
-        width: 350,
+        width: 200,
         transform:'scaleX(-1);'
     },
     iconLayout: {
