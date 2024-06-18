@@ -1,8 +1,14 @@
+import { useState } from "react"
 import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity} from "react-native"
 import { TextInput } from "react-native-paper"
 import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors"
 
-const FillBlank = () => {return(
+const FillBlank = () => {
+    const [] = useState()
+    const selectAnswer=(index)=>{
+        
+    }
+    return(
     <View >
         <Text style={styles.title}>Hoàn tất bản dịch.</Text>
         <View style={styles.questionGroup}>
@@ -14,16 +20,16 @@ const FillBlank = () => {return(
             </View>
         </View>
         <View style={styles.answerGroup}>
-            <TouchableOpacity style={styles.answerBtn }>
+            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(0)}>
                 <Text style={styles.answerBtnText}>a</Text>
             </TouchableOpacity> 
-            <TouchableOpacity style={styles.answerBtn }>
+            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(1)}>
                 <Text style={styles.answerBtnText}>an</Text>
             </TouchableOpacity> 
-            <TouchableOpacity style={styles.answerBtn }>
+            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(2)}>
                 <Text style={styles.answerBtnText}>the</Text>
             </TouchableOpacity> 
-            <TouchableOpacity style={styles.answerBtn }>
+            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(3)}>
                 <Text style={styles.answerBtnText}>once</Text>
             </TouchableOpacity> 
         </View>

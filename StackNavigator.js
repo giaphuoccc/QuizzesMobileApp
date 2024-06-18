@@ -11,11 +11,11 @@ import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 import QuizHolderScreen from './Screen/quizHolderScreen';
 import Loading from './Screen/LoadingScreen.js';
-import Welcome from './Screen/welcomeScreen.js';
+import Welcome from './Screen/WelcomeScreen.js';
 import ProfileScreen from './Screen/profile_Screen';
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
-import FriendsScreen from './Screen/friendsScreen.js';
+import FriendsScreen from './Screen/FriendsScreen.js';
 import HomeScreen from './Screen/homeScreen'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
@@ -55,8 +55,8 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="FriendsScreen"
-        component={FriendsScreen}
+        name="GreetingScreen"
+        component={GreetingScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons name="people" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -148,11 +148,7 @@ const stack = () => {
           component={BriefScreen}
           options={{headerShown: false}}
         />
-        <StackNav.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{headerShown: false}}
-        />
+        
       </StackNav.Navigator>
     </NavigationContainer>
   );

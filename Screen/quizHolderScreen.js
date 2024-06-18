@@ -2,24 +2,19 @@ import {StyleSheet, View, Alert, TouchableOpacity} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
-import FillBlank from './fillBlankScreen';
-import PairWord from './pairWordScreen';
-import ArragaSentence from './arrangeSentence';
-import {useNavigation} from '@react-navigation/native';
+import FillBlank from "./fillBlankScreen";
+import PairWord from "./pairWordScreen";
+import ArrangeSentence from "./arrangeSentence";
 
 const QuizHolderScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.heading}>
-        <View style={{width: '10%', height: '100%', justifyContent: 'center'}}>
-          <TouchableOpacity style={[styles.buttonClose]}>
-            <IconFontisto
-              name="close-a"
-              style={{fontSize: 36}}
-              color="black"
-              onPress={() => navigation.navigate('QuizHolderScreen')}
-            />
-          </TouchableOpacity>
+        <View style={{width: "10%", height: "100%", justifyContent: 'center',}}>
+          <TouchableOpacity style={[styles.buttonClose] }>
+            <IconFontisto name="close-a" style={{ fontSize: 36}} color="black" 
+              onPress={()=> navigation.navigate('HomeScreen')}/>
+          </TouchableOpacity> 
         </View>
         <Progress.Bar
           progress={0.9}
@@ -32,11 +27,12 @@ const QuizHolderScreen = ({navigation}) => {
           style={styles.processBar}
         />
       </View>
-      <View style={styles.body}>
-        <ArragaSentence></ArragaSentence>
+      <View style = {styles.body}>
+        {/* <FillBlank></FillBlank> */}
+        <ArrangeSentence></ArrangeSentence>
       </View>
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.buttonNext}>
+      <View style = {styles.footer}>
+        <TouchableOpacity style={styles.buttonNext } onPress={()=>{}}>
           <Text style={styles.textButtonNext}>Tiếp tục</Text>
         </TouchableOpacity>
       </View>
