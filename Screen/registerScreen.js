@@ -46,7 +46,7 @@ const RegisteeScreen = () => {
       image: image,
     };
     axios
-      .post('http://192.168.100.3:8000/api/users/register', user)
+      .post('http://172.20.10.4:8000/api/users/register', user)
       .then(response => {
         console.log(response);
         Alert.alert(

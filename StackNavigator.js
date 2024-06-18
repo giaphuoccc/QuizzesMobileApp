@@ -55,8 +55,8 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="FriendsScreen"
-        component={FriendsScreen}
+        name="GreetingScreen"
+        component={GreetingScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons name="people" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -148,11 +148,7 @@ const stack = () => {
           component={BriefScreen}
           options={{headerShown: false}}
         />
-        <StackNav.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{headerShown: false}}
-        />
+        
       </StackNav.Navigator>
     </NavigationContainer>
   );
