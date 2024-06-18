@@ -4,7 +4,7 @@ import * as Progress from 'react-native-progress';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import FillBlank from "./fillBlankScreen";
 import PairWord from "./pairWordScreen";
-import ArragaSentence from "./arrangeSentence";
+import ArrangeSentence from "./arrangeSentence";
 
 const QuizHolderScreen = ({navigation}) => {return(
     <View style={styles.container}>
@@ -12,7 +12,7 @@ const QuizHolderScreen = ({navigation}) => {return(
         <View style={{width: "10%", height: "100%", justifyContent: 'center',}}>
           <TouchableOpacity style={[styles.buttonClose] }>
             <IconFontisto name="close-a" style={{ fontSize: 36}} color="black" 
-              onPress={()=> navigation.navigate('QuizHolderScreen')}/>
+              onPress={()=> navigation.navigate('HomeScreen')}/>
           </TouchableOpacity> 
         </View>
         <Progress.Bar 
@@ -26,10 +26,11 @@ const QuizHolderScreen = ({navigation}) => {return(
           style={styles.processBar}/>
       </View>
       <View style = {styles.body}>
-          <ArragaSentence></ArragaSentence>
+        <FillBlank></FillBlank>
+        {/* <ArrangeSentence></ArrangeSentence> */}
       </View>
       <View style = {styles.footer}>
-        <TouchableOpacity style={styles.buttonNext }>
+        <TouchableOpacity style={styles.buttonNext } onPress={()=>{}}>
           <Text style={styles.textButtonNext}>Tiếp tục</Text>
         </TouchableOpacity> 
       </View>
