@@ -26,8 +26,8 @@ const QuizHolderScreen = ({navigation}) => {return(
           style={styles.processBar}/>
       </View>
       <View style = {styles.body}>
-        <FillBlank></FillBlank>
-        {/* <ArrangeSentence></ArrangeSentence> */}
+        {/* <FillBlank></FillBlank> */}
+        <ArrangeSentence></ArrangeSentence>
       </View>
       <View style = {styles.footer}>
         <TouchableOpacity style={styles.buttonNext } onPress={()=>{}}>
