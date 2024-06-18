@@ -8,7 +8,7 @@ import IconIonicons from 'react-native-vector-icons/Ionicons';
 const ArrangeSentence = (navigation) => {
     const [getQuestionText, setQuestionText] = useState("Tôi thích ăn kem.");
     const [getAnswerText, setAnswerText] = useState("");
-    const wordArray = ["a","moon","eat","love","I","i-cream","me","to"]
+    const wordArray = ["a","moon","eat","love","I","ice-cream","me","to"]
     const initOpacityArray = []
     const initDisabledArray = []
     for (let index = 0; index < 8; index++) {
