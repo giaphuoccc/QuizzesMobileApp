@@ -103,7 +103,7 @@ function MyTabs() {
 const stack = () => {
   return (
     <NavigationContainer>
-      <StackNav.Navigator>
+      <StackNav.Navigator >
         <StackNav.Screen
           name="Loading"
           component={Loading}

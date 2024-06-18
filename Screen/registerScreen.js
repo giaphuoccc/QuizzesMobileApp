@@ -12,9 +12,9 @@ import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Foundation from 'react-native-vector-icons/Foundation';
+import { LOCALHOST } from '../config';
 
 const RegisteeScreen = () => {
   const navigation = useNavigation();
@@ -27,7 +27,6 @@ const RegisteeScreen = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   const handleRegister = () => {
     if (!name || !email || !password) {
       Alert.alert('Error', 'All fields are required!');
@@ -46,7 +45,7 @@ const RegisteeScreen = () => {
       image: image,
     };
     axios
-      .post('http://192.168.100.3:8000/api/users/register', user)
+      .post(`${LOCALHOST}/users/register`, user)
       .then(response => {
         console.log(response);
         Alert.alert(
@@ -56,6 +55,7 @@ const RegisteeScreen = () => {
         setName('');
         setEmail('');
         setPassword('');
+
       })
       .catch(error => {
         Alert.alert(
@@ -144,7 +144,7 @@ const RegisteeScreen = () => {
                   fontSize: email ? 18 : 18,
                   width: '90%',
                   color: 'white',
-                  paddingLeft: 10
+                  paddingLeft: 10,
                 }}
                 placeholderTextColor={'white'}
                 placeholder="Enter your name"
@@ -161,15 +161,22 @@ const RegisteeScreen = () => {
                 *
               </Text>
             </View>
-            <View style={{width: 400,
+            <View
+              style={{
+                width: 400,
                 borderWidth: 2,
                 borderRadius: 15,
                 borderColor: focusedField === 'email' ? '#01ff01' : '#fff',
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingLeft: 10,
-                paddingRight: 10,}}>
-              <Foundation name='mail' size={30} style={{color: focusedField === 'email' ? '#01ff01' : '#fff'}}/> 
+                paddingRight: 10,
+              }}>
+              <Foundation
+                name="mail"
+                size={30}
+                style={{color: focusedField === 'email' ? '#01ff01' : '#fff'}}
+              />
               <TextInput
                 value={email}
                 onChangeText={text => setEmail(text)}
@@ -177,9 +184,9 @@ const RegisteeScreen = () => {
                 onBlur={() => setFocusedField(null)}
                 style={{
                   fontSize: email ? 18 : 18,
-                  width: "90%",
+                  width: '90%',
                   paddingLeft: 10,
-                  color: "white"
+                  color: 'white',
                 }}
                 placeholderTextColor={'white'}
                 placeholder="Enter your email"
@@ -207,7 +214,13 @@ const RegisteeScreen = () => {
                 paddingRight: 10,
                 borderColor: focusedField === 'password' ? '#01ff01' : '#fff',
               }}>
-              <FontAwesome name="lock" size={30} style={{color: focusedField === 'password' ? '#01ff01' : '#fff'}} />
+              <FontAwesome
+                name="lock"
+                size={30}
+                style={{
+                  color: focusedField === 'password' ? '#01ff01' : '#fff',
+                }}
+              />
               <TextInput
                 value={password}
                 onChangeText={text => setPassword(text)}
@@ -218,7 +231,7 @@ const RegisteeScreen = () => {
                   fontSize: email ? 18 : 18,
                   width: '85%',
                   paddingLeft: 10,
-                  color: "white"
+                  color: 'white',
                 }}
                 placeholderTextColor={'white'}
                 placeholder="Password"
@@ -270,8 +283,7 @@ const RegisteeScreen = () => {
                   color: '#00faff',
                   fontSize: 18,
                   fontStyle: 'italic',
-                  fontWeight: "bold",
-
+                  fontWeight: 'bold',
                 }}>
                 Sign In
               </Text>

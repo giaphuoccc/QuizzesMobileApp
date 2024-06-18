@@ -21,7 +21,10 @@ mongoose.connect(
   });
 
   const accountRouter = require("./routers/userRou")
+  const chapterRouter = require("./routers/chapterRou")
   app.use('/api/users', accountRouter);
+
+  app.use('/api/chapter', chapterRouter);
 
 app.listen(port, () => {
   console.log('Sever running on port 8000 ');
