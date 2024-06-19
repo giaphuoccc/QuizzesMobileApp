@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: false,
   },
+  stat:{
+    type: int,
+    require: false,
+  },
   friendRequests: [
     {
       type: mongoose.Schema.Types.ObjectID,
