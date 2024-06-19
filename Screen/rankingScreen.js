@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const rankingScreen = () => {
+const RankingScreen = ({navigation}) => {
   return (
     <View
       style={{
@@ -12,7 +12,7 @@ const rankingScreen = () => {
         
       }}>
       <View style={styles.headerSection}>
-        <Icon name="arrow-left" style={[styles.back]}/>
+        <Icon name="arrow-left" style={[styles.back]} onPress={() => navigation.popToTop()}/>
         <Text style={[styles.headerText]}>LEADERBOARD</Text>
         <Text style={[styles.hmm]}></Text>
       </View>
@@ -72,7 +72,7 @@ const rankingScreen = () => {
   )
 }
 
-export default rankingScreen
+export default RankingScreen
 
 const styles = StyleSheet.create({
     headerSection: {
