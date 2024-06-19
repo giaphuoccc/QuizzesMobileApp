@@ -20,7 +20,7 @@ status:{
     unique: true,
 },
 point:{
-    type:int,
+    type:Number,
     require: true,
     unique: true,
 },

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     require: false,
   },
   stat:{
-    type: int,
+    type: Number,
     require: false,
   },
   friendRequests: [
