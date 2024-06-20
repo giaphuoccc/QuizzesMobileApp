@@ -1,11 +1,13 @@
 import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity} from "react-native"
 import { Icon, TextInput } from "react-native-paper"
-import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors"
+
+import * as Progress from 'react-native-progress';
+import IconFontisto from 'react-native-vector-icons/Fontisto';
 import React, {useState} from 'react'
 import IconIonicons from 'react-native-vector-icons/Ionicons';
 
     
-const ArrangeSentence = (navigation) => {
+const ArrangeSentence = ({navigation}) => {
     const [getQuestionText, setQuestionText] = useState("Tôi thích ăn kem.");
     const [getAnswerText, setAnswerText] = useState("");
     const wordArray = ["a","moon","eat","love","I","ice-cream","me","to"]
@@ -42,7 +44,26 @@ const ArrangeSentence = (navigation) => {
         setOpacityArray(nextOpacity);
     }
     return(
-    <View >
+        <View style={styles.container}>
+      <View style={styles.heading}>
+        <View style={{width: "10%", height: "100%", justifyContent: 'center',}}>
+          <TouchableOpacity style={[styles.buttonClose] }>
+            <IconFontisto name="close-a" style={{ fontSize: 36}} color="black" 
+              onPress={()=> navigation.navigate('HomeScreen')}/>
+          </TouchableOpacity> 
+        </View>
+        <Progress.Bar
+          progress={0.9}
+          unfilledColor="black"
+          borderRadius={200}
+          borderColor="#086CA4"
+          height={1000}
+          width={380}
+          color="#CFFF0F"
+          style={styles.processBar}
+        />
+      </View>
+      <View style = {styles.body}>
         <Text style={styles.title}>Hoàn tất ghép câu.</Text>
         <View style={styles.questionGroup}>
             <Image source={require('../Assets/Images/man.png')} style={styles.imgMan}></Image>
@@ -93,11 +114,56 @@ const ArrangeSentence = (navigation) => {
         </View>
         
         
+      </View>
+      <View style = {styles.footer}>
+        <TouchableOpacity style={styles.buttonNext } onPress={()=>{}}>
+          <Text style={styles.textButtonNext}>Tiếp tục</Text>
+        </TouchableOpacity>
+      </View>
     </View>
+    
     
 )}
 
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#086CA4',
+        width: '100%',
+        height: '100%',
+        paddingVertical: '5%',
+        paddingHorizontal: '5%',
+      },
+      heading: {
+        flexDirection: 'row',
+        height: '5%',
+        width: '100%',
+        justifyContent: 'space-between',
+      },
+      buttonClose: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 40,
+      },
+      body: {
+        marginVertical: '5%',
+        height: '80%',
+      },
+      footer: {
+        backgroundColor: 'white',
+        width: '100%',
+        height: '10%',
+        borderRadius: 20,
+      },
+      buttonNext: {
+        height: '100%',
+        justifyContent: 'center',
+      },
+      textButtonNext: {
+        color: 'black',
+        fontSize: 25,
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
     title:{
         color: 'white',
         fontSize: 30,
