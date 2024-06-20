@@ -10,6 +10,7 @@ import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 import QuizHolderScreen from './Screen/quizHolderScreen';
+import PictureQuizScreen from './Screen/pictureQuizScreen.js';
 import Loading from './Screen/LoadingScreen.js';
 import Welcome from './Screen/welcomeScreen.js';
 import ProfileScreen from './Screen/profile_Screen';
@@ -112,6 +113,11 @@ const stack = () => {
         <StackNav.Screen
           name="QuizHolderScreen"
           component={QuizHolderScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="PictureQuizScreen"
+          component={PictureQuizScreen}
           options={{headerShown: false}}
         />
         <StackNav.Screen

@@ -18,11 +18,23 @@ mongoose.connect(
     console.log('Error connecting to MongoDB', err);
   });
 
-  const accountRouter = require("./routers/userRou")
+  const achievmentRouter = require("./routers/achievementRou")
   const chapterRouter = require("./routers/chapterRou")
-  app.use('/api/users', accountRouter);
-
+  const difficultiesRouter = require("./routers/difficultiesRou")
+  const progressRouter = require("./routers/progressRou")
+  const quizRouter = require("./routers/quizRou")
+  const testRouter = require("./routers/testRou")
+  const typeQuizRouter = require("./routers/typeQuizRou")
+  const accountRouter = require("./routers/userRou")
+  
+  app.use('/api/achievement',achievmentRouter);
   app.use('/api/chapter', chapterRouter);
+  app.use('/api/difficulties', difficultiesRouter);
+  app.use('/api/progress', progressRouter);
+  app.use('/api/quiz', quizRouter);
+  app.use('/api/test', testRouter);
+  app.use('/api/typeQuiz', typeQuizRouter);
+  app.use('/api/users', accountRouter);
 
 app.listen(port, () => {
   console.log('Sever running on port 8000 ');
