@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const difficultiesSchema = new mongoose.Schema({
-    difficultyId: {
-    type: String,
-    require: true,
-    unique: true,
-  },
   diffcultyLevel: {
     type: String,
     require: true,

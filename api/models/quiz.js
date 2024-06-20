@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const quizSchema = new mongoose.Schema({
-  quizId: {
-    type: String,
-    require: true,
-    unique: true,
-  },
   testId: {
     type: String,
     require: true,
