@@ -55,7 +55,6 @@ const RegisteeScreen = () => {
         setName('');
         setEmail('');
         setPassword('');
-
       })
       .catch(error => {
         Alert.alert(

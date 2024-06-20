@@ -12,11 +12,11 @@ import BriefScreen from './Screen/briefScreen';
 import QuizHolderScreen from './Screen/quizHolderScreen';
 import PictureQuizScreen from './Screen/pictureQuizScreen.js';
 import Loading from './Screen/LoadingScreen.js';
-import Welcome from './Screen/WelcomeScreen.js';
+import Welcome from './Screen/welcomeScreen.js';
 import ProfileScreen from './Screen/profile_Screen';
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
-import FriendsScreen from './Screen/FriendsScreen.js';
+import FriendsScreen from './Screen/friendsScreen.js';
 import HomeScreen from './Screen/homeScreen'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
