@@ -28,7 +28,7 @@ const PictureQuizScreen = ({navigation}) => {
           unfilledColor="black"
           borderRadius={200}
           borderColor="#086CA4"
-          height={10}
+          height={100}
           width={380}
           color="#CFFF0F"
           style={styles.processBar}
@@ -45,9 +45,8 @@ const PictureQuizScreen = ({navigation}) => {
                 </ImageBackground>
             </View>
         </View>
-      </View>  
 
-      <View style={styles.imageContainer}>
+        <View style={styles.imageContainer}>
         {defaultImages.map((image, index) => (
           <TouchableOpacity key={index} style={styles.imageWrapper}>
             <Image
@@ -58,6 +57,10 @@ const PictureQuizScreen = ({navigation}) => {
           </TouchableOpacity>
         ))}
       </View>
+
+      </View>  
+
+
 
       <View style={styles.footer}>
         <TouchableOpacity style={styles.buttonNext} onPress={()=>{}}>
@@ -88,7 +91,7 @@ const styles = StyleSheet.create({
   },
   body: {
     marginVertical: '5%',
-    height: '20%',
+    height: '80%',
   },
   footer: {
     backgroundColor: 'white',
@@ -114,28 +117,28 @@ const styles = StyleSheet.create({
       height: 40,
   },
   questionGroup:{
-    marginTop: 50,
+    marginTop: 20,
     paddingLeft: 20,
-    height: '60%',
+    height: '20%',
     width: '100%',
     flexDirection: 'row',
+    // backgroundColor: 'black',
 },
 imgMan:{
     flex: 3,
-    height: '140%',
+    height: '100%',
     alignSelf: 'flex-end'
 },
 chatBox:{
   flex: 7,
-  height: '200%',
+  height: '100%',
   // backgroundColor: 'red',
 },
 imgChatBox:{
-  flex: 3,
-  width: '100%',
-  marginBottom: 100,
+  flex: 1,
+  width: '102.5%',
   justifyContent: 'center',
-  // backgroundColor: 'green',
+  //backgroundColor: 'green',
 },
 chatBoxContent:{
   marginLeft: '17%',
@@ -153,8 +156,10 @@ imageContainer: {
   flexWrap: 'wrap',
   justifyContent: 'space-between',
   width: '100%',
-  padding: 10
+  padding: 10,
+  
 },
+
 imageWrapper: {
   width: '48%',
   aspectRatio: 1,
