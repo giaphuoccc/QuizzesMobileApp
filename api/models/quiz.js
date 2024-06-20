@@ -6,7 +6,7 @@ const quizSchema = new mongoose.Schema({
     ref:'Test'
   },
   quizType: {
-    type: String,
+    type: Number,
     require: false,
     ref:'TypeQuiz'
   },
@@ -14,10 +14,13 @@ const quizSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  choice: {
-    type: String,
-    require: true,
-  },
+  choice: [
+    {
+      type: String,
+      require: true,
+    },
+  ],
+    
   result: {
     type: String,
     require: true,

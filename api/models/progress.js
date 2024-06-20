@@ -5,19 +5,10 @@ const progressSchema = new mongoose.Schema({
     require: true,
     ref:'User'
   },
-  chapterId: {
-    type: String,
-    require: true,
-    ref:'Chapter'
-  },
   testId: {
     type: String,
     require: true,
     ref:'Test'
-  },
-  status: {
-    type: String,
-    require: true,
   },
 });
 
