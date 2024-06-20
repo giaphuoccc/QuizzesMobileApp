@@ -2,9 +2,6 @@ import {StyleSheet, View, Alert, TouchableOpacity} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import * as Progress from 'react-native-progress';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
-import FillBlank from "./fillBlankScreen";
-import PairWord from "./pairWordScreen";
-import ArrangeSentence from "./arrangeSentence";
 
 const QuizHolderScreen = ({navigation}) => {
   return (

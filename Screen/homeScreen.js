@@ -59,11 +59,11 @@ const HomeScreen = ({navigation}) => {
                 </View>
             </View>
             <View style={[styles.content]} >
-                <Icon name="check-circle-fill" style={[styles.icon_1]} onPress={()=>navigation.navigate("QuizHolderScreen")}/>
+                <Icon name="check-circle-fill" style={[styles.icon_1]} onPress={()=>navigation.navigate("ArrangeSentence")}/>
                 <View style={[styles.layout]}>
                     <View style={[styles.iconLayout]}>
-                        <Icon name="feed-star" style={[styles.icon_2]} />
-                        <Icon name="x-circle-fill" style={[styles.icon_34_2]} />
+                        <Icon name="feed-star" style={[styles.icon_2]} onPress={()=>navigation.navigate("FillBlank")} />
+                        <Icon name="x-circle-fill" style={[styles.icon_34_2]} onPress={()=>navigation.navigate("PairWord")}/>
                         <Icon name="x-circle-fill" style={[styles.icon_34_2]} />
                         <Icon name="feed-star" style={[styles.icon_5]} />
                     </View>

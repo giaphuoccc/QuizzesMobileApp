@@ -1,43 +1,142 @@
 import { useState } from "react"
 import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity} from "react-native"
-import { TextInput } from "react-native-paper"
-import { black } from "react-native-paper/lib/typescript/styles/themes/v2/colors"
+import * as Progress from 'react-native-progress';
+import IconFontisto from 'react-native-vector-icons/Fontisto';
 
-const FillBlank = () => {
-    const [] = useState()
-    const selectAnswer=(index)=>{
-        
+const FillBlank = ({navigation}) => {
+    const answerArray = ["a","an","on","in"]
+    const question = "Last night, i got _____ heart attack. Then i die the next morning."
+    const blank = question.slice(question.indexOf("_"),question.lastIndexOf("_"))
+    const [getBlank, setBlank] = useState(blank)
+    const [getCorrectAnswer, setCorrectAnswer] = useState("a") 
+    const [getSelectedAnswer, setSelectedAnswer] = useState(-1)
+    const selectedFColor = "#00A3FF"
+    const selectedBGColor = "#B6E9FF"
+    const selectedBColor = "#00A3FF"
+    const correctBGColor = "#81F53A"
+    const [getIsSubmit, setIsSubmit] = useState(false)
+    const [getDisableChoice,setDisableChoice] = useState(false)
+    const leftQuest = question.slice(0,question.indexOf("_"))
+    const rightQuest = question.slice(question.lastIndexOf("_") + 1,question.length)
+    const submit = ()=>{
+        setDisableChoice(true)
+        setIsSubmit(true)
+        setBlank(getCorrectAnswer)
+        if(getCorrectAnswer === getSelectedAnswer){
+            //success
+        }else{
+            //fail
+        }
     }
     return(
-    <View >
+        <View style={styles.container}>
+      <View style={styles.heading}>
+        <View style={{width: "10%", height: "100%", justifyContent: 'center',}}>
+          <TouchableOpacity style={[styles.buttonClose] }>
+            <IconFontisto name="close-a" style={{ fontSize: 36}} color="black" 
+              onPress={()=> navigation.navigate('HomeScreen')}/>
+          </TouchableOpacity> 
+        </View>
+        <Progress.Bar
+          progress={0.9}
+          unfilledColor="black"
+          borderRadius={200}
+          borderColor="#086CA4"
+          height={1000}
+          width={380}
+          color="#CFFF0F"
+          style={styles.processBar}
+        />
+      </View>
+      <View style = {styles.body}>
         <Text style={styles.title}>Hoàn tất bản dịch.</Text>
         <View style={styles.questionGroup}>
             <Image source={require('../Assets/Images/man.png')} style={styles.imgMan}></Image>
             <View style={styles.chatBox}>
-                <ImageBackground source={require('../Assets/Images/speech-bubble.png')} resizeMode="cover" style={styles.imgChatBox}>
-                    <Text style={styles.chatBoxContent}>Last night, i got _____ heart attack. Then i die the next morning.</Text>
+                <ImageBackground source={require('../Assets/Images/speech-bubble.png')} resizeMode="contain" style={styles.imgChatBox}>
+                    <Text style={styles.chatBoxContent}>
+                        <Text>{leftQuest}</Text>
+                        
+                        <Text 
+                            style={{
+                                color: getBlank !== blank ? selectedFColor: "black", 
+                                fontStyle: "italic",
+                                fontWeight: 'bold',
+                                fontSize: 22,
+                            }}>{getBlank}</Text>
+                        <Text>{rightQuest}</Text>
+                    </Text> 
                 </ImageBackground>
             </View>
         </View>
         <View style={styles.answerGroup}>
-            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(0)}>
-                <Text style={styles.answerBtnText}>a</Text>
+            {answerArray.map((e,i)=>(
+                <TouchableOpacity key={i}
+                disabled = {getDisableChoice}
+                style={[styles.answerBtn,{
+                    backgroundColor:  getIsSubmit === true ? 
+                    (getCorrectAnswer === e ? correctBGColor :  getSelectedAnswer === e ? "red" : "white") : 
+                    getSelectedAnswer === e ? selectedBGColor : "white"
+                    ,borderColor: getIsSubmit === false ? getSelectedAnswer === e ? selectedBColor : "black" : "black",
+                } ] } 
+                onPress={()=>{
+                    setSelectedAnswer(e)
+                    setBlank(e)
+                    }}>
+                <Text style={[
+                    styles.answerBtnText,{
+                    color: getIsSubmit === false ? getSelectedAnswer === e ? selectedFColor:"black":"black",}]}>{e}</Text>
             </TouchableOpacity> 
-            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(1)}>
-                <Text style={styles.answerBtnText}>an</Text>
-            </TouchableOpacity> 
-            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(2)}>
-                <Text style={styles.answerBtnText}>the</Text>
-            </TouchableOpacity> 
-            <TouchableOpacity style={styles.answerBtn } onPress={selectAnswer(3)}>
-                <Text style={styles.answerBtnText}>once</Text>
-            </TouchableOpacity> 
+            ))}
         </View>
-        
-        
+      </View>
+      <View style = {styles.footer}>
+        <TouchableOpacity style={styles.buttonNext } onPress={()=>{submit()}}>
+          <Text style={styles.textButtonNext}>Tiếp tục</Text>
+        </TouchableOpacity>
+      </View>
     </View>
+    
 )}
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: '#086CA4',
+        width: '100%',
+        height: '100%',
+        paddingVertical: '5%',
+        paddingHorizontal: '5%',
+      },
+      heading: {
+        flexDirection: 'row',
+        height: '5%',
+        width: '100%',
+        justifyContent: 'space-between',
+      },
+      buttonClose: {
+        justifyContent: 'center',
+        alignSelf: 'center',
+        borderRadius: 40,
+      },
+      body: {
+        marginVertical: '5%',
+        height: '80%',
+      },
+      footer: {
+        backgroundColor: 'white',
+        width: '100%',
+        height: '10%',
+        borderRadius: 20,
+      },
+      buttonNext: {
+        height: '100%',
+        justifyContent: 'center',
+      },
+      textButtonNext: {
+        color: 'black',
+        fontSize: 25,
+        fontWeight: 'bold',
+        textAlign: 'center',
+      },
     title:{
         color: 'white',
         fontSize: 30,
@@ -61,8 +160,7 @@ const styles = StyleSheet.create({
 
     },
     answerBtn:{
-        backgroundColor: "white",
-        borderColor: 'black',
+        borderColor: 'gray',
         borderWidth: 1.5,
         height: '20%',
         justifyContent: 'center',
@@ -80,7 +178,7 @@ const styles = StyleSheet.create({
     },
     chatBox:{
         flex: 7,
-        height: '60%',
+        height: '85%',
         // backgroundColor: 'red',
     },
     imgChatBox:{
@@ -92,12 +190,11 @@ const styles = StyleSheet.create({
     chatBoxContent:{
         marginLeft: '17%',
         marginRight: '7%',
-        paddingTop: 5,
         height: 100,
         textAlign: 'left',
         color: 'black',
-        fontWeight: 'bold',
-        fontSize: 22,
+        // fontWeight: 'bold',
+        fontSize: 18,
     },
     
 })
