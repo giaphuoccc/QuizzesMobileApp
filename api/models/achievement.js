@@ -1,16 +1,11 @@
 const mongoose = require('mongoose');
 const achievementSchema = new mongoose.Schema({
-  achievementId: {
-    type: String,
-    require: true,
-    unique: true,
-  },
   achievementName: {
     type: String,
     require: true,
   },
   achievementStatus: {
-    type: String,
+    type: Number,
     require: true,
   },
 });

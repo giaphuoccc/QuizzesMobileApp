@@ -10,14 +10,12 @@ chapterId:{
     ref: 'Chapter',
 },
 status:{
-    type:String,
+    type:Number,
     require: true,
-    unique: true,
 },
 point:{
     type:Number,
     require: true,
-    unique: true,
 },
 
 });

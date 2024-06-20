@@ -4,7 +4,7 @@ const typeQuizSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  typeDiscription: {
+  typeDescription: {
     type: String,
     require: true,
   },
