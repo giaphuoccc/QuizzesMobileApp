@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const chapterSchema = new mongoose.Schema({
-  chapterId: {
-    type: String,
-    require: true,
-    unique: true,
-  },
   chapterName: {
     type: String,
     require: true,

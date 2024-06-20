@@ -1,7 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Image, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { ProgressBar } from 'react-native-paper';
-//import avatar from './path/to/your/local/avatar.jpg';
+// import { ProgressBar } from 'react-native-paper';
+import { Avatar } from 'react-native-paper';
+import ImagePicker from 'react-native-image-crop-picker';
+
+
+
 
 const achievements = [
   { id: '1', name: 'Name 1'},
@@ -19,15 +23,37 @@ const AchievementItem = ({ item, index }) => (
 );
 
 const ProfileScreen = () => {
+  const [image, setImage] = useState('');
+  const selectAvatar = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+      includeBase64: true,
+      cropperCircleOverlay: true,
+      avoidEmptySpaceAroundImage: true,
+      freeStyleCropEnabled: true,
+    }).then(image => {
+      console.log(image);
+      const data =`data:${image.mime};base64,${image.data}`
+      setImage(data);
+    }).catch(error => {
+      console.log(error);
+    });
+  };
   return (
     <View style={{ height: '100%', flexDirection: 'column' }}>
       {/* White with avatar */}
-      <View style={{ flex: 0.25, backgroundColor: '#FFFFFF', justifyContent: 'center', alignItems: 'center' }}>
-        <Image
-          //source={avatar}
-          source={require('../Assets/Images/avatar_profile.png')} // Replace with your avatar URL
-          style={styles.avatar}
-        />
+      <View style={styles.avatarContainer}>
+        <TouchableOpacity onPress={selectAvatar}>
+          <Avatar.Image
+            size ={200}
+            source={{
+              uri: image
+            }}
+            
+          />
+        </TouchableOpacity>
       </View>
 
       {/* Blue with achievement */}
@@ -122,10 +148,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  avatar: {
-    width: 200,
-    height: 200,
-    borderRadius: 75,
+  avatarContainer: {
+    flex: 0.25,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   friendButton: {

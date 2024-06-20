@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const testSchema = new mongoose.Schema({
-testId:{
-    type:String,
-    require: true,
-    unique: true,
-},
 testName:{
     type:String,
     require: true,
@@ -15,14 +10,12 @@ chapterId:{
     ref: 'Chapter',
 },
 status:{
-    type:String,
+    type:Number,
     require: true,
-    unique: true,
 },
 point:{
     type:Number,
     require: true,
-    unique: true,
 },
 
 });
