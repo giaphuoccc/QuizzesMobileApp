@@ -31,7 +31,7 @@ const LoginScreen = () => {
         const token = await AsyncStorage.getItem("authToken");
         if (token){
           // nếu đã đăng nhập thì hiện màn hình chính
-          navigation.navigate("HomeScreen")
+          // navigation.navigate("HomeScreen")
           // console.log(token);
         } else{
           //token  not found
@@ -55,7 +55,7 @@ const LoginScreen = () => {
         // console.log(response);
         const token = response.data.token;
         AsyncStorage.setItem('authToken', token);
-        navigation.navigate('HomeScreen');
+        navigation.navigate('Tabs');
         // console.log(token);
       })
       .catch(err => {

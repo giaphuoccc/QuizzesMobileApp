@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -39,8 +39,9 @@ function MyTabs() {
           justifyContent: 'center',
           alignItems: 'center',
         },
-        tabBarActiveTintColor: '#4A55A2', 
+        tabBarActiveTintColor: 'green', 
         tabBarInactiveTintColor: 'gray', 
+        tabBarActiveBackgroundColor: "#e0e0e0"
       }}
     >
       
@@ -49,10 +50,10 @@ function MyTabs() {
         component={Chat}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Ionicons name="chatbubbles" color={focused ? '#4A55A2' : 'gray'} size={32} />
+            <Ionicons name="chatbubbles" color={focused ? '#4A55A2' : 'gray'} size={32}/>
           ),
           headerShown: false,
-          tabBarLabel: "Chat"
+          tabBarLabel: "Chat",
         }}
       />
       <Tab.Screen
@@ -82,7 +83,7 @@ function MyTabs() {
         component={RankingScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Entypo name="bar-graph" color={focused ? '#4A55A2' : 'gray'} size={32} />
+            <Entypo name="bar-graph" color={focused ? '#dbdb06' : 'gray'} size={32} />
           ),
           headerShown: false,
         }}

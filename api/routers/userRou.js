@@ -1,9 +1,9 @@
 const express = require("express");
+const mongoose = require('mongoose');
 const User = require('../models/user');
 const app = express();
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const cors = require('cors');
@@ -34,7 +34,7 @@ const createToken = userId => {
   const payload = {
     userId: userId,
   };
-  const token = jwt.sign(payload, 'Q$r2K6W8n!jCW%Zk', {expiresIn: '1h'});
+  const token = jwt.sign(payload, 'Q$r2K6W8n!jCW%Zk', {expiresIn: '30s'});
   return token;
 };
 
@@ -61,6 +61,19 @@ app.post('/login', (req, res) => {
       console.log('Error in finding the user', err);
       res.status(500).json({message: 'Internal server Error!'});
     });
+});
+
+app.post('/verifyToken', (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    return res.status(400).json({ message: 'Token is required' });
+  }
+  jwt.verify(token, 'Q$r2K6W8n!jCW%Zk', (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Invalid or expired token' });
+    }
+    res.status(200).json({ message: 'Token is valid' });
+  });
 });
 
 //findOnebyID
