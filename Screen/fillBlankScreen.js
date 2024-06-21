@@ -1,32 +1,50 @@
 import { useState } from "react"
-import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity} from "react-native"
+import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, Alert} from "react-native"
 import * as Progress from 'react-native-progress';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 
-const FillBlank = ({navigation}) => {
+
+const FillBlank = ({navigation}) => {    
     const answerArray = ["a","an","on","in"]
     const question = "Last night, i got _____ heart attack. Then i die the next morning."
     const blank = question.slice(question.indexOf("_"),question.lastIndexOf("_"))
     const [getBlank, setBlank] = useState(blank)
-    const [getCorrectAnswer, setCorrectAnswer] = useState("a") 
-    const [getSelectedAnswer, setSelectedAnswer] = useState(-1)
+    const correctAnswer = "a"
+    const wrongAnswer = -1
+    const [getSelectedAnswer, setSelectedAnswer] = useState(wrongAnswer)
     const selectedFColor = "#00A3FF"
     const selectedBGColor = "#B6E9FF"
     const selectedBColor = "#00A3FF"
     const correctBGColor = "#81F53A"
+    const wrongBGColor = "#FF4848"
     const [getIsSubmit, setIsSubmit] = useState(false)
     const [getDisableChoice,setDisableChoice] = useState(false)
     const leftQuest = question.slice(0,question.indexOf("_"))
     const rightQuest = question.slice(question.lastIndexOf("_") + 1,question.length)
+    const [getNextButtonText, setNextButtonText] = useState("Xong")
+    const progress = 0.1
     const submit = ()=>{
-        setDisableChoice(true)
-        setIsSubmit(true)
-        setBlank(getCorrectAnswer)
-        if(getCorrectAnswer === getSelectedAnswer){
-            //success
+      if(getSelectedAnswer !== wrongAnswer){
+        if(!getIsSubmit){
+          setDisableChoice(true)
+          setIsSubmit(true)
+          setBlank(correctAnswer)
+          if(correctAnswer === getSelectedAnswer){
+              //success
+              Alert.alert("Bạn làm đúng r nè.")
+          }else{
+              //fail
+              Alert.alert("Bạn làm sai r nè. lêu lêu")
+          }
+          setNextButtonText("Câu tiếp theo")
         }else{
-            //fail
+          navigation.navigate("PairWord")
         }
+      }else{
+        //error
+        Alert.alert("Bạn chưa chọn đáp án nào.")
+      }
+      
     }
     return(
         <View style={styles.container}>
@@ -38,14 +56,13 @@ const FillBlank = ({navigation}) => {
           </TouchableOpacity> 
         </View>
         <Progress.Bar
-          progress={0.9}
+          progress={progress}
           unfilledColor="black"
           borderRadius={200}
           borderColor="#086CA4"
           height={1000}
           width={380}
           color="#CFFF0F"
-          style={styles.processBar}
         />
       </View>
       <View style = {styles.body}>
@@ -75,9 +92,11 @@ const FillBlank = ({navigation}) => {
                 disabled = {getDisableChoice}
                 style={[styles.answerBtn,{
                     backgroundColor:  getIsSubmit === true ? 
-                    (getCorrectAnswer === e ? correctBGColor :  getSelectedAnswer === e ? "red" : "white") : 
-                    getSelectedAnswer === e ? selectedBGColor : "white"
-                    ,borderColor: getIsSubmit === false ? getSelectedAnswer === e ? selectedBColor : "black" : "black",
+                      (correctAnswer === e ? correctBGColor : getSelectedAnswer === e ? wrongBGColor : "white") : 
+                      getSelectedAnswer === e ? selectedBGColor : "white",
+                    borderColor: getIsSubmit === true ? 
+                    (correctAnswer === e ? correctBGColor : getSelectedAnswer === e ? wrongBGColor : "black") : 
+                    getSelectedAnswer === e ? selectedBColor : "black",
                 } ] } 
                 onPress={()=>{
                     setSelectedAnswer(e)
@@ -92,7 +111,7 @@ const FillBlank = ({navigation}) => {
       </View>
       <View style = {styles.footer}>
         <TouchableOpacity style={styles.buttonNext } onPress={()=>{submit()}}>
-          <Text style={styles.textButtonNext}>Tiếp tục</Text>
+          <Text style={styles.textButtonNext}>{getNextButtonText}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -174,26 +193,22 @@ const styles = StyleSheet.create({
     imgMan:{
         flex: 3,
         height: '100%',
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
     },
     chatBox:{
         flex: 7,
         height: '85%',
-        // backgroundColor: 'red',
     },
     imgChatBox:{
         flex: 1,
         width: '102.5%',
-        justifyContent: 'center',
-        // backgroundColor: 'green',
     },
     chatBoxContent:{
-        marginLeft: '17%',
-        marginRight: '7%',
-        height: 100,
+        marginLeft: '10%',
+        marginTop: '5%',
+        height: 130,
         textAlign: 'left',
         color: 'black',
-        // fontWeight: 'bold',
         fontSize: 18,
     },
     
