@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     },
     chatBoxContent:{
         marginLeft: '10%',
-        marginTop: '5%',
+        marginTop: '7%',
         height: 130,
         textAlign: 'left',
         color: 'black',

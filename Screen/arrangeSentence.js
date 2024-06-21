@@ -1,4 +1,4 @@
-import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity} from "react-native"
+import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, Alert} from "react-native"
 import { Icon, TextInput } from "react-native-paper"
 
 import * as Progress from 'react-native-progress';
@@ -8,40 +8,103 @@ import IconIonicons from 'react-native-vector-icons/Ionicons';
 
     
 const ArrangeSentence = ({navigation}) => {
+    const [getIsSubmit, setIsSubmit] = useState(false)
+    const correctAnswer = "I love to eat ice-cream"
     const [getQuestionText, setQuestionText] = useState("Tôi thích ăn kem.");
     const [getAnswerText, setAnswerText] = useState("");
+    
+    const [getNextButtonText, setNextButtonText] = useState("Xong")
     const wordArray = ["a","moon","eat","love","I","ice-cream","me","to"]
+    const selectedFColor = "#00A3FF"
+    const selectedBGColor = "#B6E9FF"
+    const selectedBColor = "#00A3FF"
+    const correctBGColor = "#81F53A"
+    const wrongBGColor = "#FF4848"
     const initOpacityArray = []
     const initDisabledArray = []
+    const initSelectedArray = []
     for (let index = 0; index < 8; index++) {
         initOpacityArray.push(1)
         initDisabledArray.push(false)
+        initSelectedArray.push(false)
     }
     const [disabledArray, setDisabledArray] = useState(initDisabledArray);
     const [opacityArray, setOpacityArray] = useState(initOpacityArray);
+    const [selectedArray, setSelectArray] = useState(initSelectedArray);
     const onPressReset = ()=>{
         setAnswerText("")
+        setSelectArray(initSelectedArray)
         setOpacityArray(initOpacityArray);
         setDisabledArray(initDisabledArray);
     }
+    const initAnswers = (e,i) => {
+        return <TouchableOpacity 
+            key={i}
+            style={[styles.answerBtn ,{
+                opacity: opacityArray[i],
+                backgroundColor: selectedArray[i] ? selectedBGColor : 'white',
+                borderColor: selectedArray[i] ? selectedBColor : 'black',
+            }]} 
+            disabled ={disabledArray[i]} 
+            onPress={()=>{onPressWord(i)}}>
+            <Text style={[styles.answerBtnText,{color:  selectedArray[i] ? selectedFColor : 'black'}]}>{e}</Text>
+        </TouchableOpacity> 
+    }
     const onPressWord=(index)=>{
         setAnswerText(getAnswerText + " "+ wordArray[index])
-        const nextDisable = disabledArray.map((e, i) => {
+        const newSelectedeArray = selectedArray.map((e, i) => {
             if (i === index) {
                 return true;
             } else {
                 return e;
             }
         });
-        setDisabledArray(nextDisable);
-        const nextOpacity = opacityArray.map((e, i) => {
+        setSelectArray(newSelectedeArray);
+        const newDisableArray = disabledArray.map((e, i) => {
+            if (i === index) {
+                return true;
+            } else {
+                return e;
+            }
+        });
+        setDisabledArray(newDisableArray);
+        const newOpacityArray = opacityArray.map((e, i) => {
             if (i === index) {
                 return 0.5;
             } else {
                 return e;
             }
         });
-        setOpacityArray(nextOpacity);
+        setOpacityArray(newOpacityArray);
+        
+    }
+    const submit = ()=>{
+        if(getAnswerText !== ""){
+          if(!getIsSubmit){
+            const newDisableArray = disabledArray.map((e, i) => {
+                    return true;
+            });
+            setDisabledArray(newDisableArray);
+            const newOpacityArray = opacityArray.map((e, i) => {
+                return 0.5
+            });
+            setOpacityArray(newOpacityArray);
+            setIsSubmit(true)
+            if(correctAnswer === getAnswerText){
+                //success
+                Alert.alert("Bạn làm đúng r nè.")
+            }else{
+                //fail
+                Alert.alert("Bạn làm sai r nè. lêu lêu")
+            }
+            setNextButtonText("Câu tiếp theo")
+          }else{
+            navigation.navigate("PairWord")
+          }
+        }else{
+          //error
+          Alert.alert("Bạn chưa chọn đáp án nào.")
+        }
     }
     return(
         <View style={styles.container}>
@@ -68,7 +131,7 @@ const ArrangeSentence = ({navigation}) => {
         <View style={styles.questionGroup}>
             <Image source={require('../Assets/Images/man.png')} style={styles.imgMan}></Image>
             <View style={styles.chatBox}>
-                <ImageBackground source={require('../Assets/Images/speech-bubble.png')} resizeMode="cover" style={styles.imgChatBox}>
+                <ImageBackground source={require('../Assets/Images/speech-bubble.png')} resizeMode="contain" style={styles.imgChatBox}>
                     <Text style={styles.chatBoxContent}>{getQuestionText}</Text>
                 </ImageBackground>
             </View>
@@ -83,32 +146,14 @@ const ArrangeSentence = ({navigation}) => {
             </View>
             <View style={styles.answerFooter}>
                 <View style={styles.wordSelection}>
-                    <TouchableOpacity style={[styles.answerBtn ,{opacity: opacityArray[0]}]} disabled ={disabledArray[0]} onPress={()=>{onPressWord(0)}}>
-                        <Text style={styles.answerBtnText}>{wordArray[0]}</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity  style={[styles.answerBtn ,{opacity: opacityArray[1]}]} disabled ={disabledArray[1]} onPress={()=>{onPressWord(1)}}>
-                        <Text style={styles.answerBtnText} >{wordArray[1]}</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity  style={[styles.answerBtn ,{opacity: opacityArray[2]}]} disabled ={disabledArray[2]} onPress={()=>{onPressWord(2)}}>
-                        <Text style={styles.answerBtnText}>{wordArray[2]}</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity  style={[styles.answerBtn ,{opacity: opacityArray[3]}]} disabled ={disabledArray[3]} onPress={()=>{onPressWord(3)}}>
-                        <Text style={styles.answerBtnText}>{wordArray[3]}</Text>
-                    </TouchableOpacity> 
+                    {wordArray.slice(0,wordArray.length / 2).map((e,i)=>(
+                        initAnswers(e,i)
+                    ))}
                 </View>
                 <View style={styles.wordSelection}>
-                    <TouchableOpacity  style={[styles.answerBtn ,{opacity: opacityArray[4]}]} disabled ={disabledArray[4]} onPress={()=>{onPressWord(4)}}>
-                        <Text style={styles.answerBtnText}>{wordArray[4]}</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity  style={[styles.answerBtn ,{opacity: opacityArray[5]}]} disabled ={disabledArray[5]} onPress={()=>{onPressWord(5)}}>
-                        <Text style={styles.answerBtnText}>{wordArray[5]}</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity  style={[styles.answerBtn ,{opacity: opacityArray[6]}]} disabled ={disabledArray[6]} onPress={()=>{onPressWord(6)}}>
-                        <Text style={styles.answerBtnText}>{wordArray[6]}</Text>
-                    </TouchableOpacity> 
-                    <TouchableOpacity  style={[styles.answerBtn ,{opacity: opacityArray[7]}]} disabled ={disabledArray[7]} onPress={()=>{onPressWord(7)}}>
-                        <Text style={styles.answerBtnText}>{wordArray[7]}</Text>
-                </TouchableOpacity> 
+                    {wordArray.slice(wordArray.length / 2).map((e,i)=>(
+                        initAnswers(e,i + wordArray.length / 2)
+                    ))}
                 </View>
             </View>
         </View>
@@ -116,8 +161,8 @@ const ArrangeSentence = ({navigation}) => {
         
       </View>
       <View style = {styles.footer}>
-        <TouchableOpacity style={styles.buttonNext } onPress={()=>{}}>
-          <Text style={styles.textButtonNext}>Tiếp tục</Text>
+        <TouchableOpacity style={styles.buttonNext } onPress={()=>{submit()}}>
+          <Text style={styles.textButtonNext}>{getNextButtonText}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -184,24 +229,19 @@ const styles = StyleSheet.create({
     },
     chatBox:{
         flex: 7,
-        height: '60%',
-        // backgroundColor: 'red',
+        height: '85%',
     },
     imgChatBox:{
         flex: 1,
         width: '102.5%',
-        justifyContent: 'center',
-        // backgroundColor: 'green',
     },
     chatBoxContent:{
-        marginLeft: '17%',
-        marginRight: '7%',
-        paddingTop: 5,
-        height: 100,
+        marginLeft: '10%',
+        marginTop: '7%',
+        height: 130,
         textAlign: 'left',
         color: 'black',
-        fontWeight: 'bold',
-        fontSize: 22,
+        fontSize: 18,
     },
 
     answerGroup:{

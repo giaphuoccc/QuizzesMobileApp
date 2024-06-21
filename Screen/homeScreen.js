@@ -37,7 +37,7 @@ const HomeScreen = ({ navigation }) => {
                     <ImageBackground resizeMode="contain" style={[styles.image]} source={require('../Assets/Images/man.png')} />
                     <View style={[styles.iconLayout]}>
                         <View style={[styles.iconContainer_25_1]}>
-                            <TouchableOpacity style={[styles.iconBackground_2]}>
+                            <TouchableOpacity style={[styles.iconBackground_2]} onPress={() => navigation.navigate("ArrangeSentence")}>
                                 <Icon name="feed-star" style={[styles.icon]} />
                             </TouchableOpacity>
                         </View>
