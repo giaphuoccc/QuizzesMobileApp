@@ -4,9 +4,6 @@ import { View, Image, Text, StyleSheet, FlatList, TouchableOpacity } from 'react
 import { Avatar } from 'react-native-paper';
 import ImagePicker from 'react-native-image-crop-picker';
 
-
-
-
 const achievements = [
   { id: '1', name: 'Name 1'},
   { id: '2', name: 'Name 2'},
