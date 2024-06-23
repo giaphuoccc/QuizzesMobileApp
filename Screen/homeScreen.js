@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
     };
     const handleAlertPress = () => {
         // navigation.navigate("FillBlank");
-        navigation.navigate("ArrangeSentence");
+        navigation.navigate("PairWord");
     };
 
     return (
