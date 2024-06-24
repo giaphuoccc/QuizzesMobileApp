@@ -7,7 +7,7 @@ const Test = require('../models/test')
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.post('/created', (req, res) => {
-    const { testName, chapterId,status,point } = req.body;
+    const {testName, chapterId,status,point } = req.body;
     const newTest= new Test({ testName, chapterId,status,point  });
     newTest
         .save()

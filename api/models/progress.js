@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const progressSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    require: true,
-    ref:'User'
+  userId:
+  {
+    type: mongoose.Schema.Types.ObjectID,
+    ref: 'User',
   },
-  testId: {
-    type: String,
-    require: true,
-    ref:'Test'
+  testId:
+  {
+    type: mongoose.Schema.Types.ObjectID,
+    ref: 'Test',
   },
+
 });
 
 const Progress = mongoose.model('Progress', progressSchema);
