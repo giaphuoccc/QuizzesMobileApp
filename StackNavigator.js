@@ -13,8 +13,6 @@ import BriefScreen from './Screen/briefScreen';
 import Loading from './Screen/LoadingScreen.js';
 import Welcome from './Screen/WelcomeScreen.js';
 
-import Welcome from './Screen/WelcomeScreen.js';  
-import ProfileScreen from './Screen/profile_Screen';
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
 import FriendsScreen from './Screen/friendsScreen.js';
