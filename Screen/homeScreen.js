@@ -6,11 +6,13 @@ import Icon from 'react-native-vector-icons/Octicons';
 const HomeScreen = ({ navigation }) => {
 
     const unavaliableTestColor = "gray"
-    const finishTestColor = ""
-    const currentTestColor = ""
+    const finishTestColor = "#61FF00"
+    const currentTestColor = "yellow"
     const unDiffColor = "#EEEEEE"
 
     const [getChapters, setChapters] = useState([])
+    const [getChaptersDiff, setChaptersDiff] = useState(1)
+    const [getTestStatus, setTestStatus] = useState(1)
 
     // const getAllChapters = () => {
     //     fetch('/getChapter')
@@ -79,26 +81,28 @@ const HomeScreen = ({ navigation }) => {
                     </View>
 
                     <View style={[styles.difficultContainer]}>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', height: "20%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', height: "25%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', height: "30%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "35%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "40%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "45%" }]}></View>
+                        <View style={[styles.diffLevel, { height: "20%" }, { backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "25%" }, { backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "30%" }, { backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "35%" }, { backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "40%" }, { backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "45%" }, { backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]} />
                         {/* 
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "25%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "30%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "35%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "40%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "45%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "50%" }]}></View> */}
+                        <View style={[styles.diffLevel,{ width: "25%" },{ backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]}/>
+                        <View style={[styles.diffLevel,{ width: "30%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/> 
+                        <View style={[styles.diffLevel,{ width: "35%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/>
+                        <View style={[styles.diffLevel,{ width: "40%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>                        
+                        <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>
+                        <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>*/}
                     </View>
 
                 </View>
             </View>
             <View style={[styles.content]} >
                 <View style={[styles.iconContainer_16_1]}>
-                    <TouchableOpacity style={[styles.iconBackground_1]} onPress={showAlert}>
+                    <TouchableOpacity style={[styles.iconBackground_1,
+                    { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#61FF00' }]}
+                        onPress={showAlert}>
                         <Icon name="check-circle-fill" style={[styles.icon]} />
                     </TouchableOpacity>
                 </View>
@@ -106,31 +110,41 @@ const HomeScreen = ({ navigation }) => {
                     <ImageBackground resizeMode="contain" style={[styles.image]} source={require('../Assets/Images/man.png')} />
                     <View style={[styles.iconLayout]}>
                         <View style={[styles.iconContainer_25_1]}>
-                            <TouchableOpacity style={[styles.iconBackground_2]} onPress={showAlert}>
+                            <TouchableOpacity style={[styles.iconBackground_2,
+                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#ECFF15'  }]}
+                                onPress={showAlert}>
                                 <Icon name="feed-star" style={[styles.icon]} />
                             </TouchableOpacity>
                         </View>
                         <View style={[styles.iconContainer_34_1]}>
                             <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_3]} onPress={showAlert}>
+                                <TouchableOpacity style={[styles.iconBackground_3,
+                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#F00000' }]}
+                                    onPress={showAlert}>
                                     <Icon name="feed-heart" style={[styles.icon]} />
                                 </TouchableOpacity>
                             </View>
                             <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_4]} onPress={showAlert}>
+                                <TouchableOpacity style={[styles.iconBackground_4,
+                                { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : "finishTestColor" }]}
+                                    onPress={showAlert}>
                                     <Icon name="feed-rocket" style={[styles.icon]} />
                                 </TouchableOpacity>
                             </View>
                         </View>
                         <View style={[styles.iconContainer_25_1]}>
-                            <TouchableOpacity style={[styles.iconBackground_5]} onPress={showAlert}>
+                            <TouchableOpacity style={[styles.iconBackground_5,
+                            { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
+                                onPress={showAlert}>
                                 <Icon name="feed-tag" style={[styles.icon]} />
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
                 <View style={[styles.iconContainer_16_1]}>
-                    <TouchableOpacity style={[styles.iconBackground_6]} onPress={showAlert}>
+                    <TouchableOpacity style={[styles.iconBackground_6,
+                    { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
+                        onPress={showAlert}>
                         <Icon name="x-circle-fill" style={[styles.icon]} />
                     </TouchableOpacity>
                 </View>
@@ -171,7 +185,10 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <View style={[styles.content]} >
                 <View style={[styles.iconContainer_16_2]}>
-                    <TouchableOpacity style={[styles.iconBackground_1]} onPress={showAlert}>
+                    <TouchableOpacity
+                        style={[styles.iconBackground_1,
+                        { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                        onPress={showAlert}>
                         <Icon name="check-circle-fill" style={[styles.icon]} />
                     </TouchableOpacity>
                 </View>
@@ -179,24 +196,32 @@ const HomeScreen = ({ navigation }) => {
                 <View style={[styles.layout]}>
                     <View style={[styles.iconLayout]}>
                         <View style={[styles.iconContainer_25_2]}>
-                            <TouchableOpacity style={[styles.iconBackground_2]} onPress={showAlert}>
+                            <TouchableOpacity style={[styles.iconBackground_2,
+                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                onPress={showAlert}>
                                 <Icon name="feed-star" style={[styles.icon]} />
                             </TouchableOpacity>
                         </View>
                         <View style={[styles.iconContainer_34_2]}>
                             <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_3]} onPress={showAlert}>
+                                <TouchableOpacity style={[styles.iconBackground_3,
+                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                    onPress={showAlert}>
                                     <Icon name="feed-heart" style={[styles.icon]} />
                                 </TouchableOpacity>
                             </View>
                             <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_4]} onPress={showAlert}>
+                                <TouchableOpacity style={[styles.iconBackground_4,
+                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                    onPress={showAlert}>
                                     <Icon name="feed-tag" style={[styles.icon]} />
                                 </TouchableOpacity>
                             </View>
                         </View>
                         <View style={[styles.iconContainer_25_2]}>
-                            <TouchableOpacity style={[styles.iconBackground_5]} onPress={showAlert}>
+                            <TouchableOpacity style={[styles.iconBackground_5,
+                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                onPress={showAlert}>
                                 <Icon name="feed-rocket" style={[styles.icon]} />
                             </TouchableOpacity>
                         </View>
@@ -204,7 +229,9 @@ const HomeScreen = ({ navigation }) => {
                     <ImageBackground resizeMode="contain" style={[styles.image_2]} source={require('../Assets/Images/man.png')} />
                 </View>
                 <View style={[styles.iconContainer_16_2]}>
-                    <TouchableOpacity style={[styles.iconBackground_6]} onPress={showAlert}>
+                    <TouchableOpacity style={[styles.iconBackground_6,
+                    { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                        onPress={showAlert}>
                         <Icon name="x-circle-fill" style={[styles.icon]} />
                     </TouchableOpacity>
                 </View>
