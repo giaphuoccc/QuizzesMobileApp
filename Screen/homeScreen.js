@@ -13,27 +13,33 @@ const HomeScreen = ({ navigation }) => {
     const [getChapters, setChapters] = useState([])
     const [getChaptersDiff, setChaptersDiff] = useState(1)
     const [getTestStatus, setTestStatus] = useState(1)
+    const [getCompletion, setCompletion] = useState(0.4)
+    const [getCountTestComplete, setCountTestComplete] = useState(4)
 
-    // const getAllChapters = () => {
-    //     fetch('/getChapter')
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setChapters(data);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error fetching chapters:', error);
-    //         });
-    // };
 
-    // useEffect(() => {
-    //     getAllChapters();
-    // }, []);
+    useEffect(() => {
+        updateCompletionBar(getCountTestComplete);
+    }, [getCountTestComplete]);
 
-    const beginChoseTest = () => {
-        return (
-            <></>
-        );
+    const updateCompleteTest = () => {
+        setCountTestComplete(getCountTestComplete + 1);
     };
+
+    const updateCompletionBar = (count) => {
+        setCompletion(parseFloat(count / 6).toFixed(2));
+    }
+
+    const getProgressBarColor = () => {
+        if (getCompletion <= 0.4) {
+            return "#FF6347";
+        } else if (getCompletion <= 0.7) {
+            return "#FFD700";
+        } else {
+            return "#32CD32";
+        }
+    };
+
+
 
     const showAlert = () => {
         Alert.alert(
@@ -70,14 +76,14 @@ const HomeScreen = ({ navigation }) => {
 
                     <View style={[styles.progessIndicator]}>
                         <Progress.Bar
-                            progress={0.6}
+                            progress={getCompletion}
                             unfilledColor='gray'
                             borderRadius={100}
                             borderColor="#086CA4"
-                            color="#61FF00"
+                            color={getProgressBarColor()}
                             height={"100%"}
                             style={styles.processBar} />
-                        <Text style={[styles.indicator]}>60%</Text>
+                        <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
                     </View>
 
                     <View style={[styles.difficultContainer]}>
@@ -111,7 +117,7 @@ const HomeScreen = ({ navigation }) => {
                     <View style={[styles.iconLayout]}>
                         <View style={[styles.iconContainer_25_1]}>
                             <TouchableOpacity style={[styles.iconBackground_2,
-                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#ECFF15'  }]}
+                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#ECFF15' }]}
                                 onPress={showAlert}>
                                 <Icon name="feed-star" style={[styles.icon]} />
                             </TouchableOpacity>
@@ -126,7 +132,7 @@ const HomeScreen = ({ navigation }) => {
                             </View>
                             <View style={[styles.iconContainer]}>
                                 <TouchableOpacity style={[styles.iconBackground_4,
-                                { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : "finishTestColor" }]}
+                                { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
                                     onPress={showAlert}>
                                     <Icon name="feed-rocket" style={[styles.icon]} />
                                 </TouchableOpacity>
@@ -157,14 +163,14 @@ const HomeScreen = ({ navigation }) => {
                     </View>
                     <View style={[styles.progessIndicator]}>
                         <Progress.Bar
-                            progress={0.6}
+                            progress={getCompletion}
                             unfilledColor='gray'
                             borderRadius={100}
                             borderColor="#086CA4"
-                            color="#61FF00"
+                            color={getProgressBarColor()}
                             height={"100%"}
                             style={styles.processBar} />
-                        <Text style={[styles.indicator]}>50%</Text>
+                        <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
                     </View>
                     <View style={[styles.difficultContainer]}>
                         <View style={[styles.diffLevel, { backgroundColor: '#61FF00', height: "20%" }]}></View>
@@ -258,14 +264,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     topicName: {
-        color: "#FFFFFF",
+        color: "cyan",
         fontSize: 30,
         fontWeight: 'bold',
     },
     topicDescription: {
-        color: "#FFFFFF",
+        color: "cyan",
         fontSize: 25,
-        fontWeight: 'bold',
         fontStyle: 'italic',
     },
     difficultContainer: {
