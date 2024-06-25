@@ -5,26 +5,27 @@ import Icon from 'react-native-vector-icons/Octicons';
 
 const HomeScreen = ({ navigation }) => {
 
-    const unavaliableTestColor = "#FEEEEE"
+    const unavaliableTestColor = "gray"
     const finishTestColor = ""
     const currentTestColor = ""
+    const unDiffColor = "#EEEEEE"
 
     const [getChapters, setChapters] = useState([])
 
-    const getAllChapters = () => {
-        fetch('/getChapter')
-            .then(response => response.json())
-            .then(data => {
-                setChapters(data);
-            })
-            .catch(error => {
-                console.error('Error fetching chapters:', error);
-            });
-    };
+    // const getAllChapters = () => {
+    //     fetch('/getChapter')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setChapters(data);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching chapters:', error);
+    //         });
+    // };
 
-    useEffect(() => {
-        getAllChapters();
-    }, []);
+    // useEffect(() => {
+    //     getAllChapters();
+    // }, []);
 
     const beginChoseTest = () => {
         return (
@@ -65,28 +66,26 @@ const HomeScreen = ({ navigation }) => {
                         <Text style={[styles.topicDescription]}>chapter</Text>
                     </View>
 
-                   
-
                     <View style={[styles.progessIndicator]}>
                         <Progress.Bar
-                            progress={0.9}
-                            unfilledColor="black"
-                            borderRadius={200}
+                            progress={0.6}
+                            unfilledColor='gray'
+                            borderRadius={100}
                             borderColor="#086CA4"
-                            color="#CFFF0F"
+                            color="#61FF00"
                             height={"100%"}
                             style={styles.processBar} />
-                        <Text style={[styles.indicator]}>80%</Text>
+                        <Text style={[styles.indicator]}>60%</Text>
                     </View>
-                    
+
                     <View style={[styles.difficultContainer]}>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00' , height:"20%"}]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00' , height:"25%"}]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15' , height:"30%"}]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15' , height:"35%"}]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000' , height:"40%"}]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000' , height:"45%"}]}></View>
-{/* 
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', height: "20%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', height: "25%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', height: "30%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "35%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "40%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "45%" }]}></View>
+                        {/* 
                         <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "25%" }]}></View>
                         <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "30%" }]}></View>
                         <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "35%" }]}></View>
@@ -144,14 +143,29 @@ const HomeScreen = ({ navigation }) => {
                     </View>
                     <View style={[styles.progessIndicator]}>
                         <Progress.Bar
-                            progress={0.5}
-                            unfilledColor="black"
-                            borderRadius={200}
+                            progress={0.6}
+                            unfilledColor='gray'
+                            borderRadius={100}
                             borderColor="#086CA4"
-                            color="#CFFF0F"
+                            color="#61FF00"
                             height={"100%"}
                             style={styles.processBar} />
                         <Text style={[styles.indicator]}>50%</Text>
+                    </View>
+                    <View style={[styles.difficultContainer]}>
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', height: "20%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', height: "25%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', height: "30%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "35%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "40%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "45%" }]}></View>
+                        {/* 
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "25%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "30%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "35%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "40%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "45%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "50%" }]}></View> */}
                     </View>
                 </View>
             </View>
@@ -232,7 +246,7 @@ const styles = StyleSheet.create({
         // backgroundColor:'black',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems: 'center',
+
     },
     // diffLevel: {
     //     width: '50%',
@@ -252,7 +266,7 @@ const styles = StyleSheet.create({
     },
     progessIndicator: {
         flex: 1,
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
         // backgroundColor:'yellow'
     },
