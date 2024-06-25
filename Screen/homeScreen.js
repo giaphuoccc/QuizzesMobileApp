@@ -1,14 +1,41 @@
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView, Alert } from 'react-native'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
 
-
 const HomeScreen = ({ navigation }) => {
+
+    const unavaliableTestColor = "#FEEEEE"
+    const finishTestColor = ""
+    const currentTestColor = ""
+
+    const [getChapters, setChapters] = useState([])
+
+    const getAllChapters = () => {
+        fetch('/getChapter')
+            .then(response => response.json())
+            .then(data => {
+                setChapters(data);
+            })
+            .catch(error => {
+                console.error('Error fetching chapters:', error);
+            });
+    };
+
+    useEffect(() => {
+        getAllChapters();
+    }, []);
+
+    const beginChoseTest = () => {
+        return (
+            <></>
+        );
+    };
+
     const showAlert = () => {
         Alert.alert(
             'Bắt đầu học bài ?',
-            'Làm bài __ của chương __',  
+            'Làm bài __ của chương __',
             [
                 {
                     text: 'OK',
@@ -27,10 +54,19 @@ const HomeScreen = ({ navigation }) => {
         <ScrollView>
             <View style={[styles.head]}>
                 <View style={[styles.topicContainer]}>
-                    <View style={[styles.topicText]}>
-                        <Text style={[styles.topicName]}>Chapter I</Text>
-                        <Text style={[styles.topicDescription]}>Music</Text>
+                    {/* {getChapters.map((chapter,i)=>(
+                    <View key={i} style={[styles.topicText]}>
+                        <Text style={[styles.topicName]}>chapter</Text>
+                        <Text style={[styles.topicDescription]}>chapter</Text>
                     </View>
+                    ))} */}
+                    <View style={[styles.topicText]}>
+                        <Text style={[styles.topicName]}>chapter</Text>
+                        <Text style={[styles.topicDescription]}>chapter</Text>
+                    </View>
+
+                   
+
                     <View style={[styles.progessIndicator]}>
                         <Progress.Bar
                             progress={0.9}
@@ -42,6 +78,23 @@ const HomeScreen = ({ navigation }) => {
                             style={styles.processBar} />
                         <Text style={[styles.indicator]}>80%</Text>
                     </View>
+                    
+                    <View style={[styles.difficultContainer]}>
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00' , height:"20%"}]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00' , height:"25%"}]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15' , height:"30%"}]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15' , height:"35%"}]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000' , height:"40%"}]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000' , height:"45%"}]}></View>
+{/* 
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "25%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "30%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "35%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "40%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "45%" }]}></View>
+                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "50%" }]}></View> */}
+                    </View>
+
                 </View>
             </View>
             <View style={[styles.content]} >
@@ -156,12 +209,12 @@ const styles = StyleSheet.create({
     },
     topicContainer: {
         flexDirection: 'row',
-        flex: 2,
+        flex: 4,
     },
     topicText: {
         flex: 1,
         justifyContent: 'center',
-        paddingLeft: '3%',
+        alignItems: 'center'
     },
     topicName: {
         color: "#FFFFFF",
@@ -174,19 +227,44 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontStyle: 'italic',
     },
-    progessIndicator: {
-        flex: 2,
+    difficultContainer: {
+        flex: 1,
+        // backgroundColor:'black',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         alignItems: 'center',
     },
+    // diffLevel: {
+    //     width: '50%',
+    //     height: 7,
+    //     margin: 2,
+    //     backgroundColor: 'grey',
+    //     alignSelf: 'center',
+    //     borderRadius: 4,
+    // },
+    diffLevel: {
+        width: 7,
+        height: '50%',
+        margin: 2,
+        backgroundColor: 'grey',
+        alignSelf: 'center',
+        borderRadius: 4,
+    },
+    progessIndicator: {
+        flex: 1,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        // backgroundColor:'yellow'
+    },
     processBar: {
-        height: '15%',
+        height: '20%',
+        marginTop: '8%'
     },
     indicator: {
         color: "#FFFFFF",
         fontSize: 25,
         fontWeight: 'bold',
+        fontStyle: 'italic'
     },
     content: {
         flex: 6,

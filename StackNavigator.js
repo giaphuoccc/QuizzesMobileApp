@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Entypo from 'react-native-vector-icons/Entypo';
+
 import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
@@ -16,6 +17,7 @@ import Welcome from './Screen/WelcomeScreen.js';
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
 import FriendsScreen from './Screen/friendsScreen.js';
+
 import HomeScreen from './Screen/homeScreen'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
