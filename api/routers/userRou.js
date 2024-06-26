@@ -105,4 +105,6 @@ app.get('/:userId', (req, res) => {
     });
 });
 
+//get user data
+
 module.exports = app;
