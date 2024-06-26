@@ -22,6 +22,7 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [focusedField, setFocusedField] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [userId, setUserId] = useState('');
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -56,7 +57,6 @@ const LoginScreen = () => {
         const token = response.data.token;
         AsyncStorage.setItem('authToken', token);
         navigation.navigate('Tabs');
-        // console.log(token);
       })
       .catch(err => {
         Alert.alert('Login Error', 'Invalid email or password');
@@ -70,14 +70,6 @@ const LoginScreen = () => {
         flex: 1,
         backgroundColor: '#2A629A',
       }}>
-      <View style={{padding: 10}}>
-        <Ionicons
-          onPress={() => navigation.navigate('LoginGreeting')}
-          name="chevron-back-outline"
-          size={32}
-          color={'#FFF'}
-        />
-      </View>
       <KeyboardAvoidingView
         style={{
           flex: 1,

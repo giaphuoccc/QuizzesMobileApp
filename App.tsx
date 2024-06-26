@@ -16,13 +16,14 @@ import {
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigator from './StackNavigator';
+import { UserProvider } from './Screen/UserContext';
 
 function App() {
 
   return (
-    <>
+    <UserProvider>
     <StackNavigator />
-  </>
+  </UserProvider>
   )
 }
 
