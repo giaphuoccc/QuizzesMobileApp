@@ -1,10 +1,37 @@
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import * as Progress from 'react-native-progress';
+// import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
+import axios from 'axios';
+import { LOCALHOST } from '../config';
+
 
 const HomeScreen = ({ navigation }) => {
+    
+    const [friendRequest, setFriendRequests] = useState();
 
+  const fetchChapter = async () => {
+    try {
+      const response = await axios.get(
+        `${LOCALHOST}/chapter/getChapter`,
+      );
+      if (response.status === 200) {
+        setFriendRequests(response.data[0]);
+      }
+    } catch (err) {
+      console.log('error message', err);
+    }
+  };
+  
+  useEffect(() => {
+    fetchChapter();
+  }, []);
+  useEffect(() => {
+    if(friendRequest){
+        console.log(friendRequest._id);
+    }
+  }, [friendRequest]);
+  
     const unavaliableTestColor = "gray"
     const finishTestColor = "#61FF00"
     const currentTestColor = "yellow"
@@ -75,14 +102,14 @@ const HomeScreen = ({ navigation }) => {
                     </View>
 
                     <View style={[styles.progessIndicator]}>
-                        <Progress.Bar
+                        {/* <Progress.Bar
                             progress={getCompletion}
                             unfilledColor='gray'
                             borderRadius={100}
                             borderColor="#086CA4"
                             color={getProgressBarColor()}
                             height={"100%"}
-                            style={styles.processBar} />
+                            style={styles.processBar} /> */}
                         <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
                     </View>
 
@@ -162,14 +189,14 @@ const HomeScreen = ({ navigation }) => {
                         <Text style={[styles.topicDescription]}>School</Text>
                     </View>
                     <View style={[styles.progessIndicator]}>
-                        <Progress.Bar
+                        {/* <Progress.Bar
                             progress={getCompletion}
                             unfilledColor='gray'
                             borderRadius={100}
                             borderColor="#086CA4"
                             color={getProgressBarColor()}
                             height={"100%"}
-                            style={styles.processBar} />
+                            style={styles.processBar} /> */}
                         <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
                     </View>
                     <View style={[styles.difficultContainer]}>
