@@ -16,15 +16,15 @@ import Welcome from './Screen/welcomeScreen.js';
 
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
-import FriendsScreen from './Screen/friendsScreen.js';
+import FriendsScreen from './Screen/FriendsScreen.js';
 
 import HomeScreen from './Screen/homeScreen'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
 
 //Profile 
-import ProfileScreen from './Screen/Profile&EditProfile/profileScreen.js';
-import UpdateProfileScreen from './Screen/Profile&EditProfile/updateProfileScreen.js';
+import ProfileScreen from './Screen/profileScreen.js';
+import ProfileEditScreen from './Screen/profileEditScreen.js';
 
 //Quiz
 import PictureQuizScreen from './Screen/pictureQuizScreen.js';
