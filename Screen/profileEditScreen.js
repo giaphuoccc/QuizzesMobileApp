@@ -11,7 +11,7 @@ import {
   Image,
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
-import styles from './stylesUpdateProfile';
+import styles from './profileEditStyles';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 import Back from 'react-native-vector-icons/Ionicons';
 

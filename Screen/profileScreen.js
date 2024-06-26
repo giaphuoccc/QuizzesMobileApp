@@ -22,12 +22,7 @@ const AchievementItem = ({ item, index }) => (
 );
 
 const ProfileScreen = () => {
-  const [userData, setUserData] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
- 
-  });
+  const [user, setUser] = useState(null);
 
 
   return (
@@ -52,26 +47,19 @@ const ProfileScreen = () => {
       {/* Blue with achievement */}
       <View style={{ flex: 0.75, backgroundColor: '#086CA4', padding: 10 }}>
         <Text style={styles.nameText}>
-          Your Name
+          {user.name}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           {/* username */}
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
             <Text style={styles.smallWhiteText}>
-              @username
-            </Text>
-          </View>
-
-          {/* joined_date */}
-          <View style={{ flex: 1, alignItems: 'flex-start' }}>
-            <Text style={styles.smallWhiteText}>
-              Joined: DD/MM/YYYY
+              @{user.email}
             </Text>
           </View>
         </View>
 
 
-        {/* Folowers và Follow */}
+        {/* Friends and Achieve */}
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
           {/* Followers */}
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
