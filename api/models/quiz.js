@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 const quizSchema = new mongoose.Schema({
-  testId: {
-    type: String,
-    require: true,
-    ref:'Test'
+  testId:
+  {
+    type: mongoose.Schema.Types.ObjectID,
+    ref: 'Test',
   },
-  quizType: {
-    type: Number,
-    require: false,
-    ref:'TypeQuiz'
+
+  quizType:
+  {
+    type: mongoose.Schema.Types.ObjectID,
+    ref: 'TypeQuiz',
   },
+
   question: {
     type: String,
     require: true,
@@ -20,11 +22,13 @@ const quizSchema = new mongoose.Schema({
       require: true,
     },
   ],
-    
-  result: {
-    type: String,
-    require: true,
-  },
+
+  result: [
+      {
+      type: String,
+      require: true,
+    },
+  ]
 });
 
 const Quiz = mongoose.model('Quiz', quizSchema);

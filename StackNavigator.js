@@ -6,22 +6,25 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Entypo from 'react-native-vector-icons/Entypo';
+
 import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
-import QuizHolderScreen from './Screen/quizHolderScreen';
 
 import Loading from './Screen/LoadingScreen.js';
-import Welcome from './Screen/welcomeScreen.js';
-import ProfileScreen from './Screen/profile_Screen';
+import Welcome from './Screen/WelcomeScreen.js';
+
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
 import FriendsScreen from './Screen/friendsScreen.js';
+
 import HomeScreen from './Screen/homeScreen'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
 
-import { UserProvider } from './Context.js';
+//Profile 
+import ProfileScreen from './Screen/Profile&EditProfile/profileScreen.js';
+import UpdateProfileScreen from './Screen/Profile&EditProfile/updateProfileScreen.js';
 
 //Quiz
 import PictureQuizScreen from './Screen/pictureQuizScreen.js';
@@ -97,8 +100,8 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="LoginGreeting"
-        component={LoginGreeting}
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Entypo name="shield" color={focused ? '#4A55A2' : 'gray'} size={32} />
