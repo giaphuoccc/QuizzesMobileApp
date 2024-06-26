@@ -12,14 +12,16 @@ import BriefScreen from './Screen/briefScreen';
 import QuizHolderScreen from './Screen/quizHolderScreen';
 
 import Loading from './Screen/LoadingScreen.js';
-import Welcome from './Screen/WelcomeScreen.js';
+import Welcome from './Screen/welcomeScreen.js';
 import ProfileScreen from './Screen/profile_Screen';
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
-import FriendsScreen from './Screen/FriendsScreen.js';
+import FriendsScreen from './Screen/friendsScreen.js';
 import HomeScreen from './Screen/homeScreen'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
+
+import { UserProvider } from './Context.js';
 
 //Quiz
 import PictureQuizScreen from './Screen/pictureQuizScreen.js';
@@ -63,8 +65,8 @@ function MyTabs() {
         }}
       />
       <Tab.Screen
-        name="GreetingScreen"
-        component={GreetingScreen}
+        name="FriendsScreen"
+        component={FriendsScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons name="people" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -111,7 +113,7 @@ function MyTabs() {
 const stack = () => {
   return (
     <NavigationContainer>
-      <StackNav.Navigator >
+      <StackNav.Navigator initialRouteName="MyTabs" >
         <StackNav.Screen
           name="Loading"
           component={Loading}

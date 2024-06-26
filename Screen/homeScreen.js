@@ -28,7 +28,7 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <View style={[styles.content]} >
                 <View style={[styles.iconContainer_16_1]}>
-                    <TouchableOpacity style={[styles.iconBackground_1]} onPress={() => navigation.navigate("QuizHolderScreen")}>
+                    <TouchableOpacity style={[styles.iconBackground_1]} onPress={() => navigation.navigate("FillBlank")}>
                         <Icon name="check-circle-fill" style={[styles.icon]} />
                     </TouchableOpacity>
                 </View>

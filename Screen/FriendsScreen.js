@@ -1,7 +1,12 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import axios from 'axios';
+import FriendRequest from '../components/friendRequestCompo';
+import {UserContext} from './UserContext';
+import User from '../components/userCompo';
 
-const FriendsScreen = () => {
+const FriendsScreen = ({item, friendRequest, setFriendRequests}) => {
+  const {userId, users} = useContext(UserContext);
   return (
     <View style={{padding: 10, marginHorizontal: 12}}>
       {/* {friendRequest.length > 0 && <Text>Your Friend Request</Text>}
@@ -14,6 +19,10 @@ const FriendsScreen = () => {
           setFriendRequests={setFriendRequests}
         />
       ))} */}
+      {users.map((item, index) => (
+        <User key={index} item={item} />
+      ))}
+      <Text>userId: {userId}</Text>
     </View>
   );
 };
