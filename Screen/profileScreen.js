@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, Image, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 // import { ProgressBar } from 'react-native-paper';
 import { Avatar } from 'react-native-paper';
 import { LOCALHOST } from '../config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {UserContext} from './UserContext';
+import User from '../components/userCompo';
 
 const achievements = [
   { id: '1', name: 'Name 1'},
@@ -22,15 +24,33 @@ const AchievementItem = ({ item, index }) => (
 );
 
 const ProfileScreen = () => {
-  const [user, setUser] = useState(null);
+  const {userId, users} = useContext(UserContext);
+  console.log(userId)
+  const [userData, setUserData] = useState(null);
+  console.log(userData)
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (!userId) {
+          console.error('userId is undefined or null');
+          return;
+        }
+        const response = await axios.get(`${LOCALHOST}/users/${userId}`);
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
 
   return (
     <View style={{ height: '100%', flexDirection: 'column' }}>
       {/* White with avatar */}
-      
       <View style={styles.avatarContainer}>
-      <View style={{alignItems: 'center'}}>
+        <View style={{alignItems: 'center'}}>
           <Avatar.Image
             size={180}
             style={styles.avatar}
@@ -47,20 +67,19 @@ const ProfileScreen = () => {
       {/* Blue with achievement */}
       <View style={{ flex: 0.75, backgroundColor: '#086CA4', padding: 10 }}>
         <Text style={styles.nameText}>
-          {user.name}
+          {users.name}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-          {/* username */}
-          <View style={{ flex: 1, alignItems: 'flex-start' }}>
+          <View style={{ flex: 1, alignItems: 'flex-start'}}>
             <Text style={styles.smallWhiteText}>
-              @{user.email}
+              {users.email}
             </Text>
           </View>
         </View>
 
 
         {/* Friends and Achieve */}
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 15 }}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
           {/* Followers */}
           <View style={{ flex: 1, alignItems: 'flex-start' }}>
             <Text style={styles.largeWhiteTextBold}>

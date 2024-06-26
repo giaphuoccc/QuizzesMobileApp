@@ -64,20 +64,20 @@ app.post('/login', (req, res) => {
 });
 
 //findOnebyID
-// app.get("/:userId", (req, res) => {
-//   const userId = req.params.userId; // Lấy userId từ request params
-//   User.findById(userId) // Tìm người dùng bằng ID
-//     .then(user => {
-//       if (!user) {
-//         return res.status(404).json({message: "User not found"});
-//       }
-//       res.status(200).json(user); // Trả về thông tin của người dùng
-//     })
-//     .catch(err => {
-//       console.log("Error retrieving user", err);
-//       res.status(500).json({message: "Error retrieving user"});
-//     });
-// });
+app.get("/:userId", (req, res) => {
+  const userId = req.params.userId; // Lấy userId từ request params
+  User.findById(userId) // Tìm người dùng bằng ID
+    .then(user => {
+      if (!user) {
+        return res.status(404).json({message: "User not found"});
+      }
+      res.status(200).json(user); // Trả về thông tin của người dùng
+    })
+    .catch(err => {
+      console.log("Error retrieving user", err);
+      res.status(500).json({message: "Error retrieving user"});
+    });
+});
 
 //findall
 app.get('/:userId', (req, res) => {
@@ -91,7 +91,6 @@ app.get('/:userId', (req, res) => {
       res.status(500).json({message: 'Error retrieving users'});
     });
 });
-
 
 //endpoit to send a request to a user
 app.post('/friend-request', async (req, res) => {
