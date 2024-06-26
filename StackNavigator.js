@@ -11,7 +11,7 @@ import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 
-import Loading from './Screen/LoadingScreen.js';
+import Loading from './Screen/loadingScreen.js';
 import Welcome from './Screen/welcomeScreen.js';
 
 import Login from './Screen/loginScreen.js';

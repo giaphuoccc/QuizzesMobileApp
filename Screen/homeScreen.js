@@ -1,48 +1,46 @@
 import { StyleSheet, Text, View, ImageBackground, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
-// import * as Progress from 'react-native-progress';
+import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
 import axios from 'axios';
 import { LOCALHOST } from '../config';
 
 
 const HomeScreen = ({ navigation }) => {
-    
-    const [friendRequest, setFriendRequests] = useState();
 
-  const fetchChapter = async () => {
-    try {
-      const response = await axios.get(
-        `${LOCALHOST}/chapter/getChapter`,
-      );
-      if (response.status === 200) {
-        setFriendRequests(response.data[0]);
-      }
-    } catch (err) {
-      console.log('error message', err);
-    }
-  };
-  
-  useEffect(() => {
-    fetchChapter();
-  }, []);
-  useEffect(() => {
-    if(friendRequest){
-        console.log(friendRequest._id);
-    }
-  }, [friendRequest]);
-  
     const unavaliableTestColor = "gray"
     const finishTestColor = "#61FF00"
     const currentTestColor = "yellow"
     const unDiffColor = "#EEEEEE"
 
     const [getChapters, setChapters] = useState([])
-    const [getChaptersDiff, setChaptersDiff] = useState(1)
+    const [getChaptersDiff, setChaptersDiff] = useState(5)
     const [getTestStatus, setTestStatus] = useState(1)
     const [getCompletion, setCompletion] = useState(0.4)
     const [getCountTestComplete, setCountTestComplete] = useState(4)
 
+    const fetchChapter = async () => {
+        try {
+            const response = await axios.get(
+                `${LOCALHOST}/chapter/getChapter`,
+            );
+            if (response.status === 200) {
+                setChapters(response.data);
+            }
+        } catch (err) {
+            console.log('error message', err);
+        }
+    };
+
+    useEffect(() => {
+        fetchChapter();
+    }, []);
+    useEffect(() => {
+        if (getChapters.length>0) {
+            console.log(getChapters[0]);
+            // setChaptersDiff(getChapters[0].chapterDifficulties)
+        }
+    }, [getChapters]);
 
     useEffect(() => {
         updateCompletionBar(getCountTestComplete);
@@ -65,8 +63,6 @@ const HomeScreen = ({ navigation }) => {
             return "#32CD32";
         }
     };
-
-
 
     const showAlert = () => {
         Alert.alert(
@@ -102,31 +98,31 @@ const HomeScreen = ({ navigation }) => {
                     </View>
 
                     <View style={[styles.progessIndicator]}>
-                        {/* <Progress.Bar
-                            progress={getCompletion}
+                        <Progress.Bar
+                            progress={Number(getCompletion)}
                             unfilledColor='gray'
                             borderRadius={100}
                             borderColor="#086CA4"
                             color={getProgressBarColor()}
                             height={"100%"}
-                            style={styles.processBar} /> */}
+                            style={styles.processBar} />
                         <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
                     </View>
 
                     <View style={[styles.difficultContainer]}>
                         <View style={[styles.diffLevel, { height: "20%" }, { backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "25%" }, { backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "30%" }, { backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "35%" }, { backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "40%" }, { backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "45%" }, { backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]} />
-                        {/* 
-                        <View style={[styles.diffLevel,{ width: "25%" },{ backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]}/>
+                        <View style={[styles.diffLevel, { height: "25%" }, { backgroundColor: getChaptersDiff >= 2 ? '#61FF00' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "30%" }, { backgroundColor: getChaptersDiff >= 3 ? '#ECFF15' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "35%" }, { backgroundColor: getChaptersDiff >= 4 ? '#ECFF15' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "40%" }, { backgroundColor: getChaptersDiff >= 5 ? '#F00000' : unDiffColor }]} />
+                        <View style={[styles.diffLevel, { height: "45%" }, { backgroundColor: getChaptersDiff >= 6 ? '#F00000' : unDiffColor }]} />
+                        
+                        {/* <View style={[styles.diffLevel,{ width: "25%" },{ backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]}/>
                         <View style={[styles.diffLevel,{ width: "30%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/> 
                         <View style={[styles.diffLevel,{ width: "35%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/>
                         <View style={[styles.diffLevel,{ width: "40%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>                        
                         <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>
-                        <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>*/}
+                        <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/> */}
                     </View>
 
                 </View>
@@ -280,6 +276,7 @@ const styles = StyleSheet.create({
         height: '7%',
         backgroundColor: '#2C3C67',
         justifyContent: 'center',
+        alignItems:'center'
     },
     topicContainer: {
         flexDirection: 'row',
@@ -302,9 +299,12 @@ const styles = StyleSheet.create({
     },
     difficultContainer: {
         flex: 1,
+        top:20,
         // backgroundColor:'black',
         flexDirection: 'row',
         justifyContent: 'center',
+        alignItems:'center'
+        
 
     },
     // diffLevel: {
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
         height: '50%',
         margin: 2,
         backgroundColor: 'grey',
-        alignSelf: 'center',
+        alignSelf: 'baseline',
         borderRadius: 4,
     },
     progessIndicator: {
