@@ -15,13 +15,10 @@ const HomeScreen = ({ navigation }) => {
 
     const [getChapter, setChapter] = useState([])
     const [getDiff, setDiff] = useState(0)
+    const [getTest, setTest] = useState([])
     const [getTestStatus, setTestStatus] = useState(1)
-    const [getCompletion, setCompletion] = useState(0.4)
+    const [getCompletion, setCompletion] = useState(0.2)
     const [getCountTestComplete, setCountTestComplete] = useState(4)
-
-    useEffect(() => {
-        fetchAllChapter();
-    }, []);
 
     const fetchAllChapter = async () => {
         try {
@@ -29,13 +26,40 @@ const HomeScreen = ({ navigation }) => {
                 `${LOCALHOST}/chapter/getChapter`,
             );
             if (response.status === 200) {
-                // console.log("hello  "+response.data[0]);
                 setChapter(response.data);
+                console.log(getChapter);
+
+            }
+        } catch (err) {
+            console.log('Error fetching chapters:', err);
+        }
+    };
+
+    const fetchTestByChapter = async (chapterId) => {
+        try {
+            const response = await axios.get(
+                `${LOCALHOST}/test/` + chapterId,
+            );
+            if (response.status === 200) {
+                // console.log("heoo");
+                console.log(response.data);
+                setTest(response.data);
+
+                const countComplete = response.data.filter(test => test.status === 1).length;
+
+                console.log(countComplete);
+                setCountTestComplete(countComplete);
+                // console.log("pogg");
+                // console.log(getTest);
             }
         } catch (err) {
             console.log('error message', err);
         }
     };
+
+    useEffect(() => {
+        fetchAllChapter();
+    }, []);
 
     useEffect(() => {
         updateCompletionBar(getCountTestComplete);
@@ -59,18 +83,23 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
-    const showAlert = () => {
-        Alert.alert(
-            'Bắt đầu học bài ?',
-            'Làm bài __ của chương __',
-            [
-                {
-                    text: 'OK',
-                    onPress: handleAlertPress,
-                },
-            ],
-            { cancelable: true }
-        );
+    const showAlert = (chapterId, chapterName, index) => {
+        fetchTestByChapter(chapterId)
+        const Test = getTest[index];
+        console.log(Test);
+        if (Test) {
+            Alert.alert(
+                'Start learning?',
+                `Do ${Test.testName} of ${chapterName}`,
+                [
+                    {
+                        text: 'OK',
+                        onPress: () => handleAlertPress(),
+                    },
+                ],
+                { cancelable: true }
+            );
+        }
     };
     const handleAlertPress = () => {
         // navigation.navigate("FillBlank");
@@ -80,7 +109,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <ScrollView>
             {getChapter.length > 0 ?
-                getChapter.map((chapter, i) => (                  
+                getChapter.map((chapter, i) => (
                     i % 2 === 0 ? (
                         <View key={i}>
                             <View style={[styles.head]}>
@@ -97,7 +126,7 @@ const HomeScreen = ({ navigation }) => {
                                     </View>
                                     <View style={[styles.progessIndicator]}>
                                         <Progress.Bar
-                                            progress={Number(getCompletion)}
+                                            progress={getCompletion}
                                             unfilledColor='gray'
                                             borderRadius={100}
                                             borderColor="#086CA4"
@@ -107,20 +136,12 @@ const HomeScreen = ({ navigation }) => {
                                         <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
                                     </View>
                                     <View style={[styles.difficultContainer]} >
-                                        
                                         <View style={[styles.diffLevel, { height: "20%" }, { backgroundColor: chapter.chapterDifficulties >= '1' ? '#61FF00' : unDiffColor }]} />
                                         <View style={[styles.diffLevel, { height: "25%" }, { backgroundColor: chapter.chapterDifficulties >= '2' ? '#61FF00' : unDiffColor }]} />
                                         <View style={[styles.diffLevel, { height: "30%" }, { backgroundColor: chapter.chapterDifficulties >= '3' ? '#ECFF15' : unDiffColor }]} />
                                         <View style={[styles.diffLevel, { height: "35%" }, { backgroundColor: chapter.chapterDifficulties >= '4' ? '#ECFF15' : unDiffColor }]} />
                                         <View style={[styles.diffLevel, { height: "40%" }, { backgroundColor: chapter.chapterDifficulties >= '5' ? '#F00000' : unDiffColor }]} />
                                         <View style={[styles.diffLevel, { height: "45%" }, { backgroundColor: chapter.chapterDifficulties >= '6' ? '#F00000' : unDiffColor }]} />
-
-                                        {/* <View style={[styles.diffLevel,{ width: "25%" },{ backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]}/>
-                        <View style={[styles.diffLevel,{ width: "30%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/> 
-                        <View style={[styles.diffLevel,{ width: "35%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/>
-                        <View style={[styles.diffLevel,{ width: "40%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>                        
-                        <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>
-                        <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/> */}
                                     </View>
                                 </View>
                             </View>
@@ -128,7 +149,7 @@ const HomeScreen = ({ navigation }) => {
                                 <View style={[styles.iconContainer_16_1]}>
                                     <TouchableOpacity style={[styles.iconBackground_1,
                                     { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#61FF00' }]}
-                                        onPress={showAlert}>
+                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 0)}>
                                         <Icon name="check-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
@@ -138,22 +159,22 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_1]}>
                                             <TouchableOpacity style={[styles.iconBackground_2,
                                             { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#ECFF15' }]}
-                                                onPress={showAlert}>
+                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 1)}>
                                                 <Icon name="feed-star" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
                                         <View style={[styles.iconContainer_34_1]}>
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_3,
-                                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#F00000' }]}
-                                                    onPress={showAlert}>
+                                                { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : '#F00000' }]}
+                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 2)}>
                                                     <Icon name="feed-heart" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_4,
                                                 { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                                    onPress={showAlert}>
+                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 3)}>
                                                     <Icon name="feed-rocket" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
@@ -161,7 +182,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_1]}>
                                             <TouchableOpacity style={[styles.iconBackground_5,
                                             { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                                onPress={showAlert}>
+                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 4)}>
                                                 <Icon name="feed-tag" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
@@ -170,7 +191,7 @@ const HomeScreen = ({ navigation }) => {
                                 <View style={[styles.iconContainer_16_1]}>
                                     <TouchableOpacity style={[styles.iconBackground_6,
                                     { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                        onPress={showAlert}>
+                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 5)}>
                                         <Icon name="x-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
@@ -181,34 +202,27 @@ const HomeScreen = ({ navigation }) => {
                             <View style={[styles.head]}>
                                 <View style={[styles.topicContainer]}>
                                     <View style={[styles.topicText]}>
-                                    <Text style={[styles.topicName]}>{chapter.chapterName}</Text>
+                                        <Text style={[styles.topicName]}>{chapter.chapterName}</Text>
                                         <Text style={[styles.topicDescription]}>{chapter.chapterDescription}</Text>
                                     </View>
                                     <View style={[styles.progessIndicator]}>
-                                        {/* <Progress.Bar
-                            progress={getCompletion}
-                            unfilledColor='gray'
-                            borderRadius={100}
-                            borderColor="#086CA4"
-                            color={getProgressBarColor()}
-                            height={"100%"}
-                            style={styles.processBar} /> */}
+                                        <Progress.Bar
+                                            progress={getCompletion}
+                                            unfilledColor='gray'
+                                            borderRadius={100}
+                                            borderColor="#086CA4"
+                                            color={getProgressBarColor()}
+                                            height={"100%"}
+                                            style={styles.processBar} />
                                         <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
                                     </View>
                                     <View style={[styles.difficultContainer]}>
-                                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', height: "20%" }]}></View>
-                                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', height: "25%" }]}></View>
-                                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', height: "30%" }]}></View>
-                                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "35%" }]}></View>
-                                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "40%" }]}></View>
-                                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "45%" }]}></View>
-                                        {/* 
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "25%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "30%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "35%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "40%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "45%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "50%" }]}></View> */}
+                                        <View style={[styles.diffLevel, { backgroundColor: chapter.chapterDifficulties >= '1' ? '#61FF00' : unDiffColor, height: "20%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: chapter.chapterDifficulties >= '2' ? '#61FF00' : unDiffColor, height: "25%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: chapter.chapterDifficulties >= '3' ? '#ECFF15' : unDiffColor, height: "30%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: chapter.chapterDifficulties >= '4' ? '#ECFF15' : unDiffColor, height: "35%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: chapter.chapterDifficulties >= '5' ? '#F00000' : unDiffColor, height: "40%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: chapter.chapterDifficulties >= '6' ? '#F00000' : unDiffColor, height: "45%" }]}></View>
                                     </View>
                                 </View>
                             </View>
@@ -217,7 +231,7 @@ const HomeScreen = ({ navigation }) => {
                                     <TouchableOpacity
                                         style={[styles.iconBackground_1,
                                         { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                        onPress={showAlert}>
+                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 0)}>
                                         <Icon name="check-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
@@ -227,7 +241,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_2]}>
                                             <TouchableOpacity style={[styles.iconBackground_2,
                                             { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                onPress={showAlert}>
+                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 1)}>
                                                 <Icon name="feed-star" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
@@ -235,14 +249,14 @@ const HomeScreen = ({ navigation }) => {
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_3,
                                                 { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                    onPress={showAlert}>
+                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 2)}>
                                                     <Icon name="feed-heart" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_4,
                                                 { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                    onPress={showAlert}>
+                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 3)}>
                                                     <Icon name="feed-tag" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
@@ -250,7 +264,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_2]}>
                                             <TouchableOpacity style={[styles.iconBackground_5,
                                             { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                onPress={showAlert}>
+                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 4)}>
                                                 <Icon name="feed-rocket" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
@@ -260,7 +274,7 @@ const HomeScreen = ({ navigation }) => {
                                 <View style={[styles.iconContainer_16_2]}>
                                     <TouchableOpacity style={[styles.iconBackground_6,
                                     { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                        onPress={showAlert}>
+                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 5)}>
                                         <Icon name="x-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
@@ -273,13 +287,6 @@ const HomeScreen = ({ navigation }) => {
                         <Text>No items to display</Text>
                     </View>
                 )}
-
-            <View>
-
-            </View>
-            <View>
-
-            </View>
         </ScrollView>
     );
 };
@@ -288,10 +295,12 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
     head: {
-        flex: 2,
+        flex: 1,
         backgroundColor: '#2C3C67',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingLeft: '3%',
+        paddingVertical: '5%'
     },
     topicContainer: {
         flexDirection: 'row',
@@ -300,16 +309,18 @@ const styles = StyleSheet.create({
     topicText: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'flex-start',
+
+        // backgroundColor:'red'
     },
     topicName: {
         color: "cyan",
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: 'bold',
     },
     topicDescription: {
         color: "cyan",
-        fontSize: 25,
+        fontSize: 22,
         fontStyle: 'italic',
     },
     difficultContainer: {
@@ -355,10 +366,10 @@ const styles = StyleSheet.create({
         fontStyle: 'italic'
     },
     content: {
-        flex: 6,
+        flex: 5,
         backgroundColor: '#2E4583',
-        paddingHorizontal: '10%',
-        paddingVertical: '6%',
+        paddingHorizontal: '7%',
+        paddingVertical: '2%',
     },
     iconContainer_16_1: {
         width: '65%',
