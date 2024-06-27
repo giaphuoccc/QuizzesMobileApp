@@ -8,11 +8,10 @@ const chapterSchema = new mongoose.Schema({
     type: String,
     require: false,
   },
-  chapterDifficulties: 
-    {
-      type: mongoose.Schema.Types.ObjectID,
-      ref: 'Difficulties',
-    },
+  chapterDifficulties:{
+    type: String,
+    require: false,
+  },
 });
 
 const Chapter = mongoose.model('Chapter', chapterSchema);

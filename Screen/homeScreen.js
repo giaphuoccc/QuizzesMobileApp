@@ -13,34 +13,29 @@ const HomeScreen = ({ navigation }) => {
     const currentTestColor = "yellow"
     const unDiffColor = "#EEEEEE"
 
-    const [getChapters, setChapters] = useState([])
-    const [getChaptersDiff, setChaptersDiff] = useState(5)
+    const [getChapter, setChapter] = useState([])
+    const [getDiff, setDiff] = useState(0)
     const [getTestStatus, setTestStatus] = useState(1)
     const [getCompletion, setCompletion] = useState(0.4)
     const [getCountTestComplete, setCountTestComplete] = useState(4)
 
-    const fetchChapter = async () => {
+    useEffect(() => {
+        fetchAllChapter();
+    }, []);
+
+    const fetchAllChapter = async () => {
         try {
             const response = await axios.get(
                 `${LOCALHOST}/chapter/getChapter`,
             );
             if (response.status === 200) {
-                setChapters(response.data);
+                // console.log("hello  "+response.data[0]);
+                setChapter(response.data);
             }
         } catch (err) {
             console.log('error message', err);
         }
     };
-
-    useEffect(() => {
-        fetchChapter();
-    }, []);
-    useEffect(() => {
-        if (getChapters.length>0) {
-            console.log(getChapters[0]);
-            // setChaptersDiff(getChapters[0].chapterDifficulties)
-        }
-    }, [getChapters]);
 
     useEffect(() => {
         updateCompletionBar(getCountTestComplete);
@@ -84,108 +79,113 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <ScrollView>
-            <View style={[styles.head]}>
-                <View style={[styles.topicContainer]}>
-                    {/* {getChapters.map((chapter,i)=>(
+            {getChapter.length > 0 ?
+                getChapter.map((chapter, i) => (                  
+                    i % 2 === 0 ? (
+                        <View key={i}>
+                            <View style={[styles.head]}>
+                                <View style={[styles.topicContainer]}>
+                                    {/* {getChapters.map((chapter,i)=>(
                     <View key={i} style={[styles.topicText]}>
                         <Text style={[styles.topicName]}>chapter</Text>
                         <Text style={[styles.topicDescription]}>chapter</Text>
                     </View>
                     ))} */}
-                    <View style={[styles.topicText]}>
-                        <Text style={[styles.topicName]}>chapter</Text>
-                        <Text style={[styles.topicDescription]}>chapter</Text>
-                    </View>
+                                    <View style={[styles.topicText]}>
+                                        <Text style={[styles.topicName]}>{chapter.chapterName}</Text>
+                                        <Text style={[styles.topicDescription]}>{chapter.chapterDescription}</Text>
+                                    </View>
+                                    <View style={[styles.progessIndicator]}>
+                                        <Progress.Bar
+                                            progress={Number(getCompletion)}
+                                            unfilledColor='gray'
+                                            borderRadius={100}
+                                            borderColor="#086CA4"
+                                            color={getProgressBarColor()}
+                                            height={"100%"}
+                                            style={styles.processBar} />
+                                        <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
+                                    </View>
+                                    <View style={[styles.difficultContainer]} >
+                                        
+                                        <View style={[styles.diffLevel, { height: "20%" }, { backgroundColor: chapter.chapterDifficulties >= '1' ? '#61FF00' : unDiffColor }]} />
+                                        <View style={[styles.diffLevel, { height: "25%" }, { backgroundColor: chapter.chapterDifficulties >= '2' ? '#61FF00' : unDiffColor }]} />
+                                        <View style={[styles.diffLevel, { height: "30%" }, { backgroundColor: chapter.chapterDifficulties >= '3' ? '#ECFF15' : unDiffColor }]} />
+                                        <View style={[styles.diffLevel, { height: "35%" }, { backgroundColor: chapter.chapterDifficulties >= '4' ? '#ECFF15' : unDiffColor }]} />
+                                        <View style={[styles.diffLevel, { height: "40%" }, { backgroundColor: chapter.chapterDifficulties >= '5' ? '#F00000' : unDiffColor }]} />
+                                        <View style={[styles.diffLevel, { height: "45%" }, { backgroundColor: chapter.chapterDifficulties >= '6' ? '#F00000' : unDiffColor }]} />
 
-                    <View style={[styles.progessIndicator]}>
-                        <Progress.Bar
-                            progress={Number(getCompletion)}
-                            unfilledColor='gray'
-                            borderRadius={100}
-                            borderColor="#086CA4"
-                            color={getProgressBarColor()}
-                            height={"100%"}
-                            style={styles.processBar} />
-                        <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
-                    </View>
-
-                    <View style={[styles.difficultContainer]}>
-                        <View style={[styles.diffLevel, { height: "20%" }, { backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "25%" }, { backgroundColor: getChaptersDiff >= 2 ? '#61FF00' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "30%" }, { backgroundColor: getChaptersDiff >= 3 ? '#ECFF15' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "35%" }, { backgroundColor: getChaptersDiff >= 4 ? '#ECFF15' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "40%" }, { backgroundColor: getChaptersDiff >= 5 ? '#F00000' : unDiffColor }]} />
-                        <View style={[styles.diffLevel, { height: "45%" }, { backgroundColor: getChaptersDiff >= 6 ? '#F00000' : unDiffColor }]} />
-                        
-                        {/* <View style={[styles.diffLevel,{ width: "25%" },{ backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]}/>
+                                        {/* <View style={[styles.diffLevel,{ width: "25%" },{ backgroundColor: getChaptersDiff >= 1 ? '#61FF00' : unDiffColor }]}/>
                         <View style={[styles.diffLevel,{ width: "30%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/> 
                         <View style={[styles.diffLevel,{ width: "35%" },{ backgroundColor: getChaptersDiff >= 2 ? '#ECFF15' : unDiffColor }]}/>
                         <View style={[styles.diffLevel,{ width: "40%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>                        
                         <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/>
                         <View style={[styles.diffLevel,{ width: "45%" },{ backgroundColor: getChaptersDiff >= 3 ? '#F00000' : unDiffColor }]}/> */}
-                    </View>
-
-                </View>
-            </View>
-            <View style={[styles.content]} >
-                <View style={[styles.iconContainer_16_1]}>
-                    <TouchableOpacity style={[styles.iconBackground_1,
-                    { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#61FF00' }]}
-                        onPress={showAlert}>
-                        <Icon name="check-circle-fill" style={[styles.icon]} />
-                    </TouchableOpacity>
-                </View>
-                <View style={[styles.layout]}>
-                    <ImageBackground resizeMode="contain" style={[styles.image]} source={require('../Assets/Images/man.png')} />
-                    <View style={[styles.iconLayout]}>
-                        <View style={[styles.iconContainer_25_1]}>
-                            <TouchableOpacity style={[styles.iconBackground_2,
-                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#ECFF15' }]}
-                                onPress={showAlert}>
-                                <Icon name="feed-star" style={[styles.icon]} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={[styles.iconContainer_34_1]}>
-                            <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_3,
-                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#F00000' }]}
-                                    onPress={showAlert}>
-                                    <Icon name="feed-heart" style={[styles.icon]} />
-                                </TouchableOpacity>
+                                    </View>
+                                </View>
                             </View>
-                            <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_4,
-                                { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                    onPress={showAlert}>
-                                    <Icon name="feed-rocket" style={[styles.icon]} />
-                                </TouchableOpacity>
+                            <View style={[styles.content]} >
+                                <View style={[styles.iconContainer_16_1]}>
+                                    <TouchableOpacity style={[styles.iconBackground_1,
+                                    { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#61FF00' }]}
+                                        onPress={showAlert}>
+                                        <Icon name="check-circle-fill" style={[styles.icon]} />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={[styles.layout]}>
+                                    <ImageBackground resizeMode="contain" style={[styles.image]} source={require('../Assets/Images/man.png')} />
+                                    <View style={[styles.iconLayout]}>
+                                        <View style={[styles.iconContainer_25_1]}>
+                                            <TouchableOpacity style={[styles.iconBackground_2,
+                                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#ECFF15' }]}
+                                                onPress={showAlert}>
+                                                <Icon name="feed-star" style={[styles.icon]} />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={[styles.iconContainer_34_1]}>
+                                            <View style={[styles.iconContainer]}>
+                                                <TouchableOpacity style={[styles.iconBackground_3,
+                                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#F00000' }]}
+                                                    onPress={showAlert}>
+                                                    <Icon name="feed-heart" style={[styles.icon]} />
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View style={[styles.iconContainer]}>
+                                                <TouchableOpacity style={[styles.iconBackground_4,
+                                                { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
+                                                    onPress={showAlert}>
+                                                    <Icon name="feed-rocket" style={[styles.icon]} />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View style={[styles.iconContainer_25_1]}>
+                                            <TouchableOpacity style={[styles.iconBackground_5,
+                                            { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
+                                                onPress={showAlert}>
+                                                <Icon name="feed-tag" style={[styles.icon]} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={[styles.iconContainer_16_1]}>
+                                    <TouchableOpacity style={[styles.iconBackground_6,
+                                    { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
+                                        onPress={showAlert}>
+                                        <Icon name="x-circle-fill" style={[styles.icon]} />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
-                        <View style={[styles.iconContainer_25_1]}>
-                            <TouchableOpacity style={[styles.iconBackground_5,
-                            { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                onPress={showAlert}>
-                                <Icon name="feed-tag" style={[styles.icon]} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-                <View style={[styles.iconContainer_16_1]}>
-                    <TouchableOpacity style={[styles.iconBackground_6,
-                    { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                        onPress={showAlert}>
-                        <Icon name="x-circle-fill" style={[styles.icon]} />
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View style={[styles.head]}>
-                <View style={[styles.topicContainer]}>
-                    <View style={[styles.topicText]}>
-                        <Text style={[styles.topicName]}>Chapter II</Text>
-                        <Text style={[styles.topicDescription]}>School</Text>
-                    </View>
-                    <View style={[styles.progessIndicator]}>
-                        {/* <Progress.Bar
+                    ) : (
+                        <View key={i}>
+                            <View style={[styles.head]}>
+                                <View style={[styles.topicContainer]}>
+                                    <View style={[styles.topicText]}>
+                                    <Text style={[styles.topicName]}>{chapter.chapterName}</Text>
+                                        <Text style={[styles.topicDescription]}>{chapter.chapterDescription}</Text>
+                                    </View>
+                                    <View style={[styles.progessIndicator]}>
+                                        {/* <Progress.Bar
                             progress={getCompletion}
                             unfilledColor='gray'
                             borderRadius={100}
@@ -193,77 +193,92 @@ const HomeScreen = ({ navigation }) => {
                             color={getProgressBarColor()}
                             height={"100%"}
                             style={styles.processBar} /> */}
-                        <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
-                    </View>
-                    <View style={[styles.difficultContainer]}>
-                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', height: "20%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', height: "25%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', height: "30%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "35%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "40%" }]}></View>
-                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "45%" }]}></View>
-                        {/* 
+                                        <Text style={[styles.indicator]}>{getCompletion * 100}%</Text>
+                                    </View>
+                                    <View style={[styles.difficultContainer]}>
+                                        <View style={[styles.diffLevel, { backgroundColor: '#61FF00', height: "20%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', height: "25%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: '#F00000', height: "30%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "35%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "40%" }]}></View>
+                                        <View style={[styles.diffLevel, { backgroundColor: unDiffColor, height: "45%" }]}></View>
+                                        {/* 
                         <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "25%" }]}></View>
                         <View style={[styles.diffLevel, { backgroundColor: '#F00000', width: "30%" }]}></View>
                         <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "35%" }]}></View>
                         <View style={[styles.diffLevel, { backgroundColor: '#ECFF15', width: "40%" }]}></View>
                         <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "45%" }]}></View>
                         <View style={[styles.diffLevel, { backgroundColor: '#61FF00', width: "50%" }]}></View> */}
-                    </View>
-                </View>
-            </View>
-            <View style={[styles.content]} >
-                <View style={[styles.iconContainer_16_2]}>
-                    <TouchableOpacity
-                        style={[styles.iconBackground_1,
-                        { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                        onPress={showAlert}>
-                        <Icon name="check-circle-fill" style={[styles.icon]} />
-                    </TouchableOpacity>
-                </View>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={[styles.content]} >
+                                <View style={[styles.iconContainer_16_2]}>
+                                    <TouchableOpacity
+                                        style={[styles.iconBackground_1,
+                                        { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                        onPress={showAlert}>
+                                        <Icon name="check-circle-fill" style={[styles.icon]} />
+                                    </TouchableOpacity>
+                                </View>
 
-                <View style={[styles.layout]}>
-                    <View style={[styles.iconLayout]}>
-                        <View style={[styles.iconContainer_25_2]}>
-                            <TouchableOpacity style={[styles.iconBackground_2,
-                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                onPress={showAlert}>
-                                <Icon name="feed-star" style={[styles.icon]} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={[styles.iconContainer_34_2]}>
-                            <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_3,
-                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                    onPress={showAlert}>
-                                    <Icon name="feed-heart" style={[styles.icon]} />
-                                </TouchableOpacity>
+                                <View style={[styles.layout]}>
+                                    <View style={[styles.iconLayout]}>
+                                        <View style={[styles.iconContainer_25_2]}>
+                                            <TouchableOpacity style={[styles.iconBackground_2,
+                                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                                onPress={showAlert}>
+                                                <Icon name="feed-star" style={[styles.icon]} />
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View style={[styles.iconContainer_34_2]}>
+                                            <View style={[styles.iconContainer]}>
+                                                <TouchableOpacity style={[styles.iconBackground_3,
+                                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                                    onPress={showAlert}>
+                                                    <Icon name="feed-heart" style={[styles.icon]} />
+                                                </TouchableOpacity>
+                                            </View>
+                                            <View style={[styles.iconContainer]}>
+                                                <TouchableOpacity style={[styles.iconBackground_4,
+                                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                                    onPress={showAlert}>
+                                                    <Icon name="feed-tag" style={[styles.icon]} />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                        <View style={[styles.iconContainer_25_2]}>
+                                            <TouchableOpacity style={[styles.iconBackground_5,
+                                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                                onPress={showAlert}>
+                                                <Icon name="feed-rocket" style={[styles.icon]} />
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                    <ImageBackground resizeMode="contain" style={[styles.image_2]} source={require('../Assets/Images/man.png')} />
+                                </View>
+                                <View style={[styles.iconContainer_16_2]}>
+                                    <TouchableOpacity style={[styles.iconBackground_6,
+                                    { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
+                                        onPress={showAlert}>
+                                        <Icon name="x-circle-fill" style={[styles.icon]} />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                            <View style={[styles.iconContainer]}>
-                                <TouchableOpacity style={[styles.iconBackground_4,
-                                { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                    onPress={showAlert}>
-                                    <Icon name="feed-tag" style={[styles.icon]} />
-                                </TouchableOpacity>
-                            </View>
                         </View>
-                        <View style={[styles.iconContainer_25_2]}>
-                            <TouchableOpacity style={[styles.iconBackground_5,
-                            { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                onPress={showAlert}>
-                                <Icon name="feed-rocket" style={[styles.icon]} />
-                            </TouchableOpacity>
-                        </View>
+                    )
+                ))
+                : (
+                    <View key="empty">
+                        <Text>No items to display</Text>
                     </View>
-                    <ImageBackground resizeMode="contain" style={[styles.image_2]} source={require('../Assets/Images/man.png')} />
-                </View>
-                <View style={[styles.iconContainer_16_2]}>
-                    <TouchableOpacity style={[styles.iconBackground_6,
-                    { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                        onPress={showAlert}>
-                        <Icon name="x-circle-fill" style={[styles.icon]} />
-                    </TouchableOpacity>
-                </View>
+                )}
+
+            <View>
+
+            </View>
+            <View>
+
             </View>
         </ScrollView>
     );
@@ -273,10 +288,10 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
     head: {
-        height: '7%',
+        flex: 2,
         backgroundColor: '#2C3C67',
         justifyContent: 'center',
-        alignItems:'center'
+        alignItems: 'center'
     },
     topicContainer: {
         flexDirection: 'row',
@@ -299,12 +314,12 @@ const styles = StyleSheet.create({
     },
     difficultContainer: {
         flex: 1,
-        top:20,
+        top: 20,
         // backgroundColor:'black',
         flexDirection: 'row',
         justifyContent: 'center',
-        alignItems:'center'
-        
+        alignItems: 'center'
+
 
     },
     // diffLevel: {
@@ -343,7 +358,7 @@ const styles = StyleSheet.create({
         flex: 6,
         backgroundColor: '#2E4583',
         paddingHorizontal: '10%',
-        paddingVertical: '5%',
+        paddingVertical: '6%',
     },
     iconContainer_16_1: {
         width: '65%',
