@@ -27,8 +27,11 @@ const HomeScreen = ({ navigation }) => {
             );
             if (response.status === 200) {
                 setChapter(response.data);
+                const chapId = response.data.map(chapter => chapter._id);
+                chapId.forEach(element => {
+                    fetchTestByChapter(element)
+                });
                 console.log(getChapter);
-
             }
         } catch (err) {
             console.log('Error fetching chapters:', err);
@@ -38,10 +41,10 @@ const HomeScreen = ({ navigation }) => {
     const fetchTestByChapter = async (chapterId) => {
         try {
             const response = await axios.get(
-                `${LOCALHOST}/test/` + chapterId,
+                `${LOCALHOST}/test/${chapterId}`,
             );
             if (response.status === 200) {
-                // console.log("heoo");
+                // console.log("heoo"); 
                 console.log(response.data);
                 setTest(response.data);
 
@@ -59,6 +62,7 @@ const HomeScreen = ({ navigation }) => {
 
     useEffect(() => {
         fetchAllChapter();
+   
     }, []);
 
     useEffect(() => {
@@ -83,8 +87,7 @@ const HomeScreen = ({ navigation }) => {
         }
     };
 
-    const showAlert = (chapterId, chapterName, index) => {
-        fetchTestByChapter(chapterId)
+    const showAlert = ( chapterName, index) => {
         const Test = getTest[index];
         console.log(Test);
         if (Test) {
@@ -149,7 +152,7 @@ const HomeScreen = ({ navigation }) => {
                                 <View style={[styles.iconContainer_16_1]}>
                                     <TouchableOpacity style={[styles.iconBackground_1,
                                     { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#61FF00' }]}
-                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 0)}>
+                                        onPress={() => showAlert( chapter.chapterName, 0)}>
                                         <Icon name="check-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
@@ -159,7 +162,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_1]}>
                                             <TouchableOpacity style={[styles.iconBackground_2,
                                             { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : '#ECFF15' }]}
-                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 1)}>
+                                                onPress={() => showAlert( chapter.chapterName, 1)}>
                                                 <Icon name="feed-star" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
@@ -167,14 +170,14 @@ const HomeScreen = ({ navigation }) => {
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_3,
                                                 { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : '#F00000' }]}
-                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 2)}>
+                                                    onPress={() => showAlert( chapter.chapterName, 2)}>
                                                     <Icon name="feed-heart" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_4,
                                                 { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 3)}>
+                                                    onPress={() => showAlert( chapter.chapterName, 3)}>
                                                     <Icon name="feed-rocket" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
@@ -182,7 +185,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_1]}>
                                             <TouchableOpacity style={[styles.iconBackground_5,
                                             { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 4)}>
+                                                onPress={() => showAlert( chapter.chapterName, 4)}>
                                                 <Icon name="feed-tag" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
@@ -191,7 +194,7 @@ const HomeScreen = ({ navigation }) => {
                                 <View style={[styles.iconContainer_16_1]}>
                                     <TouchableOpacity style={[styles.iconBackground_6,
                                     { backgroundColor: getTestStatus == 1 ? unavaliableTestColor : finishTestColor }]}
-                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 5)}>
+                                        onPress={() => showAlert( chapter.chapterName, 5)}>
                                         <Icon name="x-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
@@ -231,7 +234,7 @@ const HomeScreen = ({ navigation }) => {
                                     <TouchableOpacity
                                         style={[styles.iconBackground_1,
                                         { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 0)}>
+                                        onPress={() => showAlert( chapter.chapterName, 0)}>
                                         <Icon name="check-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
@@ -241,7 +244,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_2]}>
                                             <TouchableOpacity style={[styles.iconBackground_2,
                                             { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 1)}>
+                                                onPress={() => showAlert( chapter.chapterName, 1)}>
                                                 <Icon name="feed-star" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
@@ -249,14 +252,14 @@ const HomeScreen = ({ navigation }) => {
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_3,
                                                 { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 2)}>
+                                                    onPress={() => showAlert( chapter.chapterName, 2)}>
                                                     <Icon name="feed-heart" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
                                             <View style={[styles.iconContainer]}>
                                                 <TouchableOpacity style={[styles.iconBackground_4,
                                                 { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                    onPress={() => showAlert(chapter._id, chapter.chapterName, 3)}>
+                                                    onPress={() => showAlert( chapter.chapterName, 3)}>
                                                     <Icon name="feed-tag" style={[styles.icon]} />
                                                 </TouchableOpacity>
                                             </View>
@@ -264,7 +267,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View style={[styles.iconContainer_25_2]}>
                                             <TouchableOpacity style={[styles.iconBackground_5,
                                             { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                                onPress={() => showAlert(chapter._id, chapter.chapterName, 4)}>
+                                                onPress={() => showAlert( chapter.chapterName, 4)}>
                                                 <Icon name="feed-rocket" style={[styles.icon]} />
                                             </TouchableOpacity>
                                         </View>
@@ -274,7 +277,7 @@ const HomeScreen = ({ navigation }) => {
                                 <View style={[styles.iconContainer_16_2]}>
                                     <TouchableOpacity style={[styles.iconBackground_6,
                                     { backgroundColor: getTestStatus == 0 ? unavaliableTestColor : finishTestColor }]}
-                                        onPress={() => showAlert(chapter._id, chapter.chapterName, 5)}>
+                                        onPress={() => showAlert( chapter.chapterName, 5)}>
                                         <Icon name="x-circle-fill" style={[styles.icon]} />
                                     </TouchableOpacity>
                                 </View>
