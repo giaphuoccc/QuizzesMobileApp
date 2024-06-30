@@ -1,80 +1,71 @@
-import {StyleSheet, View, Alert, TouchableOpacity} from 'react-native';
-import {Button, Text} from 'react-native-paper';
-import * as Progress from 'react-native-progress';
-import IconFontisto from 'react-native-vector-icons/Fontisto';
+import { useState, useEffect } from 'react';
+import {View} from 'react-native';
+import {LOCALHOST} from '../config';
+import { useRoute } from '@react-navigation/native';
 
 const QuizHolderScreen = ({navigation}) => {
+  let idUser = 'idUser'
+  let idTest = '667927aba50b5d3365a8b19f'
+  let quiz = [];
+  const route = useRoute();
+  const [quizIndex, setQuizIndex] = useState(0);
+  // try {
+  //   setQuizIndex(route.params.QuizIndex) 
+  // } catch (error) {
+  //   console.log(error);
+  // }
+  
+  const[totalPoint, getTotalPoint] = useState(0)
+  const[progress, setProgess] = useState(0)
+  const [quizArray, setQuizArray] = useState([])
+
+
+  useEffect(() => {
+    const loadQuizs = async () => {
+      try {
+        const quizs = await fetch(`${LOCALHOST}/quiz/getQuizsByIdTest/${idTest}`);
+        const quizsJson = await quizs.json();
+        
+        const fetchedQuizzes = await Promise.all(quizsJson.map(async (e) => {
+          const quizType = await fetch(`${LOCALHOST}/typeQuiz/getTypeQuiz/${e.quizType}`);
+          const quizTypeJson = await quizType.json();
+          return {
+            testId: e.testId,
+            typeDescription: quizTypeJson[0].typeDescription,
+            question: e.question,
+            choice: e.choice,
+            result: e.result
+          };
+        }));
+
+        setQuizArray(fetchedQuizzes);
+      } catch (err) {
+        console.log('Error loading quizzes:', err);
+        Alert.alert('Error', 'Failed to load quizzes.');
+      }
+    };
+
+    loadQuizs();
+  }, []);
+  useEffect(() => {
+    if (quizArray.length > 0) {
+      const quizIndex = route.params?.quizIndex || 0; 
+      const currentQuiz = quizArray[quizIndex];
+      
+      if (currentQuiz && currentQuiz.typeDescription === "0") {
+        navigation.navigate('ArrangeSentence', { quiz: currentQuiz, idUser: 'idUser' });
+      } else if (currentQuiz && currentQuiz.typeDescription === '1') {
+        navigation.navigate('FillBlank', { quiz: currentQuiz, idUser: 'idUser' });
+      } else if (currentQuiz && currentQuiz.typeDescription === '2') {
+        navigation.navigate('PairWord', { quiz: currentQuiz, idUser: 'idUser' });
+      } else {
+        Alert.alert('Error', 'Unknown quiz type.');
+      }
+    }
+  }, [quizArray, route.params?.quizIndex, navigation]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.heading}>
-        <View style={{width: "10%", height: "100%", justifyContent: 'center',}}>
-          <TouchableOpacity style={[styles.buttonClose] }>
-            <IconFontisto name="close-a" style={{ fontSize: 36}} color="black" 
-              onPress={()=> navigation.navigate('HomeScreen')}/>
-          </TouchableOpacity> 
-        </View>
-        <Progress.Bar
-          progress={0.9}
-          unfilledColor="black"
-          borderRadius={200}
-          borderColor="#086CA4"
-          height={1000}
-          width={380}
-          color="#CFFF0F"
-          style={styles.processBar}
-        />
-      </View>
-      <View style = {styles.body}>
-        {/* <FillBlank></FillBlank> */}
-        <ArrangeSentence></ArrangeSentence>
-      </View>
-      <View style = {styles.footer}>
-        <TouchableOpacity style={styles.buttonNext } onPress={()=>{}}>
-          <Text style={styles.textButtonNext}>Tiếp tục</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <View></View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#086CA4',
-    width: '100%',
-    height: '100%',
-    paddingVertical: '5%',
-    paddingHorizontal: '5%',
-  },
-  heading: {
-    flexDirection: 'row',
-    height: '5%',
-    width: '100%',
-    justifyContent: 'space-between',
-  },
-  buttonClose: {
-    justifyContent: 'center',
-    alignSelf: 'center',
-    borderRadius: 40,
-  },
-  body: {
-    marginVertical: '5%',
-    height: '80%',
-  },
-  footer: {
-    backgroundColor: 'white',
-    width: '100%',
-    height: '10%',
-    borderRadius: 20,
-  },
-  buttonNext: {
-    height: '100%',
-    justifyContent: 'center',
-  },
-  textButtonNext: {
-    color: 'black',
-    fontSize: 25,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
 export default QuizHolderScreen;

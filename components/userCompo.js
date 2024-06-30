@@ -5,21 +5,23 @@ import {
   Pressable,
   Image,
   ImageBackground,
+  ToastAndroid
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
-import {UserContext} from '../Screen/UserContext';
+import {UserContext} from '../Screen/userContext';
 import {LOCALHOST} from '../config';
 import axios from 'axios';
 import base64 from 'base-64';
+import { useToast } from 'react-native-toast-notifications';
+import Icon from 'react-native-vector-icons/Octicons';
 
-const User = ({item}) => {
+const User = ({item, onFriendRequestSent}) => {
+  const toast = useToast();
   const {userId, users} = useContext(UserContext);
   const [requestSent, setRequestSent] = useState(false);
-  const [countFriends, setCountFriends] = useState(0);
 
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
-      console.log('crr:', currentUserId, 'sl', selectedUserId);
       const response = await fetch(`${LOCALHOST}/users/friend-request`, {
         method: 'POST',
         headers: {
@@ -28,32 +30,25 @@ const User = ({item}) => {
         body: JSON.stringify({currentUserId, selectedUserId}),
       });
       if (response.ok) {
-        setRequestSent(true);
+        // setRequestSent(true);
+        toast.show('Successfully sent a new friend request!', {
+          type: 'success',
+          duration: 1500,
+          animationType: 'slide-in',
+          placement: 'bottom', 
+          offsetBottom: 500,
+          icon: <Icon name='check-circle' color={"#FFF"} size={24}/>,
+        });
+        if (onFriendRequestSent) {
+          console.log('Calling onFriendRequestSent callback...');
+          onFriendRequestSent();
+        }
       }
     } catch (err) {
-      console.log('error message', err);
+      console.log('Error message', err);
     }
   };
 
-  useEffect(() => {
-    if (item && item.friends) {
-      setCountFriends(item.friends.length);
-    }
-  }, [item]);
-
-  // if (
-  //   userFriends.includes(item._id) ||
-  //   friendRequests.some(friend => friend._id === item._id)
-  // ) {
-  //   return (
-  //     <View
-  //       style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
-  //       <Text style={{fontSize: 18, color: 'gray'}}>
-  //         There are currently no friend suggestions
-  //       </Text>
-  //     </View>
-  //   );
-  // }
 
   return (
     <View
@@ -78,9 +73,6 @@ const User = ({item}) => {
         <Text style={{fontWeight: 'bold', color: 'black', fontSize: 24}}>
           {item?.name}
         </Text>
-        {countFriends > 0 && (
-          <Text style={{color: 'gray', fontSize: 18}}>{countFriends}</Text>
-        )}
       </View>
 
       <View style={{flexDirection: 'row', gap: 10}}>

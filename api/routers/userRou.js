@@ -63,7 +63,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-//findOnebyID
+//findOnebyID 
 app.get("/userdata/:userId", (req, res) => {
   const userId = req.params.userId; // Lấy userId từ request params
   User.findById(userId) // Tìm người dùng bằng ID
@@ -79,7 +79,7 @@ app.get("/userdata/:userId", (req, res) => {
     });
 });
 
-//findall
+//find all
 app.get('/:userId', (req, res) => {
   const loggedInUserId = req.params.userId;
   User.find({_id: {$ne: loggedInUserId}})
@@ -100,7 +100,6 @@ app.post('/friend-request', async (req, res) => {
       $push: { friendRequests: currentUserId },
     });
 
-    // update the sender's sentFriendRequest
     await User.findByIdAndUpdate(currentUserId, {
       $push: { sentFriendRequests: selectedUserId },
     });

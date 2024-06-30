@@ -5,7 +5,12 @@ import { Avatar } from 'react-native-paper';
 import { LOCALHOST } from '../config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {UserContext} from './UserContext';
+
+import {UserContext} from './userContext';
+import User from '../components/userCompo';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 
 const achievements = [
   { id: '1', name: 'Name 1'},
