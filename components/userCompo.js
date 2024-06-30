@@ -41,19 +41,6 @@ const User = ({item}) => {
     }
   }, [item]);
 
-  // if (
-  //   userFriends.includes(item._id) ||
-  //   friendRequests.some(friend => friend._id === item._id)
-  // ) {
-  //   return (
-  //     <View
-  //       style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
-  //       <Text style={{fontSize: 18, color: 'gray'}}>
-  //         There are currently no friend suggestions
-  //       </Text>
-  //     </View>
-  //   );
-  // }
 
   return (
     <View

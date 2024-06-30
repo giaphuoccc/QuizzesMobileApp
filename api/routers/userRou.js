@@ -79,7 +79,7 @@ app.post('/login', (req, res) => {
 //     });
 // });
 
-//findall
+//find all
 app.get('/:userId', (req, res) => {
   const loggedInUserId = req.params.userId;
   User.find({_id: {$ne: loggedInUserId}})
@@ -99,8 +99,7 @@ app.post('/friend-request', async (req, res) => {
     await User.findByIdAndUpdate(selectedUserId, {
       $push: { friendRequests: currentUserId },
     });
-
-    // update the sender's sentFriendRequest
+    
     await User.findByIdAndUpdate(currentUserId, {
       $push: { sentFriendRequests: selectedUserId },
     });
