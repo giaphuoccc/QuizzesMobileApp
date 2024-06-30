@@ -30,4 +30,16 @@ app.get('/getTest', (req, res) => {
         });
 });
 
+app.get('/:chapterId', (req, res) => {
+    const ChapterId = req.params.chapterId;
+    Test.find({chapterId:ChapterId})
+        .then(test => {
+            res.status(200).json(test);
+        })
+        .catch(err => {
+            console.log('Error retrieving', err);
+            res.status(500).json({ message: 'Error retrieving' });
+        });
+});
+
 module.exports = app;

@@ -92,7 +92,6 @@ app.get('/:userId', (req, res) => {
     });
 });
 
-
 //endpoit to send a request to a user
 app.post('/friend-request', async (req, res) => {
   const { currentUserId, selectedUserId } = req.body;

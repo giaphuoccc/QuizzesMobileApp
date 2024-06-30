@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigator from './StackNavigator';
-import { UserProvider } from './Screen/UserContext';
+import { UserProvider } from './Screen/userContext';
 
 function App() {
 

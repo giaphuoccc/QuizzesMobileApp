@@ -11,14 +11,14 @@ import {
   Image,
 } from 'react-native';
 import {Avatar} from 'react-native-paper';
-import styles from './stylesUpdateProfile';
+import styles from './profileEditStyles';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 import Back from 'react-native-vector-icons/Ionicons';
 
 //import {RadioButton} from 'react-native-paper';
 //import Toast from 'react-native-toast-message';
 
-function UpdateProfile() {
+function profileEditScreen() {
   return (
     <ScrollView
       keyboardShouldPersistTaps={'always'}
@@ -109,4 +109,4 @@ function UpdateProfile() {
   );
 }
 
-export default UpdateProfile;
+export default profileEditScreen;

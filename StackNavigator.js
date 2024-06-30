@@ -11,7 +11,7 @@ import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 
-import Loading from './Screen/LoadingScreen.js';
+import Loading from './Screen/loadingScreen.js';
 import Welcome from './Screen/welcomeScreen.js';
 
 import Login from './Screen/loginScreen.js';
@@ -23,8 +23,8 @@ import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
 
 //Profile 
-import ProfileScreen from './Screen/Profile&EditProfile/profileScreen.js';
-import UpdateProfileScreen from './Screen/Profile&EditProfile/updateProfileScreen.js';
+import ProfileScreen from './Screen/profileScreen.js';
+import ProfileEditScreen from './Screen/profileEditScreen.js';
 
 //Quiz
 import PictureQuizScreen from './Screen/pictureQuizScreen.js';

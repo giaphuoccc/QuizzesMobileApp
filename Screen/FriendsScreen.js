@@ -9,7 +9,7 @@ import {
 import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import FriendRequest from '../components/friendRequestCompo';
-import {UserContext} from './UserContext';
+import {UserContext} from './userContext';
 import User from '../components/userCompo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {LOCALHOST} from '../config';
