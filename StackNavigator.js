@@ -23,14 +23,15 @@ import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
 
 //Profile 
-import ProfileScreen from './Screen/profileScreen.js';
-import ProfileEditScreen from './Screen/profileEditScreen.js';
+import ProfileScreen from './Screen/ProfileScreen.js';
+import ProfileEditScreen from './Screen/ProfileEditScreen.js';
 
 //Quiz
 import PictureQuizScreen from './Screen/pictureQuizScreen.js';
 import FillBlank from './Screen/fillBlankScreen.js';
 import ArrangeSentence from './Screen/arrangeSentence.js';
 import PairWord from './Screen/pairWordScreen.js';
+
 
 const Tab = createBottomTabNavigator();
 const StackNav = createNativeStackNavigator();
@@ -164,6 +165,16 @@ const stack = () => {
         <StackNav.Screen
           name="GreetingScreen"
           component={GreetingScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="EditProfile"
+          component={ProfileEditScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{headerShown: false}}
         />
         <StackNav.Screen
