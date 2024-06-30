@@ -18,7 +18,7 @@ import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
 import FriendsScreen from './Screen/friendsScreen.js';
 
-import HomeScreen from './Screen/homeScreen'
+import HomeScreen from './Screen/homeScreen.js'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
 

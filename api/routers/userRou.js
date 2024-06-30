@@ -94,21 +94,57 @@ app.get('/:userId', (req, res) => {
 
 //endpoit to send a request to a user
 app.post('/friend-request', async (req, res) => {
-  const {currentUserId, selectedUserId} = req.body;
+  const { currentUserId, selectedUserId } = req.body;
   try {
     await User.findByIdAndUpdate(selectedUserId, {
-      $push: {friendRequests: currentUserId},
+      $push: { friendRequests: currentUserId },
     });
 
-    //update the sender's sentFriendRequest
+    // update the sender's sentFriendRequest
     await User.findByIdAndUpdate(currentUserId, {
-      $push: {sentFriendRequests: selectedUserId},
+      $push: { sentFriendRequests: selectedUserId },
     });
-    res.sendStatus(200);
+
+    res.status(200).json({ currentUserId, selectedUserId });
   } catch (err) {
-    res.sendStatus(500);
+    res.sendStatus(500).json({
+      message: 'Friend request sent Erorr' + err,
+    });;
   }
 });
+
+app.get("/friend-requests/sent/:userId",async(req,res) => {
+  try{
+    const {userId} = req.params;
+    const user = await User.findById(userId).populate("sentFriendRequests","name email image").lean();
+
+    const sentFriendRequests = user.sentFriendRequests;
+
+    res.status(200).json(sentFriendRequests);
+  } catch(error){
+    console.log("error",error);
+    res.status(500).json({ error: "Internal Server" });
+  }
+})
+
+app.get("/friends/:userId",(req,res) => {
+  try{
+    const {userId} = req.params;
+
+    User.findById(userId).populate("friends").then((user) => {
+      if(!user){
+        return res.status(404).json({message: "User not found"})
+      }
+
+      const friendIds = user.friends.map((friend) => friend._id);
+
+      res.status(200).json(friendIds);
+    })
+  } catch(error){
+    console.log("error",error);
+    res.status(500).json({message:"internal server error"})
+  }
+})
 
 // // endpoint to show all the friend-request of a particular user
 // app.get('/friend-request/:userId', async (req, res) => {
@@ -167,6 +203,22 @@ app.post('/friend-request', async (req, res) => {
 //     res.status(500).json({massage: "Internal Sever Err"})
 //   }
 // })
+// app.get("/user/:userId", async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+//     //fetch the user data from the user ID
+//     const recepientId = await User.findById(userId);
+//     res.json(recepientId);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
+
+
+
+
+
 
 
 

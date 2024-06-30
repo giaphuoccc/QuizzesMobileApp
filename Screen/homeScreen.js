@@ -7,7 +7,6 @@ import { LOCALHOST } from '../config';
 
 
 const HomeScreen = ({ navigation }) => {
-
     const unavaliableTestColor = "gray"
     const finishTestColor = "#61FF00"
     const currentTestColor = "yellow"
