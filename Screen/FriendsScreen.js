@@ -7,13 +7,14 @@ import {
   View,
   ActivityIndicator
 } from 'react-native';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useCallback} from 'react';
 import axios from 'axios';
 import FriendRequest from '../components/friendRequestCompo';
-import {UserContext} from './UserContext';
+import {UserContext} from './userContext';
 import User from '../components/userCompo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {LOCALHOST} from '../config';
+
 
 const FriendsScreen = () => {
   const {userId, users} = useContext(UserContext);
@@ -21,35 +22,36 @@ const FriendsScreen = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [friendSentRequest, setFriendSentRequest] = useState([]);
+
+  const fetchUserData = useCallback(async () => {
+    try {
+      const friendsResponse = await fetch(`${LOCALHOST}/users/friends/${userId}`);
+      const friendsData = await friendsResponse.json();
+  
+      const requestsResponse = await fetch(`${LOCALHOST}/users/friend-requests/sent/${userId}`);
+      const requestsData = await requestsResponse.json();
+  
+      if (friendsResponse.ok && requestsResponse.ok) {
+        setUserFriends(friendsData);
+        setFriendRequests(requestsData);
+        setDataLoaded(true); 
+      } else {
+        if (!friendsResponse.ok) {
+          console.log('Error retrieving user friends', friendsResponse.status);
+        }
+        if (!requestsResponse.ok) {
+          console.log('Error retrieving friend requests', requestsResponse.status);
+        }
+      }
+    } catch (error) {
+      console.log('Error message', error);
+    }
+  }, [userId]);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const friendsResponse = await fetch(`${LOCALHOST}/users/friends/${userId}`);
-        const friendsData = await friendsResponse.json();
-
-        const requestsResponse = await fetch(`${LOCALHOST}/users/friend-requests/sent/${userId}`);
-        const requestsData = await requestsResponse.json();
-
-        if (friendsResponse.ok && requestsResponse.ok) {
-          setUserFriends(friendsData);
-          setFriendRequests(requestsData);
-          setDataLoaded(true); 
-        } else {
-          if (!friendsResponse.ok) {
-            console.log('Error retrieving user friends', friendsResponse.status);
-          }
-          if (!requestsResponse.ok) {
-            console.log('Error retrieving friend requests', requestsResponse.status);
-          }
-        }
-      } catch (error) {
-        console.log('Error message', error);
-      }
-    };
-
     fetchUserData();
-  }, [userId]);
+  }, [fetchUserData]);
 
   useEffect(() => {
     if (dataLoaded) {
@@ -62,8 +64,13 @@ const FriendsScreen = () => {
         setFilteredUsers(filtered);
       };
       filterUsers();
-    } 
-  }, [dataLoaded]);
+    }
+  }, [dataLoaded, userFriends, friendRequests]);
+
+  const handleFriendRequestSent = () => {
+    console.log('Friend request sent, fetching user data again...');
+    fetchUserData();
+  };
 
   
   return (
@@ -102,7 +109,7 @@ const FriendsScreen = () => {
               flexDirection: 'row',
               height: 80,
               width: '100%',
-              backgroundColor: 'pink',
+              backgroundColor: '#FFF',
               borderRadius: 15,
               alignItems: 'center',
               paddingHorizontal: 20,
@@ -157,7 +164,7 @@ const FriendsScreen = () => {
                 </Text>
               </View>
             ) : (
-              filteredUsers.map((item, index) => <User key={index} item={item} />)
+              filteredUsers.map((item, index) => <User key={index} item={item} onFriendRequestSent={handleFriendRequestSent}/>)
             )
           ) : (
             <View
