@@ -5,8 +5,9 @@ import { Avatar } from 'react-native-paper';
 import { LOCALHOST } from '../config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {UserContext} from './userContext';
+import {UserContext} from './UserContext';
 import User from '../components/userCompo';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 
 const achievements = [
   { id: '1', name: 'Name 1'},
@@ -24,7 +25,7 @@ const AchievementItem = ({ item, index }) => (
 );
 
 const ProfileScreen = () => {
-  const {userId, users} = useContext(UserContext);
+  const {userId} = useContext(UserContext);
   console.log(userId)
   const [userData, setUserData] = useState(null);
   console.log(userData)
@@ -32,11 +33,11 @@ const ProfileScreen = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        if (!userId) {
-          console.error('userId is undefined or null');
-          return;
-        }
-        const response = await axios.get(`${LOCALHOST}/users/${userId}`);
+        // if (!userId) {
+        //   console.error('userId is undefined or null');
+        //   return;
+        // }
+        const response = await axios.get(`${LOCALHOST}/users/userdata/${userId}`);
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -67,12 +68,12 @@ const ProfileScreen = () => {
       {/* Blue with achievement */}
       <View style={{ flex: 0.75, backgroundColor: '#086CA4', padding: 10 }}>
         <Text style={styles.nameText}>
-          {users.name}
+          {userData.name}
         </Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <View style={{ flex: 1, alignItems: 'flex-start'}}>
             <Text style={styles.smallWhiteText}>
-              {users.email}
+              {/* {userData.email} */}
             </Text>
           </View>
         </View>
@@ -105,8 +106,12 @@ const ProfileScreen = () => {
         </View>
         
         {/* Friend Button */}
-        <TouchableOpacity style={styles.friendButton}>
-          <Text style={styles.friendButtonText}>Chỉnh sửa thông tin cá nhân</Text>
+        <TouchableOpacity 
+          style={styles.friendButton}>
+          {/* // onPress={() => {
+          //   navigation.navigate('profileEditScreen', {data: userData});        
+          // }}> */}
+            <Text style={styles.friendButtonText}>Chỉnh sửa thông tin cá nhân</Text>
         </TouchableOpacity>
 
 
