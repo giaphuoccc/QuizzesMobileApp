@@ -5,6 +5,7 @@ import {
   Text,
   TextInput,
   View,
+  ActivityIndicator
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
@@ -19,58 +20,51 @@ const FriendsScreen = () => {
   const [userFriends, setUserFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
-  
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    const fetchUserFriends = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await fetch(`${LOCALHOST}/users/friends/${userId}`);
-        const data = await response.json();
-        if (response.ok) {
-          setUserFriends(data);
+        const friendsResponse = await fetch(`${LOCALHOST}/users/friends/${userId}`);
+        const friendsData = await friendsResponse.json();
+
+        const requestsResponse = await fetch(`${LOCALHOST}/users/friend-requests/sent/${userId}`);
+        const requestsData = await requestsResponse.json();
+
+        if (friendsResponse.ok && requestsResponse.ok) {
+          setUserFriends(friendsData);
+          setFriendRequests(requestsData);
+          setDataLoaded(true); 
         } else {
-          console.log('error retrieving user friends', response.status);
+          if (!friendsResponse.ok) {
+            console.log('Error retrieving user friends', friendsResponse.status);
+          }
+          if (!requestsResponse.ok) {
+            console.log('Error retrieving friend requests', requestsResponse.status);
+          }
         }
       } catch (error) {
         console.log('Error message', error);
       }
     };
 
-    fetchUserFriends();
+    fetchUserData();
   }, [userId]);
 
   useEffect(() => {
-    const fetchFriendRequests = async () => {
-      try {
-        const response = await fetch(
-          `${LOCALHOST}/users/friend-requests/sent/${userId}`,
+    if (dataLoaded) {
+      const filterUsers = () => {
+        const filtered = users.filter(
+          item =>
+            !userFriends.includes(item._id) &&
+            !friendRequests.some(friend => friend._id === item._id)
         );
-        const data = await response.json();
-        if (response.ok) {
-          setFriendRequests(data);
-        } else {
-          console.log('error', response.status);
-        }
-      } catch (error) {
-        console.log('error', error);
-      }
-    };
+        setFilteredUsers(filtered);
+      };
+      filterUsers();
+    } 
+  }, [dataLoaded]);
 
-    fetchFriendRequests();
-  }, [userId]);
-
-  useEffect(() => {
-    const filterUsers = () => {
-      const filtered = users.filter(
-        item =>
-          !userFriends.includes(item._id) &&
-          !friendRequests.some(friend => friend._id === item._id)
-      );
-      setFilteredUsers(filtered);
-    };
-
-    filterUsers();
-  }, [users, userFriends, friendRequests]);
   
   return (
     <View style={{backgroundColor: '#2A629A', flexDirection: 'column'}}>
@@ -150,19 +144,29 @@ const FriendsScreen = () => {
               />
             </View>
           </View>
-          {filteredUsers.length === 0 ? (
+          {dataLoaded ? (
+            filteredUsers.length === 0 ? (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 20,
+                }}>
+                <Text style={{fontSize: 18, color: 'gray'}}>
+                  There are currently no friend suggestions
+                </Text>
+              </View>
+            ) : (
+              filteredUsers.map((item, index) => <User key={index} item={item} />)
+            )
+          ) : (
             <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: 20,
               }}>
-              <Text style={{fontSize: 18, color: 'gray'}}>
-                There are currently no friend suggestions
-              </Text>
+              <ActivityIndicator size="small" color="#0000ff" />
             </View>
-          ) : (
-            filteredUsers.map((item, index) => <User key={index} item={item} />)
           )}
         </View>
       </ScrollView>
