@@ -14,8 +14,12 @@ import * as Progress from 'react-native-progress';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
 import React, {useState} from 'react';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
+import { useRoute } from '@react-navigation/native';
 
 const ArrangeSentence = ({navigation}) => {
+  const route = useRoute();
+  const a = route.params.quiz;
+  console.log(a);
   const [isSubmit, setIsSubmit] = useState(false);
   const correctAnswer = 'I love to eat ice-cream';
   const [questionText, setQuestionText] = useState('Tôi thích ăn kem.');

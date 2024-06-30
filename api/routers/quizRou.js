@@ -30,5 +30,15 @@ app.get('/getQuiz', (req, res) => {
       res.status(500).json({ message: 'Error retrieving' });
     });
 });
+app.get('/getQuizsByIdTest/:idTest', (req, res) => {
+  Quiz.find({testId: req.params.idTest})
+    .then(quizs => {
+      res.status(200).json(quizs);
+    })
+    .catch(err => {
+      console.log('Error retrieving', err);
+      res.status(500).json({ message: 'Error retrieving' });
+    });
+});
 
 module.exports = app;

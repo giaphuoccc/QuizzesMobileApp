@@ -29,5 +29,15 @@ app.get('/getTypeQuiz', (req, res) => {
             res.status(500).json({ message: 'Error retrieving' });
         });
 });
+app.get('/getTypeQuiz/:tqID', (req, res) => {
+    TypeQuiz.find({_id: req.params.tqID})
+        .then(typeQuiz => {
+            res.status(200).json(typeQuiz);
+        })
+        .catch(err => {
+            console.log('Error retrieving', err);
+            res.status(500).json({ message: 'Error retrieving' });
+        });
+});
 
 module.exports = app;
