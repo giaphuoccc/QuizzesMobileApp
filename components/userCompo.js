@@ -1,21 +1,26 @@
-import {StyleSheet, Text, View, Pressable, Image, ImageBackground} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Pressable,
+  Image,
+  ImageBackground,
+} from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
 import {UserContext} from '../Screen/UserContext';
 import {LOCALHOST} from '../config';
 import axios from 'axios';
 import base64 from 'base-64';
-import { Avatar } from 'react-native-paper';
 
 const User = ({item}) => {
   const {userId, users} = useContext(UserContext);
   const [requestSent, setRequestSent] = useState(false);
-  const image = 'https://legacy.reactjs.org/logo-og.png';
-
+  const [countFriends, setCountFriends] = useState(0);
 
   const sendFriendRequest = async (currentUserId, selectedUserId) => {
     try {
       console.log('crr:', currentUserId, 'sl', selectedUserId);
-      const response = await fetch(`${LOCALHOST}/friend-request`, {
+      const response = await fetch(`${LOCALHOST}/users/friend-request`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,31 +35,75 @@ const User = ({item}) => {
     }
   };
 
+  useEffect(() => {
+    if (item && item.friends) {
+      setCountFriends(item.friends.length);
+    }
+  }, [item]);
+
+  // if (
+  //   userFriends.includes(item._id) ||
+  //   friendRequests.some(friend => friend._id === item._id)
+  // ) {
+  //   return (
+  //     <View
+  //       style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
+  //       <Text style={{fontSize: 18, color: 'gray'}}>
+  //         There are currently no friend suggestions
+  //       </Text>
+  //     </View>
+  //   );
+  // }
 
   return (
-    <Pressable style={{alignItems: 'center', marginVertical: 10}}>
-      <View style={{borderWidth: 3, borderColor: 'red'}}>
-        <Avatar.Image size={100} source={{uri: image}} />
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        borderBottomWidth: 1.5,
+        borderColor: '#C4c4c4',
+      }}>
+      <View>
+        <Image
+          source={{
+            uri: item.image,
+          }}
+          style={{width: 100, height: 100, borderRadius: 50}}
+        />
       </View>
 
-      <View style={{marginLeft: 12, flex: 1}}>
-        <Text style={{fontWeight: 'bold'}}>{item?.name}</Text>
-        <Text style={{marginTop: 4, color: 'gray'}}>{item?.email}</Text>
-      </View>
-
-      <Pressable
-        onPress={() => sendFriendRequest(userId, item._id)}
-        style={{
-          backgroundColor: '#567189',
-          padding: 10,
-          borderRadius: 6,
-          width: 105,
-        }}>
-        <Text style={{textAlign: 'center', color: 'white', fontSize: 13}}>
-          Add Friend
+      <View style={{marginLeft: 10, flex: 1}}>
+        <Text style={{fontWeight: 'bold', color: 'black', fontSize: 24}}>
+          {item?.name}
         </Text>
-      </Pressable>
-    </Pressable>
+        {countFriends > 0 && (
+          <Text style={{color: 'gray', fontSize: 18}}>{countFriends}</Text>
+        )}
+      </View>
+
+      <View style={{flexDirection: 'row', gap: 10}}>
+        <Pressable
+          onPress={() => sendFriendRequest(userId, item._id)}
+          style={{
+            backgroundColor: '#2A629A',
+            padding: 10,
+            borderRadius: 7,
+            width: 125,
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: 'white',
+              fontSize: 18,
+              fontWeight: 'bold',
+            }}>
+            Add Friend
+          </Text>
+        </Pressable>
+      </View>
+    </View>
   );
 };
 export default User;

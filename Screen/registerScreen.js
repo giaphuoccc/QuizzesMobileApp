@@ -21,7 +21,6 @@ const RegisteeScreen = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [image, setImage] = useState('');
   const [focusedField, setFocusedField] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
@@ -42,7 +41,7 @@ const RegisteeScreen = () => {
       name: name,
       email: email,
       password: password,
-      image: image,
+      image: "https://inkythuatso.com/uploads/thumbnails/800/2023/03/6-anh-dai-dien-trang-inkythuatso-03-15-26-36.jpg",
     };
     axios
       .post(`${LOCALHOST}/users/register`, user)

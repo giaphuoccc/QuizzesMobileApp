@@ -8,29 +8,29 @@ import { LOCALHOST } from '../config';
 
 const HomeScreen = ({ navigation }) => {
     
-    const [friendRequest, setFriendRequests] = useState();
+    // const [friendRequest, setFriendRequests] = useState();
 
-  const fetchChapter = async () => {
-    try {
-      const response = await axios.get(
-        `${LOCALHOST}/chapter/getChapter`,
-      );
-      if (response.status === 200) {
-        setFriendRequests(response.data[0]);
-      }
-    } catch (err) {
-      console.log('error message', err);
-    }
-  };
+//   const fetchChapter = async () => {
+//     try {
+//       const response = await axios.get(
+//         `${LOCALHOST}/chapter/getChapter`,
+//       );
+//       if (response.status === 200) {
+//         setFriendRequests(response.data[0]);
+//       }
+//     } catch (err) {
+//       console.log('error message', err);
+//     }
+//   };
   
-  useEffect(() => {
-    fetchChapter();
-  }, []);
-  useEffect(() => {
-    if(friendRequest){
-        console.log(friendRequest._id);
-    }
-  }, [friendRequest]);
+//   useEffect(() => {
+//     fetchChapter();
+//   }, []);
+//   useEffect(() => {
+//     if(friendRequest){
+//         console.log(friendRequest._id);
+//     }
+//   }, [friendRequest]);
   
     const unavaliableTestColor = "gray"
     const finishTestColor = "#61FF00"

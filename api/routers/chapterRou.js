@@ -20,7 +20,7 @@ app.post('/createchapter', (req, res) => {
     });
 });
 
-app.get('/getChapter', (req, res) => {
+app.get('/getChapter"', (req, res) => {
   Chapter.find()
     .then(chapter => {
       res.status(200).json(chapter);
