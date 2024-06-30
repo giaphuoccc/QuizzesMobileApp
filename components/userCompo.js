@@ -7,7 +7,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
-import {UserContext} from '../Screen/UserContext';
+import {UserContext} from '../Screen/userContext';
 import {LOCALHOST} from '../config';
 import axios from 'axios';
 import base64 from 'base-64';
