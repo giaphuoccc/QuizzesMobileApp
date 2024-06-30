@@ -32,13 +32,15 @@ import FillBlank from './Screen/fillBlankScreen.js';
 import ArrangeSentence from './Screen/arrangeSentence.js';
 import PairWord from './Screen/pairWordScreen.js';
 
+import QuizHolderScreen from './Screen/quizHolderScreen';
+
 const Tab = createBottomTabNavigator();
 const StackNav = createNativeStackNavigator();
 
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="QuizHolderScreen"
       screenOptions={{
         tabBarShowLabel: false, 
         tabBarStyle: {
@@ -80,7 +82,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="HomeScreen"
-        component={HomeScreen}
+        component={QuizHolderScreen}
         options={{
           tabBarIcon: ({ focused}) => (
             <Entypo name="home" color={focused ? '#4A55A2' : 'gray'} size={32} />

@@ -12,10 +12,13 @@ import * as Progress from 'react-native-progress';
 import { useRoute } from '@react-navigation/native';
 import { stopMapper } from 'react-native-reanimated';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
+import { useRoute } from '@react-navigation/native';
 const PairWord = ({navigation}) => {
   const route = useRoute();
   const testId = route.params.testId;
   // console.log("123+"+testId);
+  const a = route.params.quiz;
+  console.log(a );
   const initLAA = ['cat', 'gun', 'chair', 'fire'];
   const copyLAArray = ['cat', 'gun', 'chair', 'fire'];
   const [leftAnsArray, setLAnsArray] = useState([]);

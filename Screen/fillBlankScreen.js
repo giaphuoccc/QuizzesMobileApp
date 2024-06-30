@@ -5,6 +5,9 @@ import IconFontisto from 'react-native-vector-icons/Fontisto';
 
 
 const FillBlank = ({navigation}) => {    
+  const route = useRoute();
+  const a = route.params.quiz;
+  console.log(a );
     const answerArray = ["a","an","on","in"]
     const question = "Last night, i got _____ heart attack. Then i die the next morning."
     const blank = question.slice(question.indexOf("_"),question.lastIndexOf("_"))
