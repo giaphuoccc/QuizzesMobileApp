@@ -1,6 +1,6 @@
 import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
 import React, {useContext} from 'react';
-import {UserType} from '../Screen/userContext';
+import {UserType} from '../Screen/UserContext';
 import {useRoute} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import { LOCALHOST } from '../config';

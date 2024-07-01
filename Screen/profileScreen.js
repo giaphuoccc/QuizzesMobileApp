@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {UserContext} from './UserContext';
 
-import {UserContext} from './userContext';
 import User from '../components/userCompo';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 
