@@ -202,17 +202,17 @@ app.get("/friends/:userId",(req,res) => {
 //     res.status(500).json({massage: "Internal Sever Err"})
 //   }
 // })
-// app.get("/user/:userId", async (req, res) => {
-//   try {
-//     const { userId } = req.params;
-//     //fetch the user data from the user ID
-//     const recepientId = await User.findById(userId);
-//     res.json(recepientId);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
+app.get("/main/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    //fetch the user data from the user ID
+    const recepientId = await User.findById(userId);
+    res.json(recepientId);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 
 

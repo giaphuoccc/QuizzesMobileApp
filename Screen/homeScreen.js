@@ -13,7 +13,7 @@ import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
 import axios from 'axios';
 import { LOCALHOST } from '../config';
-import { UserContext } from './userContext';
+import { UserContext } from './UserContext';
 
 const HomeScreen = ({ navigation }) => {
   const unavaliableTestColor = 'gray';
