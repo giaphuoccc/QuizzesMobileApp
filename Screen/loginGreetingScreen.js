@@ -46,7 +46,8 @@ const LoginGreetingScreen = () => {
             alignItems: 'center',
             marginBottom: 10,
           }}
-          onPress={() => navigation.navigate('HomeScreen')}>
+          // onPress={() => navigation.navigate('HomeScreen')}
+          >
           <Text style={{color: '#001B37', fontSize: 25, fontWeight: 'bold'}}>
             Get started
           </Text>
@@ -62,7 +63,8 @@ const LoginGreetingScreen = () => {
             borderWidth: 3,
             borderColor: 'gray',
           }}
-          onPress={() => navigation.navigate('Login')}>
+          // onPress={() => navigation.navigate()}
+          >
           <Text style={{color: '#05e221', fontSize: 25, fontWeight: 'bold'}}>
             I already have an account
           </Text>

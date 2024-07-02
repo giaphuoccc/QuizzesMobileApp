@@ -1,10 +1,5 @@
 const mongoose = require('mongoose');
 const chapterSchema = new mongoose.Schema({
-  chapterId: {
-    type: String,
-    require: true,
-    unique: true,
-  },
   chapterName: {
     type: String,
     require: true,
@@ -13,10 +8,9 @@ const chapterSchema = new mongoose.Schema({
     type: String,
     require: false,
   },
-  chapterDifficulties: {
+  chapterDifficulties:{
     type: String,
-    require: true,
-    ref:'Difficulties'
+    require: false,
   },
 });
 

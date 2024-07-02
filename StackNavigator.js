@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -6,19 +6,35 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { ToastProvider } from 'react-native-toast-notifications';
+
 import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
-import QuizHolderScreen from './Screen/quizHolderScreen';
-import Loading from './Screen/LoadingScreen.js';
-import Welcome from './Screen/WelcomeScreen.js';
-import ProfileScreen from './Screen/profile_Screen';
+
+import Loading from './Screen/loadingScreen.js';
+import Welcome from './Screen/welcomeScreen.js';
+
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
 import FriendsScreen from './Screen/FriendsScreen.js';
-import HomeScreen from './Screen/homeScreen'
+
+import HomeScreen from './Screen/homeScreen.js'
 import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
+
+//Profile 
+import ProfileScreen from './Screen/profileScreen.js';
+import ProfileEditScreen from './Screen/profileEditScreen.js';
+
+//Quiz
+import PictureQuizScreen from './Screen/pictureQuizScreen.js';
+import FillBlank from './Screen/fillBlankScreen.js';
+import ArrangeSentence from './Screen/arrangeSentence.js';
+import PairWord from './Screen/pairWordScreen.js';
+
+
+import QuizHolderScreen from './Screen/quizHolderScreen';
 
 const Tab = createBottomTabNavigator();
 const StackNav = createNativeStackNavigator();
@@ -26,7 +42,7 @@ const StackNav = createNativeStackNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="QuizHolderScreen"
       screenOptions={{
         tabBarShowLabel: false, 
         tabBarStyle: {
@@ -38,8 +54,9 @@ function MyTabs() {
           justifyContent: 'center',
           alignItems: 'center',
         },
-        tabBarActiveTintColor: '#4A55A2', 
+        tabBarActiveTintColor: 'green', 
         tabBarInactiveTintColor: 'gray', 
+        tabBarActiveBackgroundColor: "#e0e0e0"
       }}
     >
       
@@ -48,15 +65,15 @@ function MyTabs() {
         component={Chat}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Ionicons name="chatbubbles" color={focused ? '#4A55A2' : 'gray'} size={32} />
+            <Ionicons name="chatbubbles" color={focused ? '#4A55A2' : 'gray'} size={32}/>
           ),
           headerShown: false,
-          tabBarLabel: "Chat"
+          tabBarLabel: "Chat",
         }}
       />
       <Tab.Screen
-        name="GreetingScreen"
-        component={GreetingScreen}
+        name="FriendsScreen"
+        component={FriendsScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Ionicons name="people" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -67,7 +84,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="HomeScreen"
-        component={HomeScreen}
+        component={QuizHolderScreen}
         options={{
           tabBarIcon: ({ focused}) => (
             <Entypo name="home" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -81,14 +98,14 @@ function MyTabs() {
         component={RankingScreen}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Entypo name="bar-graph" color={focused ? '#4A55A2' : 'gray'} size={32} />
+            <Entypo name="bar-graph" color={focused ? '#dbdb06' : 'gray'} size={32} />
           ),
           headerShown: false,
         }}
       />
       <Tab.Screen
-        name="LoginGreeting"
-        component={LoginGreeting}
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <Entypo name="shield" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -103,7 +120,8 @@ function MyTabs() {
 const stack = () => {
   return (
     <NavigationContainer>
-      <StackNav.Navigator >
+      <ToastProvider>
+      <StackNav.Navigator initialRouteName="MyTabs" >
         <StackNav.Screen
           name="Loading"
           component={Loading}
@@ -112,6 +130,26 @@ const stack = () => {
         <StackNav.Screen
           name="QuizHolderScreen"
           component={QuizHolderScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="FillBlank"
+          component={FillBlank}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="ArrangeSentence"
+          component={ArrangeSentence}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="PairWord"
+          component={PairWord}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="PictureQuizScreen"
+          component={PictureQuizScreen}
           options={{headerShown: false}}
         />
         <StackNav.Screen
@@ -139,6 +177,16 @@ const stack = () => {
           options={{headerShown: false}}
         />
         <StackNav.Screen
+          name="EditProfile"
+          component={ProfileEditScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="Profile"
+          component={ProfileScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
           name="RankingScreen"
           component={RankingScreen}
           options={{headerShown: false}}
@@ -150,6 +198,7 @@ const stack = () => {
         />
         
       </StackNav.Navigator>
+      </ToastProvider>
     </NavigationContainer>
   );
 };

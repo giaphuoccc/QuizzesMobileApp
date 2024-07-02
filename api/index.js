@@ -20,7 +20,6 @@ mongoose.connect(
 
   const achievmentRouter = require("./routers/achievementRou")
   const chapterRouter = require("./routers/chapterRou")
-  const difficultiesRouter = require("./routers/difficultiesRou")
   const progressRouter = require("./routers/progressRou")
   const quizRouter = require("./routers/quizRou")
   const testRouter = require("./routers/testRou")
@@ -29,7 +28,6 @@ mongoose.connect(
   
   app.use('/api/achievement',achievmentRouter);
   app.use('/api/chapter', chapterRouter);
-  app.use('/api/difficulties', difficultiesRouter);
   app.use('/api/progress', progressRouter);
   app.use('/api/quiz', quizRouter);
   app.use('/api/test', testRouter);

@@ -1,33 +1,36 @@
 const mongoose = require('mongoose');
 const quizSchema = new mongoose.Schema({
-  quizId: {
-    type: String,
-    require: true,
-    unique: true,
+  testId:
+  {
+    type: mongoose.Schema.Types.ObjectID,
+    ref: 'Test',
   },
-  testId: {
-    type: String,
-    require: true,
-    ref:'Test'
+
+  quizType:
+  {
+    type: mongoose.Schema.Types.ObjectID,
+    ref: 'TypeQuiz',
   },
-  quizType: {
-    type: String,
-    require: false,
-    ref:'TypeQuiz'
-  },
+
   question: {
     type: String,
     require: true,
   },
-  choice: {
-    type: String,
-    require: true,
-  },
-  result: {
-    type: String,
-    require: true,
-  },
+  choice: [
+    {
+      type: String,
+      require: true,
+    },
+  ],
+
+  result: [
+      {
+      type: String,
+      require: true,
+    },
+  ]
 });
+
 
 const Quiz = mongoose.model('Quiz', quizSchema);
 module.exports = Quiz;

@@ -15,7 +15,7 @@ export default function Welcome() {
 
   useEffect(() => {
     if (showRankingScreen) {
-      navigation.navigate('Tabs');
+      navigation.navigate('Login');
     }
   }, [showRankingScreen, navigation]);
 

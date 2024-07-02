@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: false,
   },
-  stat:{
+  stats:{
     type: Number,
     require: false,
   },
