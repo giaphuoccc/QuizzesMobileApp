@@ -4,22 +4,12 @@ import {LOCALHOST} from '../config';
 import { useRoute } from '@react-navigation/native';
 
 const QuizHolderScreen = ({navigation}) => {
-  let idUser = 'idUser'
-  let idTest = '667927aba50b5d3365a8b19f'
-  let quiz = [];
   const route = useRoute();
-  const [quizIndex, setQuizIndex] = useState(0);
-  // try {
-  //   setQuizIndex(route.params.QuizIndex) 
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  
-  const[totalPoint, getTotalPoint] = useState(0)
-  const[progress, setProgess] = useState(0)
+  let idUser = route.params?.idUser ||'idUser'
+  let idTest = route.params?.idTest || '667927aba50b5d3365a8b19f'
+  const totalPoint = route.params?.totalPoint || 0; 
+  const quizIndex = route.params?.quizIndex || 0;
   const [quizArray, setQuizArray] = useState([])
-
-
   useEffect(() => {
     const loadQuizs = async () => {
       try {
@@ -49,15 +39,32 @@ const QuizHolderScreen = ({navigation}) => {
   }, []);
   useEffect(() => {
     if (quizArray.length > 0) {
-      const quizIndex = route.params?.quizIndex || 0; 
       const currentQuiz = quizArray[quizIndex];
-      
+      const progress = quizIndex/quizArray.length
       if (currentQuiz && currentQuiz.typeDescription === "0") {
-        navigation.navigate('ArrangeSentence', { quiz: currentQuiz, idUser: 'idUser' });
+        console.log("To ArrangeSentence");
+        navigation.navigate('ArrangeSentence', 
+          { quiz: currentQuiz, 
+            idUser: idUser, 
+            quizIndex: quizIndex , 
+            progress: progress,
+            totalPoint: totalPoint });
       } else if (currentQuiz && currentQuiz.typeDescription === '1') {
-        navigation.navigate('FillBlank', { quiz: currentQuiz, idUser: 'idUser' });
+        console.log("To FillBlank");
+        navigation.navigate('FillBlank', 
+          { quiz: currentQuiz, 
+            idUser:idUser, 
+            quizIndex: quizIndex , 
+            progress: progress,
+            totalPoint: totalPoint }); 
       } else if (currentQuiz && currentQuiz.typeDescription === '2') {
-        navigation.navigate('PairWord', { quiz: currentQuiz, idUser: 'idUser' });
+        console.log("To PairWord");
+        navigation.navigate('PairWord', 
+          { quiz: currentQuiz, 
+            idUser: idUser, 
+            quizIndex: quizIndex , 
+            progress: progress,
+            totalPoint: totalPoint });
       } else {
         Alert.alert('Error', 'Unknown quiz type.');
       }

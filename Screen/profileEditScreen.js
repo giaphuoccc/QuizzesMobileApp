@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -14,11 +14,15 @@ import {Avatar} from 'react-native-paper';
 import styles from './profileEditStyles';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 import Back from 'react-native-vector-icons/Ionicons';
-
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 //import {RadioButton} from 'react-native-paper';
 //import Toast from 'react-native-toast-message';
 
-function profileEditScreen() {
+function ProfileEditScreen() {
+  const navigation = useNavigation();
+
   return (
     <ScrollView
       keyboardShouldPersistTaps={'always'}
@@ -31,9 +35,9 @@ function profileEditScreen() {
               name="arrow-back"
               size={30}
               style={styles.backIcon}
-              // onPress={() => {
-              //   this.props.navigation.goBack();
-              // }}
+              onPress={() => {
+                navigation.goBack();
+              }}
             />
           </View>
           <View style={{flex: 3}}>
@@ -76,12 +80,12 @@ function profileEditScreen() {
           <View style={styles.infoEditView}>
             <Text style={styles.infoEditFirst_text}>Email</Text>
             <TextInput
-              editable={false}
+              editable={true}
               placeholder="Your Email"
               placeholderTextColor={'#999797'}
               style={styles.infoEditSecond_text}
               // value={this.state.uemail}
-              // onChange={(e) => this.handleEmail(e)}
+              //onChange={(e) => this.handleEmail(e)}
             />
           </View>
 
@@ -109,4 +113,4 @@ function profileEditScreen() {
   );
 }
 
-export default profileEditScreen;
+export default ProfileEditScreen;

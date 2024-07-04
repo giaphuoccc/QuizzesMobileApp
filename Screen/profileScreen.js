@@ -5,7 +5,9 @@ import { Avatar } from 'react-native-paper';
 import { LOCALHOST } from '../config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {UserContext} from './userContext';
+
+import {UserContext} from './UserContext';
+
 import User from '../components/userCompo';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 
@@ -24,21 +26,26 @@ const AchievementItem = ({ item, index }) => (
   </View>
 );
 
-const ProfileScreen = () => {
+const ProfileScreen = ({navigation}) => {
   const {userId} = useContext(UserContext);
   console.log(userId)
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
   console.log(userData)
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // if (!userId) {
-        //   console.error('userId is undefined or null');
-        //   return;
-        // }
-        const response = await axios.get(`${LOCALHOST}/users/userdata/${userId}`);
-        setUserData(response.data);
+        if (!userId) {
+          console.error('userId is undefined or null');
+          return;
+        }
+        const response = await fetch(`${LOCALHOST}/users/userdata/${userId}`);
+        const data = await response.json();
+        if (response.ok) {
+          setUserData(data);
+        } else {
+          console.log('error', response.status);
+        }
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -73,7 +80,7 @@ const ProfileScreen = () => {
         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
           <View style={{ flex: 1, alignItems: 'flex-start'}}>
             <Text style={styles.smallWhiteText}>
-              {/* {userData.email} */}
+              {userData.email}
             </Text>
           </View>
         </View>
@@ -107,10 +114,10 @@ const ProfileScreen = () => {
         
         {/* Friend Button */}
         <TouchableOpacity 
-          style={styles.friendButton}>
-          {/* // onPress={() => {
-          //   navigation.navigate('profileEditScreen', {data: userData});        
-          // }}> */}
+          style={styles.friendButton}
+          onPress={() => {
+            navigation.navigate('EditProfile', {data: userData});        
+          }}>
             <Text style={styles.friendButtonText}>Chỉnh sửa thông tin cá nhân</Text>
         </TouchableOpacity>
 

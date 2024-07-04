@@ -17,7 +17,7 @@ import Welcome from './Screen/welcomeScreen.js';
 
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
-import FriendsScreen from './Screen/friendsScreen.js';
+import FriendsScreen from './Screen/FriendsScreen.js';
 
 import HomeScreen from './Screen/homeScreen.js'
 import RegisterScreen from './Screen/registerScreen.js';
@@ -32,6 +32,7 @@ import PictureQuizScreen from './Screen/pictureQuizScreen.js';
 import FillBlank from './Screen/fillBlankScreen.js';
 import ArrangeSentence from './Screen/arrangeSentence.js';
 import PairWord from './Screen/pairWordScreen.js';
+
 
 import QuizHolderScreen from './Screen/quizHolderScreen';
 import FriendSentScreen from './Screen/friendSentReqScreen.js';
@@ -128,6 +129,11 @@ const stack = () => {
           options={{headerShown: false}}
         />
         <StackNav.Screen
+          name="QuizHolderScreen"
+          component={QuizHolderScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
           name="FillBlank"
           component={FillBlank}
           options={{headerShown: false}}
@@ -169,6 +175,16 @@ const stack = () => {
         <StackNav.Screen
           name="GreetingScreen"
           component={GreetingScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="EditProfile"
+          component={ProfileEditScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="Profile"
+          component={ProfileScreen}
           options={{headerShown: false}}
         />
         <StackNav.Screen

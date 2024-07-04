@@ -8,7 +8,7 @@ import {
   ToastAndroid
 } from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
-import {UserContext} from '../Screen/userContext';
+import {UserContext} from '../Screen/UserContext';
 import {LOCALHOST} from '../config';
 import axios from 'axios';
 import base64 from 'base-64';
