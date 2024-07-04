@@ -8,14 +8,14 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Progress from 'react-native-progress';
 import Icon from 'react-native-vector-icons/Octicons';
 import axios from 'axios';
-import { LOCALHOST } from '../config';
-import { UserContext } from './userContext';
+import {LOCALHOST} from '../config';
+import {UserContext} from './userContext';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({navigation}) => {
   const unavaliableTestColor = 'gray';
   const finishTestColor = '#61FF00';
   const currentTestColor = 'yellow';
@@ -28,37 +28,54 @@ const HomeScreen = ({ navigation }) => {
   const [getCompletion, setCompletion] = useState(0.2);
   const [getCountTestComplete, setCountTestComplete] = useState([]);
   const [status, setStatus] = useState([]);
+  const [statusPercent, setStatusPercent] = useState([]);
 
   useEffect(() => {
     const fetchDataChapterandTest = async () => {
       try {
-        const responseChater = await fetch(`${LOCALHOST}/chapter/getChapter`);
-        const ChapterData = await responseChater.json();
+        const responseChapter = await fetch(`${LOCALHOST}/chapter/getChapter`);
+        const ChapterData = await responseChapter.json();
 
-        if (responseChater.ok) {
+        if (responseChapter.ok) {
           setChapter(ChapterData);
           let allTests = [];
-          
+
           for (const chapter of ChapterData) {
-            // let counter=0;
-            // let counterArray =[]
             const responseTest = await axios.get(
               `${LOCALHOST}/test/${chapter._id}`,
             );
             const TestData = responseTest.data;
             if (TestData.length > 0) {
               allTests.push(...TestData);
-            } 
-            // if(TestData.status == 1 && TestData.chapterId == chapter._id)
-            // {
-            //   counter+=1;
-            // }
-            // counterArray.push(counter);
-            
+            }
           }
 
           setTest(allTests);
-          // setCountTestComplete(counterArray)
+
+          // Count the statuses for each chapter
+          const statusCounts = allTests.reduce((acc, test) => {
+            if (!acc[test.chapterId]) {
+              acc[test.chapterId] = {statusis1: 0, statusis0: 0};
+            }
+            if (test.status === 1) {
+              acc[test.chapterId].statusis1 += 1;
+            } else if (test.status === 0) {
+              acc[test.chapterId].statusis0 += 1;
+            }
+            return acc;
+          }, {});
+
+          setStatus(statusCounts);
+          const statusPercentage = {};
+          for (const chapterId in statusCounts) {
+            const totalTests =
+              statusCounts[chapterId].statusis0 +
+              statusCounts[chapterId].statusis1;
+            const completedTests = statusCounts[chapterId].statusis1;
+            statusPercentage[chapterId] =
+              totalTests > 0 ? completedTests / totalTests : 0;
+          }
+          setStatusPercent(statusPercentage);
         }
       } catch (error) {
         console.log('Error message', error);
@@ -66,53 +83,9 @@ const HomeScreen = ({ navigation }) => {
     };
 
     fetchDataChapterandTest();
-   
   }, []);
-  // console.log(status.length);
 
-
-
-  // const fetchStatusCountByChapter = ()=>{
-  //     const currentChapter = getTest[0]
-  //     console.log(getTest);
-  //     let counter = 0;
-  //     getTest.map((e,index) =>{
-  //       if(e[2]===currentChapter)
-  //       {
-  //         counter +=1;
-  //       }
-  //       else{
-  //         getCountTestComplete.push(counter);
-  //         counter = 0;
-  //         currentChapter = e[2];
-  //       }
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   const fetchAllTests = async (chapterId) => {
-  //     try {
-  //       const promises = axios.get(`${LOCALHOST}/test/${chapterId}`);
-  //       const responses = await Promise.all(promises);
-  //       const tests = responses.map(response => response.data);
-  //       setTest(tests);
-  //     } catch (error) {
-  //       console.error('Error fetching test data', error);
-  //     }
-  //   };
-
-  //   if (getChapter.length > 0) {
-  //     fetchAllTests();
-  //   }
-  // },[]);
-
-  // console.log(getChapter);
-  // console.log(getTest);
-  // console.log(getCountTestComplete);
-
-  //   useEffect(() => {
-  //     fetchAllChapter();
-  //   }, []);
+  // console.log(status);
 
   const updateCompleteTest = () => {
     setCountTestComplete(getCountTestComplete + 1);
@@ -144,424 +117,442 @@ const HomeScreen = ({ navigation }) => {
         {
           text: 'OK',
           onPress: () => handleAlertPress(testId),
-
         },
       ],
-      { cancelable: false },
+      {cancelable: false},
     );
   };
-  const handleAlertPress = (testId) => {
+  const handleAlertPress = testId => {
     // navigation.navigate("FillBlank");
     console.log(testId);
-    navigation.navigate('PairWord', { testId });
+    navigation.navigate('PairWord', {testId});
   };
-  getTest.map((item, index) => {
-    if (item.status == 1 && item.length / 6  ) {
-      setCountTestComplete(getCountTestComplete + 1);
-      console.log(getCountTestComplete);
-    }
-  })
-  
-
 
   return (
     <ScrollView>
       {getChapter.length > 0 ? (
-        getChapter.map((chapter, i) =>
-          i % 2 === 0 ? (
-            <View key={i}>
-              <View style={[styles.head]}>
-                <View style={[styles.topicContainer]}>
-                  <View style={[styles.topicText]}>
-                    <Text style={[styles.topicName]}>
-                      {chapter.chapterName}
-                    </Text>
-                    <Text style={[styles.topicDescription]}>
-                      {chapter.chapterDescription}
-                    </Text>
-                  </View>
-                  <View style={[styles.progessIndicator]}>
-                    <Progress.Bar
-                      progress={getCompletion}
-                      unfilledColor="gray"
-                      borderRadius={100}
-                      borderColor="#086CA4"
-                      color={getProgressBarColor()}
-                      height={'100%'}
-                      style={styles.processBar}
-                    />
-                    <Text style={[styles.indicator]}>
-                      {getCompletion * 100}%
-                    </Text>
-                  </View>
-                  <View style={[styles.difficultContainer]}>
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '20%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '1'
-                              ? '#61FF00'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '25%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '2'
-                              ? '#61FF00'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '30%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '3'
-                              ? '#ECFF15'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '35%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '4'
-                              ? '#ECFF15'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '40%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '5'
-                              ? '#F00000'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '45%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '6'
-                              ? '#F00000'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
+        getChapter.map((chapter, i) => {
+          const chapterCompletion = (statusPercent[chapter._id] || 0).toFixed(2);
+          return (
+            i % 2 === 0 ? (
+              <View key={i}>
+                <View style={[styles.head]}>
+                  <View style={[styles.topicContainer]}>
+                    <View style={[styles.topicText]}>
+                      <Text style={[styles.topicName]}>
+                        {chapter.chapterName}
+                      </Text>
+                      <Text style={[styles.topicDescription]}>
+                        {chapter.chapterDescription}
+                      </Text>
+                    </View>
+                    <View style={[styles.progessIndicator]}>
+                      <Progress.Bar
+                        progress={chapterCompletion}
+                        unfilledColor="gray"
+                        borderRadius={100}
+                        borderColor="#086CA4"
+                        color={getProgressBarColor()}
+                        height={'100%'}
+                        style={styles.processBar}
+                      />
+                      <Text style={[styles.indicator]}>
+                        {chapterCompletion * 100}%
+                      </Text>
+                    </View>
+  
+                    <View style={[styles.difficultContainer]}>
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '20%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '1'
+                                ? '#61FF00'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '25%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '2'
+                                ? '#61FF00'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '30%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '3'
+                                ? '#ECFF15'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '35%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '4'
+                                ? '#ECFF15'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '40%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '5'
+                                ? '#F00000'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '45%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '6'
+                                ? '#F00000'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                    </View>
                   </View>
                 </View>
+                {getTest.length > 0 && (
+                  <View style={[styles.content]}>
+                    <ImageBackground
+                      resizeMode="contain"
+                      style={[styles.image]}
+                      source={require('../Assets/Images/man.png')}
+                    />
+                    <View style={[styles.anotherContent]}>
+                      {getTest.slice(getIndex).map((item, index) => (
+                        <View key={index}>
+                          {(index === chapter.chapterName.slice(-1) * 6 - 6 ||
+                            index === chapter.chapterName.slice(-1) * 6 - 1) && (
+                            <View style={[styles.iconContainer_16_1]}>
+                              <TouchableOpacity
+                                style={[
+                                  styles.iconBackground_1,
+                                  {
+                                    backgroundColor:
+                                      item.status === 0
+                                        ? unavaliableTestColor
+                                        : '#61FF00',
+                                  },
+                                ]}
+                                onPress={() =>
+                                  showAlert(
+                                    item._id,
+                                    chapter.chapterName,
+                                    item.testName,
+                                  )
+                                }>
+                                <Icon
+                                  name="check-circle-fill"
+                                  style={[styles.icon]}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                          )}
+                          {(index === chapter.chapterName.slice(-1) * 6 - 5 ||
+                            index === chapter.chapterName.slice(-1) * 6 - 2) && (
+                            <View>
+                              <View style={[styles.layout_14_1]}>
+                                <View style={[styles.iconContainer_25_1]}>
+                                  <TouchableOpacity
+                                    style={[
+                                      styles.iconBackground_5,
+                                      {
+                                        backgroundColor:
+                                          item.status === 0
+                                            ? unavaliableTestColor
+                                            : '#61FF00',
+                                      },
+                                    ]}
+                                    onPress={() =>
+                                      showAlert(
+                                        item._id,
+                                        chapter.chapterName,
+                                        item.testName,
+                                      )
+                                    }>
+                                    <Icon
+                                      name="feed-rocket"
+                                      style={[styles.icon]}
+                                    />
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            </View>
+                          )}
+                          {(index === chapter.chapterName.slice(-1) * 6 - 4 ||
+                            index === chapter.chapterName.slice(-1) * 6 - 3) && (
+                            <View>
+                              <View style={[styles.layout_23_1]}>
+                                <View style={[styles.iconContainer_34_1]}>
+                                  <TouchableOpacity
+                                    style={[
+                                      styles.iconBackground_5,
+                                      {
+                                        backgroundColor:
+                                          item.status === 0
+                                            ? unavaliableTestColor
+                                            : '#61FF00',
+                                      },
+                                    ]}
+                                    onPress={() =>
+                                      showAlert(
+                                        item._id,
+                                        chapter.chapterName,
+                                        item.testName,
+                                      )
+                                    }>
+                                    <Icon
+                                      name="feed-star"
+                                      style={[styles.icon]}
+                                    />
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            </View>
+                          )}
+                        </View>
+                      ))}
+                    </View>
+                  </View>
+                )}
               </View>
-              {getTest.length > 0 && (
-                <View style={[styles.content]}>
-                  <ImageBackground resizeMode="contain" style={[styles.image]} source={require('../Assets/Images/man.png')} />
-                  <View style={[styles.anotherContent]}>
-                    {getTest.slice(getIndex).map((item, index) => (
-                      <View key={index}>
-                        {(index === chapter.chapterName.slice(-1) * 6 - 6 || index === chapter.chapterName.slice(-1) * 6 - 1) && (
-                          <View style={[styles.iconContainer_16_1]}>
-                            <TouchableOpacity
-                              style={[
-                                styles.iconBackground_1,
-                                {
-                                  backgroundColor:
-                                    item.status === 0
-                                      ? unavaliableTestColor
-                                      : '#61FF00',
-                                },
-                              ]}
-                              onPress={() =>
-                                showAlert(
-                                  item._id,
-                                  chapter.chapterName,
-                                  item.testName,
-                                )
-                              }>
-                              <Icon
-                                name="check-circle-fill"
-                                style={[styles.icon]}
-                              />
-                            </TouchableOpacity>
-                          </View>
-                        )}
-                        {(index === chapter.chapterName.slice(-1) * 6 - 5 || index === chapter.chapterName.slice(-1) * 6 - 2) && (
-                          <View>
-                            <View style={[styles.layout_14_1]}>
-                              <View style={[styles.iconContainer_25_1]}>
-                                <TouchableOpacity
-                                  style={[
-                                    styles.iconBackground_5,
-                                    {
-                                      backgroundColor:
-                                        item.status === 0
-                                          ? unavaliableTestColor
-                                          : '#61FF00',
-                                    },
-                                  ]}
-                                  onPress={() =>
-                                    showAlert(
-                                      item._id,
-                                      chapter.chapterName,
-                                      item.testName,
-                                    )
-                                  }>
-                                  <Icon name="feed-rocket" style={[styles.icon]} />
-                                </TouchableOpacity>
-                              </View>
-                            </View>
-                          </View>
-                        )}
-                        {(index === chapter.chapterName.slice(-1) * 6 - 4 || index === chapter.chapterName.slice(-1) * 6 - 3) && (
-                          <View>
-                            <View style={[styles.layout_23_1]}>
-
-                              <View style={[styles.iconContainer_34_1]}>
-                                <TouchableOpacity
-                                  style={[
-                                    styles.iconBackground_5,
-                                    {
-                                      backgroundColor:
-                                        item.status === 0
-                                          ? unavaliableTestColor
-                                          : '#61FF00',
-                                    },
-                                  ]}
-                                  onPress={() =>
-                                    showAlert(
-                                      item._id,
-                                      chapter.chapterName,
-                                      item.testName,
-                                    )
-                                  }>
-                                  <Icon name="feed-star" style={[styles.icon]} />
-                                </TouchableOpacity>
-                              </View>
-                            </View>
-                          </View>
-                        )}
-                      </View>
-
-                    ))}
-                  </View>
-
-                </View>
-              )}
-            </View>
-          ) : (
-            <View key={i}>
-              <View style={[styles.head]}>
-                <View style={[styles.topicContainer]}>
-                  <View style={[styles.topicText]}>
-                    <Text style={[styles.topicName]}>
-                      {chapter.chapterName}
-                    </Text>
-                    <Text style={[styles.topicDescription]}>
-                      {chapter.chapterDescription}
-                    </Text>
-                  </View>
-                  <View style={[styles.progessIndicator]}>
-                    <Progress.Bar
-                      progress={getCompletion}
-                      unfilledColor="gray"
-                      borderRadius={100}
-                      borderColor="#086CA4"
-                      color={getProgressBarColor()}
-                      height={'100%'}
-                      style={styles.processBar}
-                    />
-                    <Text style={[styles.indicator]}>
-                      {getCompletion * 100}%
-                    </Text>
-                  </View>
-                  <View style={[styles.difficultContainer]}>
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '20%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '1'
-                              ? '#61FF00'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '25%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '2'
-                              ? '#61FF00'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '30%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '3'
-                              ? '#ECFF15'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '35%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '4'
-                              ? '#ECFF15'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '40%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '5'
-                              ? '#F00000'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
-                    <View
-                      style={[
-                        styles.diffLevel,
-                        { height: '45%' },
-                        {
-                          backgroundColor:
-                            chapter.chapterDifficulties >= '6'
-                              ? '#F00000'
-                              : unDiffColor,
-                        },
-                      ]}
-                    />
+            ) : (
+              <View key={i}>
+                <View style={[styles.head]}>
+                  <View style={[styles.topicContainer]}>
+                    <View style={[styles.topicText]}>
+                      <Text style={[styles.topicName]}>
+                        {chapter.chapterName}
+                      </Text>
+                      <Text style={[styles.topicDescription]}>
+                        {chapter.chapterDescription}
+                      </Text>
+                    </View>
+                    <View style={[styles.progessIndicator]}>
+                      <Progress.Bar
+                        progress={chapterCompletion}
+                        unfilledColor="gray"
+                        borderRadius={100}
+                        borderColor="#086CA4"
+                        color={getProgressBarColor()}
+                        height={'100%'}
+                        style={styles.processBar}
+                      />
+                      <Text style={[styles.indicator]}>
+                        {chapterCompletion * 100}%
+                      </Text>
+                    </View>
+                    <View style={[styles.difficultContainer]}>
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '20%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '1'
+                                ? '#61FF00'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '25%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '2'
+                                ? '#61FF00'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '30%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '3'
+                                ? '#ECFF15'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '35%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '4'
+                                ? '#ECFF15'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '40%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '5'
+                                ? '#F00000'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                      <View
+                        style={[
+                          styles.diffLevel,
+                          {height: '45%'},
+                          {
+                            backgroundColor:
+                              chapter.chapterDifficulties >= '6'
+                                ? '#F00000'
+                                : unDiffColor,
+                          },
+                        ]}
+                      />
+                    </View>
                   </View>
                 </View>
+                {getTest.length > 0 && (
+                  <View style={[styles.content]}>
+                    <View style={[styles.anotherContent]}>
+                      {getTest.slice(getIndex).map((item, index) => (
+                        <View key={index}>
+                          {(index === chapter.chapterName.slice(-1) * 6 - 6 ||
+                            index === chapter.chapterName.slice(-1) * 6 - 1) && (
+                            <View style={[styles.iconContainer_16_2]}>
+                              <TouchableOpacity
+                                style={[
+                                  styles.iconBackground_1,
+                                  {
+                                    backgroundColor:
+                                      item.status === 0
+                                        ? unavaliableTestColor
+                                        : '#61FF00',
+                                  },
+                                ]}
+                                onPress={() =>
+                                  showAlert(
+                                    item._id,
+                                    chapter.chapterName,
+                                    item.testName,
+                                  )
+                                }>
+                                <Icon
+                                  name="check-circle-fill"
+                                  style={[styles.icon]}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                          )}
+                          {(index === chapter.chapterName.slice(-1) * 6 - 5 ||
+                            index === chapter.chapterName.slice(-1) * 6 - 2) && (
+                            <View>
+                              <View style={[styles.layout_14_1]}>
+                                <View style={[styles.iconContainer_25_2]}>
+                                  <TouchableOpacity
+                                    style={[
+                                      styles.iconBackground_5,
+                                      {
+                                        backgroundColor:
+                                          item.status === 0
+                                            ? unavaliableTestColor
+                                            : '#61FF00',
+                                      },
+                                    ]}
+                                    onPress={() =>
+                                      showAlert(
+                                        item._id,
+                                        chapter.chapterName,
+                                        item.testName,
+                                      )
+                                    }>
+                                    <Icon
+                                      name="feed-rocket"
+                                      style={[styles.icon]}
+                                    />
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            </View>
+                          )}
+                          {(index === chapter.chapterName.slice(-1) * 6 - 4 ||
+                            index === chapter.chapterName.slice(-1) * 6 - 3) && (
+                            <View>
+                              <View style={[styles.layout_23_1]}>
+                                <View style={[styles.iconContainer_34_2]}>
+                                  <TouchableOpacity
+                                    style={[
+                                      styles.iconBackground_5,
+                                      {
+                                        backgroundColor:
+                                          item.status === 0
+                                            ? unavaliableTestColor
+                                            : '#61FF00',
+                                      },
+                                    ]}
+                                    onPress={() =>
+                                      showAlert(
+                                        item._id,
+                                        chapter.chapterName,
+                                        item.testName,
+                                      )
+                                    }>
+                                    <Icon
+                                      name="feed-star"
+                                      style={[styles.icon]}
+                                    />
+                                  </TouchableOpacity>
+                                </View>
+                              </View>
+                            </View>
+                          )}
+                        </View>
+                      ))}
+                    </View>
+                    <ImageBackground
+                      resizeMode="contain"
+                      style={[styles.image_2]}
+                      source={require('../Assets/Images/man.png')}
+                    />
+                  </View>
+                )}
               </View>
-              {getTest.length > 0 && (
-                <View style={[styles.content]}>
-                  <View style={[styles.anotherContent]}>
-                    {getTest.slice(getIndex).map((item, index) => (
-                      <View key={index}>
-                        {(index === chapter.chapterName.slice(-1) * 6 - 6 || index === chapter.chapterName.slice(-1) * 6 - 1) && (
-                          <View style={[styles.iconContainer_16_2]}>
-                            <TouchableOpacity
-                              style={[
-                                styles.iconBackground_1,
-                                {
-                                  backgroundColor:
-                                    item.status === 0
-                                      ? unavaliableTestColor
-                                      : '#61FF00',
-                                },
-                              ]}
-                              onPress={() =>
-                                showAlert(
-                                  item._id,
-                                  chapter.chapterName,
-                                  item.testName,
-                                )
-                              }>
-                              <Icon
-                                name="check-circle-fill"
-                                style={[styles.icon]}
-                              />
-                            </TouchableOpacity>
-                          </View>
-                        )}
-                        {(index === chapter.chapterName.slice(-1) * 6 - 5 || index === chapter.chapterName.slice(-1) * 6 - 2) && (
-                          <View>
-                            <View style={[styles.layout_14_1]}>
-                              <View style={[styles.iconContainer_25_2]}>
-                                <TouchableOpacity
-                                  style={[
-                                    styles.iconBackground_5,
-                                    {
-                                      backgroundColor:
-                                        item.status === 0
-                                          ? unavaliableTestColor
-                                          : '#61FF00',
-                                    },
-                                  ]}
-                                  onPress={() =>
-                                    showAlert(
-                                      item._id,
-                                      chapter.chapterName,
-                                      item.testName,
-                                    )
-                                  }>
-                                  <Icon name="feed-rocket" style={[styles.icon]} />
-                                </TouchableOpacity>
-                              </View>
-                            </View>
-                          </View>
-                        )}
-                        {(index === chapter.chapterName.slice(-1) * 6 - 4 || index === chapter.chapterName.slice(-1) * 6 - 3) && (
-                          <View>
-                            <View style={[styles.layout_23_1]}>
-
-                              <View style={[styles.iconContainer_34_2]}>
-                                <TouchableOpacity
-                                  style={[
-                                    styles.iconBackground_5,
-                                    {
-                                      backgroundColor:
-                                        item.status === 0
-                                          ? unavaliableTestColor
-                                          : '#61FF00',
-                                    },
-                                  ]}
-                                  onPress={() =>
-                                    showAlert(
-                                      item._id,
-                                      chapter.chapterName,
-                                      item.testName,
-                                    )
-                                  }>
-                                  <Icon name="feed-star" style={[styles.icon]} />
-                                </TouchableOpacity>
-                              </View>
-                            </View>
-                          </View>
-                        )}
-                      </View>
-                    ))}
-                  </View>
-                  <ImageBackground resizeMode="contain" style={[styles.image_2]} source={require('../Assets/Images/man.png')} />
-                </View>
-              )}
-            </View>
-          ),
-        )
+            )
+          )
+        }
+      )
       ) : (
         <View key="empty">
           <Text>No items to display</Text>
@@ -653,7 +644,7 @@ const styles = StyleSheet.create({
   anotherContent: {
     flex: 5,
     alignSelf: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   iconContainer_16_1: {
     width: '55%',
@@ -684,8 +675,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     width: '80%',
     // backgroundColor: 'blue',
-    alignItems: 'flex-end'
-
+    alignItems: 'flex-end',
   },
   iconContainer_34_2: {
     width: '75%',
@@ -693,8 +683,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
     justifyContent: 'center',
     alignSelf: 'flex-start',
-    paddingVertical: 5
-
+    paddingVertical: 5,
   },
   iconBackground_1: {
     backgroundColor: 'green',
@@ -753,12 +742,11 @@ const styles = StyleSheet.create({
   layout_14_1: {
     flexDirection: 'row',
     alignItems: 'center',
-
   },
   layout_23_1: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   image: {
     flex: 1,
@@ -772,7 +760,7 @@ const styles = StyleSheet.create({
     height: 200,
     width: 200,
     alignSelf: 'center',
-    transform: [{ scaleX: -1 }],
+    transform: [{scaleX: -1}],
   },
   iconLayout: {
     flex: 2,

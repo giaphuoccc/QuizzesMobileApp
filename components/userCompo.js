@@ -15,7 +15,7 @@ import base64 from 'base-64';
 import { useToast } from 'react-native-toast-notifications';
 import Icon from 'react-native-vector-icons/Octicons';
 
-const User = ({item, onFriendRequestSent}) => {
+const User = ({item, onFriendRequestSent, onFriendRequestSentReload}) => {
   const toast = useToast();
   const {userId, users} = useContext(UserContext);
   const [requestSent, setRequestSent] = useState(false);
@@ -30,7 +30,7 @@ const User = ({item, onFriendRequestSent}) => {
         body: JSON.stringify({currentUserId, selectedUserId}),
       });
       if (response.ok) {
-        // setRequestSent(true);
+        setRequestSent(true);
         toast.show('Successfully sent a new friend request!', {
           type: 'success',
           duration: 1500,
@@ -39,9 +39,10 @@ const User = ({item, onFriendRequestSent}) => {
           offsetBottom: 500,
           icon: <Icon name='check-circle' color={"#FFF"} size={24}/>,
         });
-        if (onFriendRequestSent) {
+        if (onFriendRequestSent || onFriendRequestSentReload) {
           console.log('Calling onFriendRequestSent callback...');
           onFriendRequestSent();
+          onFriendRequestSentReload();
         }
       }
     } catch (err) {
@@ -51,7 +52,7 @@ const User = ({item, onFriendRequestSent}) => {
 
 
   return (
-    <View
+    <Pressable
       style={{
         flexDirection: 'row',
         alignItems: 'center',
@@ -95,7 +96,7 @@ const User = ({item, onFriendRequestSent}) => {
           </Text>
         </Pressable>
       </View>
-    </View>
+    </Pressable>
   );
 };
 export default User;
