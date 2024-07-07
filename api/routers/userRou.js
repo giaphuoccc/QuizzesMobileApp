@@ -26,7 +26,6 @@ app.post('/register', (req, res) => {
     })
     .catch(err => {
       console.log('Error registering user!!!', err);
-
       res.status(400).json({ message: 'Error registered the user!' });
     });
 });

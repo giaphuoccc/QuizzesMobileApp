@@ -123,9 +123,7 @@ const HomeScreen = ({navigation}) => {
     );
   };
   const handleAlertPress = testId => {
-    // navigation.navigate("FillBlank");
-    console.log(testId);
-    navigation.navigate('PairWord', {testId});
+    navigation.navigate('QuizHolderScreen', {testId});
   };
 
   return (

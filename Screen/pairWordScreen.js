@@ -11,24 +11,35 @@ import {
 import * as Progress from 'react-native-progress';
 import { stopMapper } from 'react-native-reanimated';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
+import { useRoute } from '@react-navigation/native';
 
 const PairWord = ({navigation}) => {
   const route = useRoute();
-  const testId = route.params.testId;
-  // console.log("123+"+testId);
-  const a = route.params.quiz;
-  console.log(a );
-  const initLAA = ['cat', 'gun', 'chair', 'fire'];
-  const copyLAArray = ['cat', 'gun', 'chair', 'fire'];
+  const quiz = route.params.quiz;
+  const idTest = quiz.testId
+  const idUser = route.params.idUser;
+  const totalPoint = route.params.totalPoint 
+  const nextQuizIndex = route.params.quizIndex + 1;
+  const progress = route.params.progress;
+  const initLAA = quiz.choice
+  const copyLAArray = Array.from(initLAA)
+  const initRAA = quiz.result
+  const copyRAArray = Array.from(initRAA)
+
+  const state = {
+    RIGHT: "right",
+    NEUTRAL: "neutral",
+    WRONG: "wrong"
+  }
+  
   const [leftAnsArray, setLAnsArray] = useState([]);
-  const [ansLCorrectArray, setAnsLCorrectArray] = useState([false,false,false,false]);
-  const initRAA = ['mèo', 'súng', 'ghế', 'lửa'];
-  const copyRAArray = ['mèo', 'súng', 'ghế', 'lửa'];
+  const [ansLStateArray, setAnsLStateArray] = useState([state.NEUTRAL,state.NEUTRAL,state.NEUTRAL,state.NEUTRAL]);
   const [rightAnsArray, setRAnsArray] = useState([]);
-  const [ansRCorrectArray, setAnsRCorrectArray] = useState([false,false,false,false]);
+  const [ansRStateArray, setAnsRStateArray] = useState([state.NEUTRAL,state.NEUTRAL,state.NEUTRAL,state.NEUTRAL]);
   const [selectedColumn, setSelectedColumn] = useState(-1)
   const [selectedAnswer, setSelectedAnswer] = useState("")
   const [selectedIndex, setSelectedIndex] = useState(-1)
+  const [coupleSelectedIndex, setCoupleSelectedIndex] = useState([])
   const [nextBtnText, setNextBtnText] = useState('Tiếp theo')
   const selectedFColor = '#00A3FF';
   const selectedBGColor = '#B6E9FF';
@@ -38,7 +49,7 @@ const PairWord = ({navigation}) => {
   const getRandomIntInclusive = (min, max) => {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); 
   };
   const [isFirstGenerate, setIsFirstGenerate] = useState(true)
   if(isFirstGenerate){
@@ -60,25 +71,59 @@ const PairWord = ({navigation}) => {
     return (
       <TouchableOpacity 
       key={i} 
-      disabled = {column === 0 ? ansLCorrectArray[i] : ansRCorrectArray[i]}
+      disabled = {
+        column === 0 ? 
+        ansLStateArray[i] === state.RIGHT || ansLStateArray[i] === state.WRONG ? true : false : 
+        ansRStateArray[i] === state.RIGHT || ansRStateArray[i] === state.WRONG ? true : false}
       style={[
         styles.answerBtn,
         {
           backgroundColor: 
             column === 0 ? 
-            ansLCorrectArray[i] ? 
-            correctBGColor : selectedAnswer === e ?
-            selectedBGColor :'white'
+            ansLStateArray[i] === state.RIGHT ? correctBGColor : 
+            ansLStateArray[i] === state.WRONG ? wrongBGColor :
+            selectedAnswer === e ? selectedBGColor :
+            'white'
             : 
-            ansRCorrectArray[i] ? 
-            correctBGColor : selectedAnswer === e ?
-            selectedBGColor :'white'
+            ansRStateArray[i] === state.RIGHT ? correctBGColor : 
+            ansRStateArray[i] === state.WRONG ? wrongBGColor :
+            selectedAnswer === e ? selectedBGColor :
+            'white'
             ,
           borderColor:  selectedAnswer === e ? selectedBColor :'black',
-          opacity: column === 0 ? ansLCorrectArray[i] ? 0.6 : 1 : ansRCorrectArray[i] ? 0.6 : 1
         }
       ]} 
       onPress={()=>onPressChoice(e,i,column)}>
+        <View style={{
+          position: 'absolute', 
+          top: -12.5, 
+          left: -12.5,
+          backgroundColor: 'white', 
+          padding: 10,
+          borderRadius: 100,
+          width: 50,
+          height: 50,
+          justifyContent: 'center',
+          opacity: column === 0 ?
+          ansLStateArray[i] === state.RIGHT || ansLStateArray[i] === state.WRONG ? 1 : 0 :
+           ansRStateArray[i] === state.RIGHT ||ansRStateArray[i] === state.WRONG ? 1 : 0}}>
+            <Text style={{
+              textAlign: 'center', 
+              fontSize: 20,
+              fontWeight: 'bold'}}>
+                {coupleSelectedIndex.map((element,index)=>{
+                  if(column === 0){
+                    if(element[0] === i){
+                      return index + 1
+                    }
+                  }else{
+                    if(element[1] === i){
+                      return index + 1
+                    }
+                  }
+                })}
+            </Text>
+          </View>
         <Text 
         style={[
           styles.answerBtnText,
@@ -93,6 +138,7 @@ const PairWord = ({navigation}) => {
     if(selectedColumn !== -1 && selectedColumn !== column){
       let leftAnswer, rightAnswer = ""
       let leftIndex, rightIndex = 0
+      let column = 0;
       switch (selectedColumn) {
         case 0:
           leftAnswer = selectedAnswer
@@ -105,6 +151,7 @@ const PairWord = ({navigation}) => {
           leftIndex = index
           rightAnswer = selectedAnswer
           rightIndex = selectedIndex
+          column = 1
           break;
       }
       const checkLeftAnswer = (string) => {
@@ -115,36 +162,78 @@ const PairWord = ({navigation}) => {
       }
       if(initLAA.findIndex(checkLeftAnswer) === initRAA.findIndex(checkRightAnswer)){
         //success 
-        //update bg br fcolor to hide
-        setSelectedAC('',-1, -1)
-        const newALCArray = ansLCorrectArray.map((e, i) => {
+        const newALSArray = ansLStateArray.map((e, i) => {
           if (i === leftIndex) {
-            return true;
+            return state.RIGHT;
           } else {
             return e;
           }
         });
-        setAnsLCorrectArray(newALCArray);
-        const newARCArray = ansRCorrectArray.map((e, i) => {
+        setAnsLStateArray(newALSArray);
+        const newARSArray = ansRStateArray.map((e, i) => {
           if (i === rightIndex) {
-            return true;
+            return state.RIGHT;
           } else {
             return e;
           }
         });
-        setAnsRCorrectArray(newARCArray);
+        setAnsRStateArray(newARSArray);
       }else{
         //fail
-        setSelectedAC('', -1, -1)
-        //update bg br fcolor to normal
-        console.log(e,column);
+        if(column === 0){
+          const newALSArray = ansLStateArray.map((e, i) => {
+            if (i === leftIndex) {
+              return state.WRONG;
+            } else {
+              return e;
+            }
+          });
+          setAnsLStateArray(newALSArray);
+          rightAnsArray.map((e, i)=>{
+            rightAnswer = e
+            if(initLAA.findIndex(checkLeftAnswer) === initRAA.findIndex(checkRightAnswer)){
+              rightIndex = i
+            }
+          })
+          const newARSArray = ansRStateArray.map((e, i) => {
+            if (i === rightIndex) {
+              return state.WRONG;
+            } else {
+              return e;
+            }
+          });
+          setAnsRStateArray(newARSArray);
+        }else{
+          leftAnsArray.map((e, i)=>{
+            leftAnswer = e
+            if(initLAA.findIndex(checkLeftAnswer) === initRAA.findIndex(checkRightAnswer)){
+              leftIndex = i
+            }
+          })
+          const newALSArray = ansLStateArray.map((e, i) => {
+            if (i === leftIndex) {
+              return state.WRONG;
+            } else {
+              return e;
+            }
+          });
+          setAnsLStateArray(newALSArray);
+          const newARSArray = ansRStateArray.map((e, i) => {
+            if (i === rightIndex) {
+              return state.WRONG;
+            } else {
+              return e;
+            }
+          });
+          setAnsRStateArray(newARSArray);
+        }
       }
+      coupleSelectedIndex.push([leftIndex,rightIndex])
+      setSelectedAC('', -1, -1)
     } else if(selectedAnswer === e) {
       setSelectedAC('', -1, -1)
-      //update bg br fcolor to normal
     }else {
       setSelectedAC(e,index, column)
-      //update bg br fcolor to selected
     }
   }
   const setSelectedAC = (answer,index, column) => {
@@ -153,14 +242,22 @@ const PairWord = ({navigation}) => {
     setSelectedAnswer(answer)
   }
   const submit = () =>{
-    let isDone = true
-    ansLCorrectArray.map((e,i)=>{
-      if(e === false){
-        isDone = false
+    let point = totalPoint
+    let counter = 0
+    ansLStateArray.map((e,i)=>{
+      if(e === state.RIGHT){
+        point += 1 / initLAA.length
+      }
+      if(e === state.RIGHT || e === state.WRONG){
+        counter++
       }
     })
-    if(isDone){
-      navigation.navigate("FillBlank")
+    if(counter === initLAA.length){
+      navigation.navigate('QuizHolderScreen', 
+        {idTest: idTest, 
+          idUser: idUser, 
+          totalPoint: point, 
+          quizIndex: nextQuizIndex});
     }else{
       Alert.alert('Bạn chưa hoàn thành ghép các cặp tương ứng.');
     }
@@ -179,7 +276,7 @@ const PairWord = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <Progress.Bar
-          progress={0.9}
+          progress={progress}
           unfilledColor="black"
           borderRadius={200}
           borderColor="#086CA4"

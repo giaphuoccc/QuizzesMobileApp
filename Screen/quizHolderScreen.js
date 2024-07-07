@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {LOCALHOST} from '../config';
 import { useRoute } from '@react-navigation/native';
 
@@ -41,8 +41,11 @@ const QuizHolderScreen = ({navigation}) => {
     if (quizArray.length > 0) {
       const currentQuiz = quizArray[quizIndex];
       const progress = quizIndex/quizArray.length
-      if (currentQuiz && currentQuiz.typeDescription === "0") {
-        console.log("To ArrangeSentence");
+      if(quizIndex >= quizArray.length){
+        //add new progress to server
+        navigation.navigate('HomeScreen')
+      }else if (currentQuiz && currentQuiz.typeDescription === "0") {
+        console.log("To ArrangeSentence",quizIndex, progress, totalPoint);
         navigation.navigate('ArrangeSentence', 
           { quiz: currentQuiz, 
             idUser: idUser, 
@@ -50,7 +53,7 @@ const QuizHolderScreen = ({navigation}) => {
             progress: progress,
             totalPoint: totalPoint });
       } else if (currentQuiz && currentQuiz.typeDescription === '1') {
-        console.log("To FillBlank");
+        console.log("To FillBlank",quizIndex, progress, totalPoint);
         navigation.navigate('FillBlank', 
           { quiz: currentQuiz, 
             idUser:idUser, 
@@ -58,7 +61,7 @@ const QuizHolderScreen = ({navigation}) => {
             progress: progress,
             totalPoint: totalPoint }); 
       } else if (currentQuiz && currentQuiz.typeDescription === '2') {
-        console.log("To PairWord");
+        console.log("To PairWord",quizIndex, progress, totalPoint);
         navigation.navigate('PairWord', 
           { quiz: currentQuiz, 
             idUser: idUser, 
