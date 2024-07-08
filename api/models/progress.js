@@ -10,6 +10,14 @@ const progressSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectID,
     ref: 'Test',
   },
+  status: {
+    type: Number,
+    require: true,
+  },
+  point: {
+    type: Number,
+    require: true,
+  },
 
 });
 
