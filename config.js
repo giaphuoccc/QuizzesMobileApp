@@ -1,1 +1,1 @@
-export const LOCALHOST = 'http://192.168.0.169:8000/api';
+export const LOCALHOST = 'http://192.168.1.2:8000/api';

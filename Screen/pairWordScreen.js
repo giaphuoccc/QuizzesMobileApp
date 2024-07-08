@@ -18,6 +18,7 @@ const PairWord = ({navigation}) => {
   const quiz = route.params.quiz;
   const idTest = quiz.testId
   const idUser = route.params.idUser;
+  const quizPoint = route.params.quizPoint
   const totalPoint = route.params.totalPoint 
   const nextQuizIndex = route.params.quizIndex + 1;
   const progress = route.params.progress;
@@ -246,7 +247,7 @@ const PairWord = ({navigation}) => {
     let counter = 0
     ansLStateArray.map((e,i)=>{
       if(e === state.RIGHT){
-        point += 1 / initLAA.length
+        point += quizPoint / initLAA.length
       }
       if(e === state.RIGHT || e === state.WRONG){
         counter++

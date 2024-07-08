@@ -21,7 +21,7 @@ const ArrangeSentence = ({navigation}) => {
   const quiz = route.params.quiz;
   const idTest = quiz.testId
   const idUser = route.params.idUser;
-  const [quizPoint, setQuizPoint] = useState(1)
+  const [quizPoint, setQuizPoint] = useState(route.params.quizPoint)
   const totalPoint = route.params.totalPoint + quizPoint
   const nextQuizIndex = route.params.quizIndex + 1;
   const progress = route.params.progress;
@@ -151,6 +151,7 @@ const ArrangeSentence = ({navigation}) => {
         setOpacityArray(initOpacityArray);
         setDisabledArray(initDisabledArray);
         setNextButtonText('Xong')
+        console.log("In arrange",totalPoint);
         navigation.navigate('QuizHolderScreen', 
           {idTest: idTest, 
             idUser: idUser, 
