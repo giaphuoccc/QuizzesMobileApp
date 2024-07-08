@@ -12,38 +12,45 @@ import {Icon, TextInput} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Progress from 'react-native-progress';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import IconIonicons from 'react-native-vector-icons/Ionicons';
 import { useRoute } from '@react-navigation/native';
 
 const ArrangeSentence = ({navigation}) => {
   const route = useRoute();
-  const a = route.params.quiz;
-  console.log(a);
-  const [isSubmit, setIsSubmit] = useState(false);
-  const correctAnswer = 'I love to eat ice-cream';
-  const [questionText, setQuestionText] = useState('Tôi thích ăn kem.');
-  const [answerText, setAnswerText] = useState('');
+  const quiz = route.params.quiz;
+  const idTest = quiz.testId
+  const idUser = route.params.idUser;
+  const [quizPoint, setQuizPoint] = useState(route.params.quizPoint)
+  const totalPoint = route.params.totalPoint + quizPoint
+  const nextQuizIndex = route.params.quizIndex + 1;
+  const progress = route.params.progress;
+  const wordArray = quiz.choice;
+  const correctAnswer = quiz.result[0];
+  const questionText = quiz.question
 
-  const [getNextButtonText, setNextButtonText] = useState('Xong');
-  const wordArray = ['a', 'moon', 'eat', 'love', 'I', 'ice-cream', 'me', 'to'];
+  const [isSubmit, setIsSubmit] = useState(false);
+  let [answerText, setAnswerText] = useState('');
+  let [getNextButtonText, setNextButtonText] = useState('Xong');
+
   const selectedFColor = '#00A3FF';
   const selectedBGColor = '#B6E9FF';
   const selectedBColor = '#00A3FF';
   const correctBGColor = '#81F53A';
   const wrongBGColor = '#FF4848';
-  const initOpacityArray = [];
-  const initDisabledArray = [];
-  const initSelectedArray = [];
-  for (let index = 0; index < 8; index++) {
+
+  let initOpacityArray = [];
+  let initDisabledArray = [];
+  let initSelectedArray = [];
+  for (let index = 0; index < wordArray.length; index++) {
     initOpacityArray.push(1);
     initDisabledArray.push(false);
     initSelectedArray.push(false);
   }
-  const [disabledReset, setDisabledReset] = useState(false);
-  const [disabledArray, setDisabledArray] = useState(initDisabledArray);
-  const [opacityArray, setOpacityArray] = useState(initOpacityArray);
-  const [selectedArray, setSelectArray] = useState(initSelectedArray);
+  let [disabledReset, setDisabledReset] = useState(false);
+  let [disabledArray, setDisabledArray] = useState(initDisabledArray);
+  let [opacityArray, setOpacityArray] = useState(initOpacityArray);
+  let [selectedArray, setSelectArray] = useState(initSelectedArray);
   const onPressReset = () => {
     if (disabledReset) {
       return;
@@ -132,11 +139,24 @@ const ArrangeSentence = ({navigation}) => {
           Alert.alert('Bạn làm đúng r nè.');
         } else {
           //fail
-          Alert.alert('Bạn làm sai r nè. lêu lêu');
+          Alert.alert('Bạn làm sai r nè. lêu lêu \nĐáp án đúng là: '+correctAnswer);
+          setQuizPoint(0)
         }
         setNextButtonText('Câu tiếp theo');
       } else {
-        navigation.navigate('PairWord');
+        setDisabledReset(false)
+        setAnswerText('');
+        setIsSubmit(false)
+        setSelectArray(initSelectedArray);
+        setOpacityArray(initOpacityArray);
+        setDisabledArray(initDisabledArray);
+        setNextButtonText('Xong')
+        console.log("In arrange",totalPoint);
+        navigation.navigate('QuizHolderScreen', 
+          {idTest: idTest, 
+            idUser: idUser, 
+            totalPoint: totalPoint, 
+            quizIndex: nextQuizIndex});
       }
     } else {
       //error
@@ -157,7 +177,7 @@ const ArrangeSentence = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <Progress.Bar
-          progress={0.9}
+          progress={progress}
           unfilledColor="black"
           borderRadius={200}
           borderColor="#086CA4"
@@ -199,13 +219,13 @@ const ArrangeSentence = ({navigation}) => {
           <View style={styles.answerFooter}>
             <View style={styles.wordSelection}>
               {wordArray
-                .slice(0, wordArray.length / 2)
+                .slice(0, Math.round(wordArray.length / 2))
                 .map((e, i) => initAnswers(e, i))}
             </View>
             <View style={styles.wordSelection}>
               {wordArray
-                .slice(wordArray.length / 2)
-                .map((e, i) => initAnswers(e, i + wordArray.length / 2))}
+                .slice(Math.round(wordArray.length / 2))
+                .map((e, i) => initAnswers(e, Math.round(i + wordArray.length / 2)))}
             </View>
           </View>
         </View>
@@ -294,7 +314,7 @@ const styles = StyleSheet.create({
     height: 130,
     textAlign: 'left',
     color: 'black',
-    fontSize: 18,
+    fontSize: 22,
   },
 
   answerGroup: {
@@ -307,7 +327,7 @@ const styles = StyleSheet.create({
   answerHeader: {
     // backgroundColor: 'blue',
     width: '100%',
-    height: '40%',
+    height: '30%',
     flexDirection: 'row',
   },
   sentenceHolder: {
@@ -324,7 +344,8 @@ const styles = StyleSheet.create({
 
   answerFooter: {
     width: '100%',
-    height: '60%',
+    height: '70%',
+    // backgroundColor: 'red',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -337,14 +358,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: 'black',
     borderWidth: 1.5,
-    height: '20%',
+    height: '18%',
     justifyContent: 'center',
     borderRadius: 20,
   },
   answerBtnText: {
     alignSelf: 'center',
     color: 'black',
-    fontSize: 26,
+    fontSize: 22,
   },
 });
 export default ArrangeSentence;

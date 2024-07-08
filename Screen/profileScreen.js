@@ -6,6 +6,7 @@ import { LOCALHOST } from '../config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {UserContext} from './UserContext';
+import User from '../components/userCompo';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 
 const achievements = [

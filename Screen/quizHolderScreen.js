@@ -1,25 +1,19 @@
 import { useState, useEffect } from 'react';
-import {View} from 'react-native';
+import {View, Alert} from 'react-native';
 import {LOCALHOST} from '../config';
 import { useRoute } from '@react-navigation/native';
+import axios from 'axios';
 
 const QuizHolderScreen = ({navigation}) => {
-  let idUser = 'idUser'
-  let idTest = '667927aba50b5d3365a8b19f'
-  let quiz = [];
   const route = useRoute();
-  const [quizIndex, setQuizIndex] = useState(0);
-  // try {
-  //   setQuizIndex(route.params.QuizIndex) 
-  // } catch (error) {
-  //   console.log(error);
-  // }
-  
-  const[totalPoint, getTotalPoint] = useState(0)
-  const[progress, setProgess] = useState(0)
+  //Bear1@gmail.com
+  let idUser = route.params?.idUser ||'6682771561e69b48ae1cb9c7' 
+  //Test 1
+  let idTest = route.params?.idTest || '667927aba50b5d3365a8b19f'
+  let maxPoint = 10;
+  const totalPoint = route.params?.totalPoint || 0; 
+  const quizIndex = route.params?.quizIndex || 0;
   const [quizArray, setQuizArray] = useState([])
-
-
   useEffect(() => {
     const loadQuizs = async () => {
       try {
@@ -47,17 +41,54 @@ const QuizHolderScreen = ({navigation}) => {
 
     loadQuizs();
   }, []);
+  const saveProgress = () =>{
+    const progress = {
+      userId: idUser,
+      testId: idTest,
+      status: 1,
+      point: totalPoint
+    }
+    console.log(progress);
+    axios
+      .post(`${LOCALHOST}/progress/created`, progress)
+      .then(response => {
+        console.log(response);
+        Alert.alert(
+          'Update progress successful'
+        );
+        navigation.navigate('HomeScreen')
+      })
+      .catch(error => {
+        Alert.alert(
+          'Update progress failed',
+        );
+        console.log('Update progress failed', error);
+      });
+  }
   useEffect(() => {
     if (quizArray.length > 0) {
-      const quizIndex = route.params?.quizIndex || 0; 
       const currentQuiz = quizArray[quizIndex];
-      
-      if (currentQuiz && currentQuiz.typeDescription === "0") {
-        navigation.navigate('ArrangeSentence', { quiz: currentQuiz, idUser: 'idUser' });
+      const progress = quizIndex/quizArray.length
+      const pointPerQuiz = maxPoint / quizArray.length
+      const output = { 
+        quiz: currentQuiz, 
+        idUser: idUser, 
+        quizIndex: quizIndex , 
+        progress: progress,
+        totalPoint: totalPoint,
+        quizPoint: pointPerQuiz}
+      if(quizIndex >= quizArray.length){
+        //add new progress to server
+        saveProgress();
+      }else if (currentQuiz && currentQuiz.typeDescription === "0") {
+        console.log("To ArrangeSentence",quizIndex, progress, totalPoint,pointPerQuiz);
+        navigation.navigate('ArrangeSentence', output);
       } else if (currentQuiz && currentQuiz.typeDescription === '1') {
-        navigation.navigate('FillBlank', { quiz: currentQuiz, idUser: 'idUser' });
+        console.log("To FillBlank",quizIndex, progress, totalPoint,pointPerQuiz);
+        navigation.navigate('FillBlank', output); 
       } else if (currentQuiz && currentQuiz.typeDescription === '2') {
-        navigation.navigate('PairWord', { quiz: currentQuiz, idUser: 'idUser' });
+        console.log("To PairWord",quizIndex, progress, totalPoint,pointPerQuiz);
+        navigation.navigate('PairWord', output); 
       } else {
         Alert.alert('Error', 'Unknown quiz type.');
       }

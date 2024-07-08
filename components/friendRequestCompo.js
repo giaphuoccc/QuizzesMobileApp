@@ -1,29 +1,25 @@
 import {Pressable, StyleSheet, Text, View, Image} from 'react-native';
 import React, {useContext} from 'react';
-import {UserType} from '../Screen/userContext';
+import {UserType} from '../Screen/UserContext';
 import {useRoute} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-import { LOCALHOST } from '../config';
+import {LOCALHOST} from '../config';
 
 const FriendRequest = ({item, friendRequest, setFriendRequests}) => {
   const route = useRoute();
-  const userIdFromToken = route.params.userIdFromToken;
   const navigation = useNavigation();
   const acceptRequest = async friendRequestId => {
     try {
-      const response = await fetch(
-        `${LOCALHOST}/friend-request/accept`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            senderId: friendRequestId,
-            recepientId: userIdFromToken,
-          }),
+      const response = await fetch(`${LOCALHOST}/friend-request/accept`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+        body: JSON.stringify({
+          senderId: friendRequestId,
+          recepientId: userIdFromToken,
+        }),
+      });
       if (response.ok) {
         setFriendRequests(
           friendRequest.filter(request => request._id !== friendRequestId),
@@ -39,34 +35,60 @@ const FriendRequest = ({item, friendRequest, setFriendRequests}) => {
       style={{
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
         marginVertical: 2,
+        gap: 30,
+        width: "100%",
+        height: 120
       }}>
       <Image
-        style={{width: 80, height: 80, borderRadius: 25}}
+        style={{width: 100, height: 100, borderRadius: 50}}
         source={{uri: item.image}}
       />
-      <Text style={{fontSize: 18, fontWeight: 'bold', marginLeft: 5, flex: 1}}>
-        {item?.name} sent you a friend request
-      </Text>
-      <Pressable
-        onPress={() => acceptRequest(item._id)}
-        style={{
-          backgroundColor: '#0066b2',
-          width: 110,
-          padding: 15,
-          borderRadius: 6,
-        }}>
-        <Text
-          style={{
-            textAlign: 'center',
-            color: 'white',
-            fontSize: 15,
-            fontWeight: 'bold',
-          }}>
-          Accept
-        </Text>
-      </Pressable>
+      <View style={{flexDirection: "column", flex: 1, gap: 5}}>
+        <View>
+          <Text style={{fontSize: 25, fontWeight: 'bold', color: "black"}}>
+            {item?.name}
+          </Text>
+        </View>
+        <View style={{flexDirection: 'row', gap: 30 }}>
+          <Pressable
+            onPress={() => acceptRequest(item._id)}
+            style={{
+              backgroundColor: '#0066b2',
+              width: 120,
+              padding: 10,
+              borderRadius: 6,
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              Accept
+            </Text>
+          </Pressable>
+          <Pressable
+            // onPress={() => acceptRequest(item._id)}
+            style={{
+              backgroundColor: 'gray',
+              width: 120,
+              padding: 10,
+              borderRadius: 6,
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 18,
+                fontWeight: 'bold',
+              }}>
+              Delete
+            </Text>
+          </Pressable>
+        </View>
+      </View>
     </Pressable>
   );
 };

@@ -24,8 +24,8 @@ import RegisterScreen from './Screen/registerScreen.js';
 import Chat from './Screen/chatScreen.js';
 
 //Profile 
-import ProfileScreen from './Screen/ProfileScreen.js';
-import ProfileEditScreen from './Screen/ProfileEditScreen.js';
+import ProfileScreen from './Screen/profileScreen.js';
+import ProfileEditScreen from './Screen/profileEditScreen.js';
 
 //Quiz
 import PictureQuizScreen from './Screen/pictureQuizScreen.js';
@@ -35,6 +35,7 @@ import PairWord from './Screen/pairWordScreen.js';
 
 
 import QuizHolderScreen from './Screen/quizHolderScreen';
+import FriendSentScreen from './Screen/friendSentReqScreen.js';
 
 const Tab = createBottomTabNavigator();
 const StackNav = createNativeStackNavigator();
@@ -42,7 +43,7 @@ const StackNav = createNativeStackNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="QuizHolderScreen"
+      initialRouteName="HomeScreen"
       screenOptions={{
         tabBarShowLabel: false, 
         tabBarStyle: {
@@ -84,7 +85,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="HomeScreen"
-        component={QuizHolderScreen}
+        component={HomeScreen}
         options={{
           tabBarIcon: ({ focused}) => (
             <Entypo name="home" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -125,6 +126,11 @@ const stack = () => {
         <StackNav.Screen
           name="Loading"
           component={Loading}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="QuizHolderScreen"
+          component={QuizHolderScreen}
           options={{headerShown: false}}
         />
         <StackNav.Screen
@@ -189,6 +195,11 @@ const stack = () => {
         <StackNav.Screen
           name="BriefScreen"
           component={BriefScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="FriendSentScreen"
+          component={FriendSentScreen}
           options={{headerShown: false}}
         />
         
