@@ -79,6 +79,21 @@ app.get("/userdata/:userId", (req, res) => {
     });
 });
 
+//update-profile
+app.put('/userdata/update-profile/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { name, email, image } = req.body;
+    const user = await User.findByIdAndUpdate(userId, { name, email, image }, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user', error });
+  }
+});
+
 //find all
 app.get('/:userId', (req, res) => {
   const loggedInUserId = req.params.userId;
@@ -202,6 +217,7 @@ app.get("/friends/:userId",(req,res) => {
 //     res.status(500).json({massage: "Internal Sever Err"})
 //   }
 // })
+
 // app.get("/user/:userId", async (req, res) => {
 //   try {
 //     const { userId } = req.params;

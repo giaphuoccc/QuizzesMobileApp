@@ -12,7 +12,6 @@ import * as Progress from 'react-native-progress';
 import { useRoute } from '@react-navigation/native';
 import { stopMapper } from 'react-native-reanimated';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
-import { useRoute } from '@react-navigation/native';
 const PairWord = ({navigation}) => {
   const route = useRoute();
   const testId = route.params.testId;

@@ -63,7 +63,7 @@ export default StyleSheet.create({
   },
   camIconDiv: {
     position: 'absolute',
-    right: 142,
+    right: 200,
     zIndex: 1,
     bottom: 5,
     height: 36,

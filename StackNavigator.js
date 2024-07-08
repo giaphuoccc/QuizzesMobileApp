@@ -12,12 +12,12 @@ import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 
-import Loading from './Screen/loadingScreen.js';
-import Welcome from './Screen/welcomeScreen.js';
+import Loading from './Screen/LoadingScreen.js';
+import Welcome from './Screen/WelcomeScreen.js';
 
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
-import FriendsScreen from './Screen/friendsScreen.js';
+import FriendsScreen from './Screen/FriendsScreen.js';
 
 import HomeScreen from './Screen/homeScreen.js'
 import RegisterScreen from './Screen/registerScreen.js';
