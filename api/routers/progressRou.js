@@ -31,4 +31,15 @@ app.post('/created', (req, res) => {
       });
   });
 
+  app.get('/getProgressByUser/:userId', (req, res) => {
+    Progress.find({userId: req.params.userId})
+    .then(progress => {
+      res.status(200).json(progress);
+    })
+      .catch(err => {
+        console.log('Error retrieving', err);
+        res.status(500).json({message: 'Error retrieving'});
+      });
+  });
+
 module.exports = app;

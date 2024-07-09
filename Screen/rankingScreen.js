@@ -2,9 +2,7 @@ import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import React, { useContext, useEffect, useState, useCallback } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { UserContext } from './UserContext';
-import User from '../components/userCompo';
 import { LOCALHOST } from '../config';
-
 
 const RankingScreen = ({ navigation }) => {
     const { userId, users } = useContext(UserContext);
@@ -32,7 +30,6 @@ const RankingScreen = ({ navigation }) => {
 
     const fetchUserFriend = useCallback(async () => {
         try {
-
             const friendsResponse = await fetch(`${LOCALHOST}/users/friends/${userId}`);
             const friendsData = await friendsResponse.json();
             // console.log(users);
