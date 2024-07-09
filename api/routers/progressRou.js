@@ -8,8 +8,8 @@ const User = require('../models/user')
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.post('/created', (req, res) => {
-    const {userId,testId} = req.body;
-    const newProgress = new Progress({userId,testId});
+    const {userId,testId,status,point} = req.body;
+    const newProgress = new Progress({userId,testId,status,point});
     newProgress
       .save()
       .then(() => {
@@ -25,6 +25,17 @@ app.post('/created', (req, res) => {
       .then(progress => {
         res.status(200).json(progress);
       })
+      .catch(err => {
+        console.log('Error retrieving', err);
+        res.status(500).json({message: 'Error retrieving'});
+      });
+  });
+
+  app.get('/getProgressByUser/:userId', (req, res) => {
+    Progress.find({userId: req.params.userId})
+    .then(progress => {
+      res.status(200).json(progress);
+    })
       .catch(err => {
         console.log('Error retrieving', err);
         res.status(500).json({message: 'Error retrieving'});

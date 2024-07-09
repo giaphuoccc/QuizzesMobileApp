@@ -2,17 +2,23 @@ import { useState } from "react"
 import {StyleSheet, View, Text, ImageBackground, Image, TouchableOpacity, Alert} from "react-native"
 import * as Progress from 'react-native-progress';
 import IconFontisto from 'react-native-vector-icons/Fontisto';
-
+import { useRoute } from "@react-navigation/native";
 
 const FillBlank = ({navigation}) => {    
-  const route = useRoute();
-  const a = route.params.quiz;
-  console.log(a );
-    const answerArray = ["a","an","on","in"]
-    const question = "Last night, i got _____ heart attack. Then i die the next morning."
+    const route = useRoute();
+    const quiz = route.params.quiz;
+    const idTest = quiz.testId
+    const idUser = route.params.idUser;
+    const [quizPoint, setQuizPoint] = useState(route.params.quizPoint)
+    const totalPoint = route.params.totalPoint + quizPoint
+    const nextQuizIndex = route.params.quizIndex + 1;
+    const progress = route.params.progress;
+    const answerArray = quiz.choice
+    const question = quiz.question
+    const correctAnswer = quiz.result[0]
+
     const blank = question.slice(question.indexOf("_"),question.lastIndexOf("_"))
     const [getBlank, setBlank] = useState(blank)
-    const correctAnswer = "a"
     const wrongAnswer = -1
     const [getSelectedAnswer, setSelectedAnswer] = useState(wrongAnswer)
     const selectedFColor = "#00A3FF"
@@ -25,7 +31,7 @@ const FillBlank = ({navigation}) => {
     const leftQuest = question.slice(0,question.indexOf("_"))
     const rightQuest = question.slice(question.lastIndexOf("_") + 1,question.length)
     const [getNextButtonText, setNextButtonText] = useState("Xong")
-    const progress = 0.1
+
     const submit = ()=>{
       if(getSelectedAnswer !== wrongAnswer){
         if(!getIsSubmit){
@@ -37,11 +43,17 @@ const FillBlank = ({navigation}) => {
               Alert.alert("Bạn làm đúng r nè.")
           }else{
               //fail
-              Alert.alert("Bạn làm sai r nè. lêu lêu")
+              Alert.alert("Bạn làm sai r nè. lêu lêu\nĐáp án đúng là: "+correctAnswer)
+              setQuizPoint(0)
           }
           setNextButtonText("Câu tiếp theo")
         }else{
-          navigation.navigate("PairWord")
+          navigation.navigate('QuizHolderScreen', 
+            {idTest: idTest, 
+              idUser: idUser, 
+              totalPoint: totalPoint, 
+              quizIndex: nextQuizIndex});
+
         }
       }else{
         //error

@@ -2,9 +2,7 @@ import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import React, { useContext, useEffect, useState, useCallback } from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { UserContext } from './UserContext';
-import User from '../components/userCompo';
 import { LOCALHOST } from '../config';
-
 
 const RankingScreen = ({ navigation }) => {
     const { userId, users } = useContext(UserContext);
@@ -13,6 +11,22 @@ const RankingScreen = ({ navigation }) => {
     const [rankList, setRankList] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
+
+
+    const resetAllUserStat = useCallback(async () => {
+        try {
+            const userResponse = await fetch(`${LOCALHOST}/users/resetUserPoint`, {
+                method: 'PATCH',
+            });
+            if (!userResponse.ok) {
+                throw new Error('Failed to reset user points');
+            }
+            const userData = await userResponse.json();
+            console.log('User data:', userData);
+        } catch (error) {
+            console.log('Error message', error);
+        }
+    }, []);
 
     const fetchUserFriend = useCallback(async () => {
         try {
@@ -54,34 +68,33 @@ const RankingScreen = ({ navigation }) => {
     useEffect(() => {
         const calculateCountdown = () => {
             const now = new Date();
-            const startOfWeek = new Date(now);
-            startOfWeek.setHours(0, 0, 0, 0); // Start of current day at midnight
-            const dayOfWeek = startOfWeek.getDay(); // 0 (Sunday) to 6 (Saturday)
-            // Adjust startOfWeek to the beginning of the current week (Sunday)
-            startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
-            // Calculate target end of week
-            const endOfWeek = new Date(startOfWeek);
-            endOfWeek.setDate(startOfWeek.getDate() + 7); // End of the week (7 days later)
-
+            const startOfCurrentDay = new Date(now);
+            startOfCurrentDay.setHours(0, 0, 0, 0); // Start of current day at midnight
+          
+            // Calculate next Monday
+            const startOfNextMonday = new Date(startOfCurrentDay);
+            startOfNextMonday.setDate(startOfNextMonday.getDate() + (1 + 7 - startOfNextMonday.getDay()) % 7);
+          
             const currentTime = now.getTime();
-            if (currentTime >= endOfWeek.getTime()) {
-                // If current time is past end of week, reset countdown
-                setCountdown({ days: '00', hours: '00', minutes: '00', seconds: '00' });
-                return;
+            if (currentTime >= startOfNextMonday.getTime()) {
+              // If current time is past or equal to next Monday, reset countdown
+              resetAllUserStat();
+              setCountdown({ days: '00', hours: '00', minutes: '00', seconds: '00' });
+              return;
             }
-
-            const distance = endOfWeek.getTime() - currentTime;
+          
+            const distance = startOfNextMonday.getTime() - currentTime;
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             setCountdown({
-                days: String(days).padStart(2, '0'),
-                hours: String(hours).padStart(2, '0'),
-                minutes: String(minutes).padStart(2, '0'),
-                seconds: String(seconds).padStart(2, '0'),
+              days: String(days).padStart(2, '0'),
+              hours: String(hours).padStart(2, '0'),
+              minutes: String(minutes).padStart(2, '0'),
+              seconds: String(seconds).padStart(2, '0'),
             });
-        };
+          };
         // Calculate countdown on component mount
         calculateCountdown();
         // Update countdown every second
@@ -226,40 +239,40 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red'
     },
     listHeading: {
-        flex:3,
+        flex: 3,
         flexDirection: 'row',
         backgroundColor: 'white',
         borderRadius: 7,
         padding: '2%',
         marginVertical: '1%',
-        justifyContent:'center',
-        
+        justifyContent: 'center',
+
         width: '99%',
     },
-    placementIndicator:{
-        flex:1,
-        fontSize:35,
-        textAlign:'center',
-        fontWeight:'bold',
-        textAlignVertical:'center',
+    placementIndicator: {
+        flex: 1,
+        fontSize: 35,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        textAlignVertical: 'center',
         color: '#33B6FF',
     },
-    nameIndicator:{
-        flex:2,
+    nameIndicator: {
+        flex: 2,
         // backgroundColor:'red',
-        textAlignVertical:'center',
-        fontSize:25,
-        fontWeight:'bold',
-        textAlign:'center',
+        textAlignVertical: 'center',
+        fontSize: 25,
+        fontWeight: 'bold',
+        textAlign: 'center',
         color: '#33B6FF',
 
     },
-    pointIndicator:{
-        flex:1,
-        textAlign:'center',
-        textAlignVertical:'center',
-        fontWeight:'bold',
-        fontSize:25,
+    pointIndicator: {
+        flex: 1,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        fontWeight: 'bold',
+        fontSize: 25,
         color: '#33B6FF',
     },
     memberContent: {
@@ -294,7 +307,7 @@ const styles = StyleSheet.create({
     memberName: {
         flex: 4,
         textAlignVertical: 'center',
-        textAlign:'center',
+        textAlign: 'center',
         paddingLeft: '2%',
         fontSize: 25,
         fontWeight: '400',

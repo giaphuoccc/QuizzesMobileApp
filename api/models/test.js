@@ -9,14 +9,7 @@ const testSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectID,
     ref: 'Chapter',
   },
-  status: {
-    type: Number,
-    require: true,
-  },
-  point: {
-    type: Number,
-    require: true,
-  },
+
 
 });
 

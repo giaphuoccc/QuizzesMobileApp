@@ -12,8 +12,8 @@ import RankingScreen from './Screen/rankingScreen';
 import GreetingScreen from './Screen/greetingScreen';
 import BriefScreen from './Screen/briefScreen';
 
-import Loading from './Screen/loadingScreen.js';
-import Welcome from './Screen/welcomeScreen.js';
+import Loading from './Screen/LoadingScreen.js';
+import Welcome from './Screen/WelcomeScreen.js';
 
 import Login from './Screen/loginScreen.js';
 import LoginGreeting from './Screen/loginGreetingScreen.js';
@@ -35,6 +35,7 @@ import PairWord from './Screen/pairWordScreen.js';
 
 
 import QuizHolderScreen from './Screen/quizHolderScreen';
+import FriendSentScreen from './Screen/friendSentReqScreen.js';
 
 const Tab = createBottomTabNavigator();
 const StackNav = createNativeStackNavigator();
@@ -42,7 +43,7 @@ const StackNav = createNativeStackNavigator();
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="QuizHolderScreen"
+      initialRouteName="HomeScreen"
       screenOptions={{
         tabBarShowLabel: false, 
         tabBarStyle: {
@@ -84,7 +85,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="HomeScreen"
-        component={QuizHolderScreen}
+        component={HomeScreen}
         options={{
           tabBarIcon: ({ focused}) => (
             <Entypo name="home" color={focused ? '#4A55A2' : 'gray'} size={32} />
@@ -194,6 +195,11 @@ const stack = () => {
         <StackNav.Screen
           name="BriefScreen"
           component={BriefScreen}
+          options={{headerShown: false}}
+        />
+        <StackNav.Screen
+          name="FriendSentScreen"
+          component={FriendSentScreen}
           options={{headerShown: false}}
         />
         
