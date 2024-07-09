@@ -78,6 +78,22 @@ app.get("/userdata/:userId", (req, res) => {
     });
 });
 
+//update-profile
+app.put('/userdata/update-profile/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { name, email, image } = req.body;
+    const user = await User.findByIdAndUpdate(userId, { name, email, image }, { new: true });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user', error });
+  }
+});
+
+
 //find all user By Id with ID User login
 app.get('/:userId', (req, res) => {
   const loggedInUserId = req.params.userId;
@@ -201,6 +217,18 @@ app.post("/friend-request/accept", async (req, res) => {
 //     res.status(500).json({massage: "Internal Sever Err"})
 //   }
 // })
+
+// app.get("/user/:userId", async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+//     //fetch the user data from the user ID
+//     const recepientId = await User.findById(userId);
+//     res.json(recepientId);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// });
 
 app.get("/main/:userId", async (req, res) => {
   try {
